@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+<url>
+  <loc>https://thingsboard.io/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url>
+<url>
+  <loc>https://thingsboard.io/docs/user-guide/access-token/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/processors/alarm-deduplication-processor/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/api/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/architecture/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/attributes/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/install/aws/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/alarms/basic-rules/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/install/building-from-source/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/install/building-from-source/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/certificates/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/install/cluster-setup/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/coap-api/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/community/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/install/config/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/configuration/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/contact-us-thanks/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/contact-us/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/ui/customers/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/customization/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/ui/dashboards/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/demo-account/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/filters/device-attributes-filter/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/device-credentials/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/filters/device-telemetry-filter/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/ui/devices/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/install/docker-windows/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/install/docker/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/contribution/extensions-development/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/monitoring/facilities-monitoring-poc/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/faq/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/feed.xml</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/feedback/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/fleet-tracking/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/gateway-mqtt-api/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/getting-started/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/raspberry/gpio-android-things/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/esp8266/gpio/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/raspberry/gpio/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/linkit-one/gps/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/getting-started-guides/helloworld/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/contribution/how-to-contribute/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/http-api/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/partners/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/nodemcu/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/services/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/raspberry/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/arduino/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/esp8266/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/linkit-one/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/install/installation-options/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/installation/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/integration-with-aws-iot/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/integration-with-ibm-watson-iot/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/iot-use-cases/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-video-tutorials/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/actions/kafka-plugin-action/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/plugins/kafka/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/install/linux/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/install/linux/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/live-demo/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/ui/mail-settings/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/alarms/mail/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/plugins/mail/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/filters/message-type-filter/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/plugins/messaging/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/filters/method-name-filter/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/mqtt-api/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/mqtt-over-ssl/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/mqtt/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/newsletter-thanks/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/opc-ua/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/performance-tests/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/performance-tools/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/performance/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/ui/plugins/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/services/professional-services/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/protocols/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/actions/rabbitmq-plugin-action/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/plugins/rabbitmq/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/actions/rest-api-call-plugin-action/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/rest-api/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/plugins/rest/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/actions/rpc-plugin-action/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/rpc/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/plugins/rpc/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/install/rpi/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/install/rpi/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/rule-engine/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/ui/rules/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/search/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/actions/send-mail-action/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/sigfox-iot-data-visualization/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/sigfox/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/sitemap/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/smart-energy/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/smart-farming/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/analytics/spark-integration-with-thingsboard/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/services/support/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/actions/telemetry-plugin-action/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/telemetry/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/plugins/telemetry/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/esp8266/temperature/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/nodemcu/temperature/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/raspberry/temperature/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/samples/arduino/temperature/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/ui/tenants/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/reference/plugins/time/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/services/trainings/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/troubleshooting/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/install/upgrade-instructions/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/install/upgrade-instructions/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/ui/users/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/visualization/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/what-is-iot-gateway/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/getting-started-guides/what-is-thingsboard/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/ui/widget-library/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/iot-gateway/install/windows/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url><url>
+  <loc>https://thingsboard.io/docs/user-guide/install/windows/</loc>
+  <lastmod>2017-08-23T15:20:31+08:00</lastmod>
+</url>
+</urlset>

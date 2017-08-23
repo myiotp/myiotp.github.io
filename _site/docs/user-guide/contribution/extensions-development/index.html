@@ -1,0 +1,608 @@
+
+
+<!Doctype html>
+<html id="docs" class="Thingsboard Documentation">
+
+
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- Begin Jekyll SEO tag v2.0.0 -->
+<title>Extensions (Plugins and Actions) Development Guide - Thingsboard</title>
+<meta property="og:title" content="Extensions (Plugins and Actions) Development Guide" />
+<link rel="canonical" href="http://localhost:4000/docs/user-guide/contribution/extensions-development/" />
+<meta property="og:url" content="http://localhost:4000/docs/user-guide/contribution/extensions-development/" />
+<meta property="og:site_name" content="Thingsboard" />
+<meta property="og:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@thingsboard" />
+<meta name="twitter:creator" content="@thingsboard" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "headline": "Extensions (Plugins and Actions) Development Guide",
+    "image": "http://localhost:4000/images/thingsboard_logo.png",
+    "logo": "http://localhost:4000/images/thingsboard_logo.png",
+    "url": "http://localhost:4000/docs/user-guide/contribution/extensions-development/"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+	
+	
+	
+	<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="/css/styles.css">
+	<script type="text/javascript">
+		/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+		!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+		/*! onloadCSS. (onload callback for loadCSS) [c]2017 Filament Group, Inc. MIT License */
+		function onloadCSS(a,b){function c(){!d&&b&&(d=!0,b.call(a))}var d;a.addEventListener&&a.addEventListener("load",c),a.attachEvent&&a.attachEvent("onload",c),"isApplicationInstalled"in navigator&&"onloadcssdefined"in a&&a.onloadcssdefined(c)}
+	</script>
+	<script type="text/javascript">
+
+		function jqueryDefer(method) {
+			if (window.jQuery) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryDefer(method)
+				}, 50);
+			}
+		}
+
+		function jqueryUiDefer(method) {
+			if (window.jQuery && window.jQuery.ui) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryUiDefer(method)
+				}, 50);
+			}
+		}
+
+		function loadScript(src, callback)
+		{
+			var s, r, t;
+			r = false;
+			s = document.createElement('script');
+			s.type = 'text/javascript';
+			s.src = src;
+			s.onload = s.onreadystatechange = function() {
+				if ( !r && (!this.readyState || this.readyState == 'complete') )
+				{
+					r = true;
+					if (callback) {
+						callback();
+					}
+				}
+			};
+			t = document.getElementsByTagName('script')[0];
+			t.parentNode.insertBefore(s, t);
+		}
+
+		function loadCssAsync(src, callback) {
+			var stylesheet = loadCSS( src );
+			if (callback) {
+				onloadCSS(stylesheet, callback);
+			}
+		}
+
+		function loadNextScript(index, scriptsList, completeCallback) {
+			if (index < scriptsList.length) {
+				var script = scriptsList[index];
+				if (script.type === 'script') {
+					loadScript(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				} else if (script.type === 'css') {
+					loadCssAsync(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				}
+			} else if (completeCallback) {
+				completeCallback();
+			}
+		}
+
+		var initialScriptsList = [
+			{src: '/js/jquery-2.2.0.min.js', type: 'script'},
+			{src: '/css/jquery-ui.min.css', type: 'css'},
+			{src: '/js/jquery-ui.min.js', type: 'script'},
+			{src: '/js/script.js', type: 'script'},
+			{src: '/css/sweetalert.css', type: 'css'},
+			{src: '/js/sweetalert.min.js', type: 'script'}
+		];
+
+		loadNextScript(0, initialScriptsList);
+
+	</script>
+	<script type="text/javascript">
+		function _gaLt(event) {
+			/* If GA is blocked or not loaded, or not main|middle|touch click then don't track */
+			if (!ga.hasOwnProperty("loaded") || ga.loaded != true || (event.which != 1 && event.which != 2)) {
+				return;
+			}
+			var el = event.srcElement || event.target;
+
+			while (el && (typeof el.tagName == 'undefined' || el.tagName.toLowerCase() != 'a' || !el.href)) {
+				el = el.parentNode;
+			}
+			if (el && el.href) {
+				var link = el.href;
+				if ((link.indexOf(location.host) == -1 || link.indexOf('.' + location.host) > 0) && !link.match(/^javascript\:/i)) {
+					var target = (el.target && !el.target.match(/^_(self|parent|top)$/i)) ? el.target : false;
+					if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
+						target = "_blank";
+					}
+
+					var hbrun = false; // tracker has not yet run
+					var hitBack = function() {
+						if (hbrun) return;
+						hbrun = true;
+						window.location.href = link;
+					};
+
+					if (target) {
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search
+						);
+					} else {
+						event.preventDefault ? event.preventDefault() : event.returnValue = !1;
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search, {
+									"hitCallback": hitBack
+								}
+						);
+
+						setTimeout(hitBack, 1000);
+					}
+				}
+			}
+		}
+
+		var _w = window;
+		var _gaLtEvt = ("ontouchstart" in _w) ? "click" : "mousedown";
+		_w.addEventListener ? _w.addEventListener("load", function() {document.body.addEventListener(_gaLtEvt, _gaLt, !1)}, !1)
+				: _w.attachEvent && _w.attachEvent("onload", function() {document.body.attachEvent("on" + _gaLtEvt, _gaLt)});
+	</script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-88383331-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+</head>
+<body>
+<div id="cellophane" onclick="tb.toggleMenu()"></div>
+<header>
+	<a href="/" class="logo"></a>
+	<div id="githubButtonContainer">
+		<iframe id="gh-btn-frame" src="https://ghbtns.com/github-btn.html?user=thingsboard&repo=thingsboard&type=star&count=true&size=large"
+				frameborder="0"
+				scrolling="0" width="130px" height="30px"></iframe>
+	</div>
+	<div class="nav-buttons" data-auto-burger="primary">
+		<a href="/docs/" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a>
+		<a href="/iot-use-cases/" class="button" id="useCases" data-auto-burger-exclude>Use cases</a>
+		<a href="/docs/getting-started-guides/helloworld/" class="button" id="gettingStarted" data-auto-burger-exclude>Getting started</a>
+		<a target="_blank" href="https://demo.thingsboard.io/signup" class="button" id="liveDemo" data-auto-burger-exclude>Live demo</a>
+		<button id="hamburger" onclick="tb.toggleMenu()" data-auto-burger-exclude><div></div></button>
+	</div>
+
+	<nav id="mainNav">
+		<main id="headNav" data-auto-burger="primary">
+			<div class="nav-box">
+				<h3><a href="/docs/getting-started-guides/helloworld/">Get Started</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/">Documentation</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/iot-use-cases/">Use cases</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="http://blog.thingsboard.io/">Blog</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/services/">Services</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/contact-us/">Contact us</a></h3>
+			</div>
+		</main>
+		<main data-auto-burger="primary">
+			<div class="center">
+				<div class="social">
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>Twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+			<div class="clear" style="clear: both"></div>
+		</main>
+	</nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Thingsboard Documentation</h1>
+  <h5>Documentation for using Thingsboard IoT Platform.</h5>
+  <div id="vendorStrip" class="light-text">
+    <div id="docsList">
+        <ul>
+          <li><a href="/docs/" class="YAH">DOCS HOME</a></li>
+          <li><a href="/docs/api/" >API</a></li>
+          <li><a href="/docs/iot-gateway/" >IOT GATEWAY</a></li>
+          <li><a href="/docs/reference/" >REFERENCE</a></li>
+          <li><a href="/docs/samples/" >SAMPLES</a></li>
+          <li><a href="/iot-use-cases/" >USE CASES</a></li>
+          <li><a href="/docs/iot-video-tutorials/" >VIDEO TUTORIALS</a></li>
+          <li><a href="/docs/faq/" >FAQ</a></li>
+          <li><a href="/docs/services/" >SERVICES</a></li>
+          <li><a href="/docs/contact-us/" >CONTACT US</a></li>
+        </ul>
+    </div>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)">
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section id="encyclopedia">
+  
+  <div id="docsToc" >
+        <div class="pi-accordion">
+        
+    <a class="item" data-title="Thingsboard Documentation" href="/docs/"></a>
+    <a class="item" data-title="What is Thingsboard?" href="/docs/getting-started-guides/what-is-thingsboard/"></a>
+    <a class="item" data-title="Getting Started" href="/docs/getting-started-guides/helloworld/"></a>
+<div class="item" data-title="Installation">
+  <div class="container">
+    <a class="item" data-title="Installation options" href="/docs/user-guide/install/installation-options/"></a>
+    <a class="item" data-title="Installing Thingsboard on Windows" href="/docs/user-guide/install/windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on Linux (Ubuntu & CentOS)" href="/docs/user-guide/install/linux/"></a>
+    <a class="item" data-title="Installing Thingsboard on Raspberry Pi 3" href="/docs/user-guide/install/rpi/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Linux or Mac OS)" href="/docs/user-guide/install/docker/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Windows)" href="/docs/user-guide/install/docker-windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on AWS EC2" href="/docs/user-guide/install/aws/"></a>
+    <a class="item" data-title="Building from sources" href="/docs/user-guide/install/building-from-source/"></a>
+    <a class="item" data-title="Upgrade instructions" href="/docs/user-guide/install/upgrade-instructions/"></a>
+    <a class="item" data-title="Configuration" href="/docs/user-guide/install/config/"></a>
+    <a class="item" data-title="Cluster setup" href="/docs/user-guide/install/cluster-setup/"></a>
+  </div>
+</div>
+<div class="item" data-title="Features">
+  <div class="container">
+    <a class="item" data-title="Working with device attributes" href="/docs/user-guide/attributes/"></a>
+    <a class="item" data-title="Working with telemetry data" href="/docs/user-guide/telemetry/"></a>
+    <a class="item" data-title="Using RPC capabilities" href="/docs/user-guide/rpc/"></a>
+    <a class="item" data-title="Rule engine" href="/docs/user-guide/rule-engine/"></a>
+    <a class="item" data-title="Data visualization" href="/docs/user-guide/visualization/"></a>
+  </div>
+</div>
+<div class="item" data-title="Integrations Cookbook">
+  <div class="container">
+    <a class="item" data-title="Persist and visualize AWS IoT data" href="/docs/iot-gateway/integration-with-aws-iot/"></a>
+    <a class="item" data-title="IoT data analytics using Apache Spark" href="/docs/samples/analytics/spark-integration-with-thingsboard/"></a>
+    <a class="item" data-title="SigFox IoT data collection and visualization" href="/docs/iot-gateway/sigfox-iot-data-visualization/"></a>
+    <a class="item" data-title="Persist and visualize IBM Watson IoT data" href="/docs/iot-gateway/integration-with-ibm-watson-iot/"></a>
+  </div>
+</div>
+<div class="item" data-title="Security">
+  <div class="container">
+    <a class="item" data-title="MQTT over SSL" href="/docs/user-guide/mqtt-over-ssl/"></a>
+    <a class="item" data-title="Device authentication options" href="/docs/user-guide/device-credentials/"></a>
+    <a class="item" data-title="Access Token based authentication" href="/docs/user-guide/access-token/"></a>
+    <a class="item" data-title="X.509 Certificate based authentication" href="/docs/user-guide/certificates/"></a>
+  </div>
+</div>
+<div class="item" data-title="Administration UI">
+  <div class="container">
+    <a class="item" data-title="Tenants" href="/docs/user-guide/ui/tenants/"></a>
+    <a class="item" data-title="Customers" href="/docs/user-guide/ui/customers/"></a>
+    <a class="item" data-title="Users" href="/docs/user-guide/ui/users/"></a>
+    <a class="item" data-title="Devices" href="/docs/user-guide/ui/devices/"></a>
+    <a class="item" data-title="Rules" href="/docs/user-guide/ui/rules/"></a>
+    <a class="item" data-title="Plugins" href="/docs/user-guide/ui/plugins/"></a>
+    <a class="item" data-title="Widgets Library" href="/docs/user-guide/ui/widget-library/"></a>
+    <a class="item" data-title="Dashboards" href="/docs/user-guide/ui/dashboards/"></a>
+    <a class="item" data-title="Mail Settings" href="/docs/user-guide/ui/mail-settings/"></a>
+  </div>
+</div>
+    <a class="item" data-title="Troubleshooting" href="/docs/user-guide/troubleshooting/"></a>
+<div class="item" data-title="Contribution Guide">
+  <div class="container">
+    <a class="item" data-title="How to contribute" href="/docs/user-guide/contribution/how-to-contribute/"></a>
+    <a class="item" data-title="Extensions (Plugins and Actions) development" href="/docs/user-guide/contribution/extensions-development/"></a>
+  </div>
+</div>
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="tb.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+  
+  <div id="docsContent" class="">
+    <h1>Extensions (Plugins and Actions) Development Guide</h1>
+    <ul id="markdown-toc">
+  <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
+  <li><a href="#maven-module" id="markdown-toc-maven-module">Maven module</a></li>
+  <li><a href="#api" id="markdown-toc-api">API</a></li>
+  <li><a href="#server-side-development" id="markdown-toc-server-side-development">Server-side development</a>    <ul>
+      <li><a href="#action-guide-development" id="markdown-toc-action-guide-development">Action guide development</a></li>
+      <li><a href="#plugin-guide-development" id="markdown-toc-plugin-guide-development">Plugin guide development</a></li>
+    </ul>
+  </li>
+  <li><a href="#ui-development" id="markdown-toc-ui-development">UI development</a></li>
+  <li><a href="#plugin-json-configuration" id="markdown-toc-plugin-json-configuration">Plugin JSON configuration</a></li>
+  <li><a href="#action-json-configuration" id="markdown-toc-action-json-configuration">Action JSON configuration</a></li>
+  <li><a href="#extension-testing-and-verification" id="markdown-toc-extension-testing-and-verification">Extension testing and verification</a></li>
+</ul>
+
+<h4 id="introduction">Introduction</h4>
+
+<p><strong>Thingsboard extensions</strong> are additional modules that could be developed and fitted to the platform to provide new functionality required by your needs.
+As an example, you can easily add your custom <strong>extension</strong> that could send messages from <strong>Thingsboard</strong> to any other external system, additionally applying your specific business logic calculations before send.
+Or you can add <strong>extension</strong> that do specific stream analytics on device <em>telemetry</em> stream data and pushes result back to <strong>Thingsboard</strong> instance.</p>
+
+<p>Here is high level design flow of <strong>Thingsboard extensions</strong>:</p>
+
+<p><img src="/images/user-guide/contribution/extension-design.png" alt="image" /></p>
+
+<h4 id="maven-module">Maven module</h4>
+
+<p>Custom extensions are separate <em>maven</em> modules in <strong>Thingsboard</strong> <a href="https://github.com/thingsboard/thingsboard/tree/master/extensions">github repository</a>.
+New <em>maven</em> module must be created inside <em>extensions</em> module to add new extension.
+Then this new <em>maven</em> module should be added as dependency to the <em>application</em> module dependencies.</p>
+
+<p><em>** TODO - ADD DETAILS REGARDING WHERE INCLUDE THIS  **</em></p>
+
+<p>During the start-up <strong>Thingsboard</strong> parses <em>classes</em> inside classpath, finds annotated with custom <em>Thingsboard Plugin and Action Annotations</em> and adds new extension to the platform.</p>
+
+<p>Once it’s done you are able to use your custom extension as any other extension in the system.</p>
+
+<h4 id="api">API</h4>
+
+<p>To properly construct new extension you’ll need to develop <strong>Action</strong> and <strong>Plugin</strong> functionality using predefined set of <em>Classes</em>, <em>Interfaces</em> and <em>Annotations</em>.
+As well, you’ll need to provide JSON descriptor for the UI forms of the <strong>Plugin</strong> and <strong>Action</strong>.</p>
+
+<p>We’ll provide details how to create new extensions to the system using as a reference <a href="/docs/reference/plugins/rest/">REST API Call Extension</a> that is already placed to the system.</p>
+
+<p>Plugin is responsible for sending HTTP requests to specific endpoints and code for this plugin is located <a href="https://github.com/thingsboard/thingsboard/tree/master/extensions/extension-rest-api-call/src/main/java/org/thingsboard/server/extensions/rest">here</a>.</p>
+
+<h4 id="server-side-development">Server-side development</h4>
+
+<p>Server-side development contains of two parts - <strong>Action</strong> and <strong>Plugin</strong> coding.</p>
+
+<p><img src="/images/user-guide/contribution/action-plugin-communication.png" alt="image" /></p>
+
+<h5 id="action-guide-development">Action guide development</h5>
+
+<p>Action is responsible for processing messages that have been delivered from the devices (telemetry or attribute data) and converting it into <strong>RuleToPluginMsg</strong> object that is going to be processed by <strong>Plugin</strong>.
+Here are particular samples:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>- in case of Email extension, action will create email object
+- in case of Kafka extenstion, action will create message object that will be published to Kafka topic
+- in case of REST API Call extenstion, action will create object that contains information reqarding REST request to specific endpoint
+- etc.
+</code></pre>
+</div>
+
+<p>First, you’ll need to create class that implements <strong>org.thingsboard.server.extensions.api.plugins.PluginAction</strong> interface.</p>
+
+<p>This class is the core of your <strong>Action</strong> and here you should implement logic where you’ll create object that is going to be passed to <strong>Plugin</strong> for processing.</p>
+
+<p>It must be annotated with <strong>org.thingsboard.server.extensions.api.component.Action</strong> so <strong>Thingsboard</strong> will correctly process this class during start-up.</p>
+
+<p>In case of <strong>REST API Call</strong> extension sample class is <strong>org.thingsboard.server.extensions.rest.action.RestApiCallPluginAction</strong>.
+In this extension <strong>Action</strong> is responsible for creating object that contains information regarding REST request - body, http method, result code, etc.</p>
+
+<p>Object that <strong>Action</strong> creates is a simple POJO class that holds needed information.</p>
+
+<p>In case of <strong>REST API Call</strong> extension sample class is <strong>org.thingsboard.server.extensions.rest.action.RestApiCallActionPayload</strong>.
+It holds information regarding REST request. This class must implements <strong>Serializable</strong> interface to be able to be received by <strong>Plugin</strong>.</p>
+
+<p><em>** TODO - ADD WHAT IS RestApiCallActionMsg **</em></p>
+
+<p>To finish with <strong>Action</strong> implementation you’ll need to add POJO class that contains configuration of the <em>UI Action</em> form.
+It basically contains fields that are mapped to the UI form of <strong>Action</strong>. In this form user will provide details regarding configuration of your <strong>Action</strong>.</p>
+
+<p>In case of <strong>REST API Call</strong> extension sample class is <strong>org.thingsboard.server.extensions.rest.action.RestApiCallPluginActionConfiguration</strong>.
+It holds information regarding template of the REST request, expected result code etc.
+Please refer to the <a href="/docs/user-guide/contribution/extensions-development/#ui-development">UI development part</a> to get details regarding how <em>UI</em> forms are generated.</p>
+
+<h5 id="plugin-guide-development">Plugin guide development</h5>
+
+<p>Plugin is responsible for receiving <strong>RuleToPluginMsg</strong> object that was created by <strong>Action</strong> and process it accordingly. This processing depends on your needs and could be anything:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>- send emails
+- send messages to external system
+- send messages to Thingsboard instance
+- etc.
+</code></pre>
+</div>
+
+<p>First, you’ll need to create class that implements <strong>org.thingsboard.server.extensions.api.plugins.Plugin</strong> interface.</p>
+
+<p>This class is the core of your <strong>Plugin</strong> and here you should implement logic regarding to correctly init plugin.</p>
+
+<p>It must be annotated with <strong>org.thingsboard.server.extensions.api.component.Plugin</strong> so <strong>Thingsboard</strong> will correctly process this class during start-up.</p>
+
+<p>In case of <strong>REST API Call</strong> extension sample class is <strong>org.thingsboard.server.extensions.rest.plugin.RestApiCallPlugin</strong>.
+In this extension <strong>Plugin</strong> is responsible for setting URL and headers for the REST request.</p>
+
+<p>Secondly, you need to add class that implements <strong>org.thingsboard.server.extensions.api.plugins.handlers.RuleMsgHandler</strong> interface.</p>
+
+<p>This class actually doing ‘real’ work - send messages to http endpoints, kafka topics, etc.</p>
+
+<p>In case of <strong>REST API Call</strong> extension sample class is <strong>org.thingsboard.server.extensions.rest.plugin.RestApiCallMsgHandler</strong>.
+This message handler is responsible for creating <strong>Spring REST template</strong> and sending HTTP request.</p>
+
+<p>To finish with <strong>Plugin</strong> implementation you’ll need to add POJO class that contains configuration of the <em>UI Plugin</em> form.
+It basically contains fields that are mapped to the UI form of <strong>Plugin</strong>. In this form user will provide details regarding configuration of your <strong>Plugin</strong>.</p>
+
+<p>In case of <strong>REST API Call</strong> extension sample class is <strong>org.thingsboard.server.extensions.rest.plugin.RestApiCallPluginConfiguration</strong>.
+It holds information regarding host of the REST endpoint, base path, authentication details, etc.
+Please refer to the <a href="/docs/user-guide/contribution/extensions-development/#ui-development">UI development part</a> to get details regarding how <em>UI</em> forms are generated.</p>
+
+<h4 id="ui-development">UI development</h4>
+
+<p><strong>Plugin</strong> and <strong>Action</strong> UI forms are auto-generated using <em>react-schema-form</em> <a href="http://networknt.github.io/react-schema-form/">builder</a>.
+It allows to build UI forms from pre-defined JSON configuration.
+JSON file contains description for the <em>schema</em> and <em>form</em> components.
+<em>Schema</em> and <em>form</em> components are used to describe what type of elements are going to be on the form and how exactly they are located.</p>
+
+<p><strong>NOTE</strong>
+<em>For the drop-down box with pre-defined set of options, but without multi-select feature use this <a href="http://networknt.github.io/react-schema-form-rc-select/">sample configuration</a>.</em></p>
+
+<p>For the extension you’ll need to define two UI configurations - <strong>Plugin</strong> and <strong>Action</strong> JSON configurations.</p>
+
+<h4 id="plugin-json-configuration">Plugin JSON configuration</h4>
+
+<p>This JSON file contains schema and form definition for the <strong>Plugin</strong> form generation. Must be located in the <em>resources</em> folder. We’ll later refer to this file as <strong>${PLUGIN_FORM_DESCRIPTOR_JSON_FILE}</strong>.</p>
+
+<h4 id="action-json-configuration">Action JSON configuration</h4>
+
+<p>This JSON file contains schema and form definition for the <strong>Action</strong> form generation. Must be located in the <em>resources</em> folder. We’ll later refer to this file as <strong>${ACTION_FORM_DESCRIPTOR_JSON_FILE}</strong>.</p>
+
+<p>Here is sample of the <strong>REST API Call</strong> Plugin and Action form configuration files:</p>
+
+<p><img src="/images/user-guide/contribution/plugin-action-json-location.png" alt="image" /></p>
+
+<p>Once appropriate <em>JSON</em> files are created and placed in <em>resources</em> project directory they should be provided to the <strong>Plugin</strong> and <strong>Action</strong> annotations accordingly:</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Plugin</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"${PLUGIN_NAME}"</span><span class="o">,</span> <span class="n">actions</span> <span class="o">=</span> <span class="o">{</span><span class="s">"${ACTION_CLASS_NAME}"</span><span class="o">.</span><span class="na">class</span><span class="o">},</span>
+        <span class="n">descriptor</span> <span class="o">=</span> <span class="s">"${PLUGIN_FORM_DESCRIPTOR_JSON_FILE}"</span><span class="o">,</span> <span class="n">configuration</span> <span class="o">=</span> <span class="s">"${PLUGIN_CONFIGURATION_CLASS_NAME}"</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Action</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"${ACTION_NAME}"</span><span class="o">,</span>
+        <span class="n">descriptor</span> <span class="o">=</span> <span class="s">"${ACTION_FORM_DESCRIPTOR_JSON_FILE}"</span><span class="o">,</span> <span class="n">configuration</span> <span class="o">=</span>  <span class="s">"${ACTION_CONFIGURATION_CLASS_NAME}"</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<h4 id="extension-testing-and-verification">Extension testing and verification</h4>
+
+<p>Now it’s time to start <strong>Thingsboard</strong> and verify that your <strong>Extension</strong> works as you expected.</p>
+
+  </div>
+</section>
+
+<footer>
+	<main class="light-text">
+		<nav>
+			<a href="/docs/getting-started-guides/helloworld/">Get Started</a>
+			<a href="/docs/">Documentation</a>
+			<a href="/iot-use-cases/">Use cases</a>
+			<a href="https://blog.thingsboard.io/">Blog</a>
+			<a href="/docs/services/">Services</a>
+			<a href="/docs/contact-us/">Contact us</a>
+		</nav>
+		<div class="newsletterSubsContainer">
+			<form id="newsletter-form" method="post" onsubmit="return validateNewsletterForm(this)">
+				<fieldset>
+					<div class="newsletterInputs">
+						<p class="subsTitle">Sign up for Thingsboard IoT newsletter</p>
+						<input id="subsEmail" placeholder="Email" class="text-input" name="email" type="text" size="20" maxlength="80">
+						<input type="hidden" name="_next" value="/docs/newsletter-thanks/" />
+						<input type="text" name="_gotcha" style="display:none" />
+						<input class="button" value="Submit" type="submit">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="center">
+			<div class="social">
+				<div>
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+				</div>
+				<div>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+		</div>
+		<div id="miceType" class="center">&copy; 2017 The Thingsboard Authors</div>
+	</main>
+
+	<script type="text/javascript">
+
+		function validateNewsletterForm(form) {
+			var email = $('input[name=email]', form).val();
+
+			if (!validateValue('Email Address', email)) {
+				return false;
+			}
+
+			var emailExp = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+			if(email.match(emailExp)==null) {
+				window.alert("Entered Email Address is not valid.");
+				return false;
+			}
+			return true;
+		}
+
+		function validateValue(name, val) {
+			if (isEmpty(val)) {
+				window.alert("Please fill '" + name + "' field.");
+				return false;
+			}
+			return true;
+		}
+
+		function isEmpty(val) {
+			return val === undefined || val.trim().length == 0;
+		}
+
+	</script>
+
+	<script type="text/javascript">
+
+		var newsletterform =  document.getElementById('newsletter-form');
+		newsletterform.setAttribute('action', 'https://formspree.io/' + 'newsletter' + '@' + 'thingsboard' + '.' + 'io');
+
+	</script>
+
+</footer>
+
+
+
+<button class="flyout-button" onclick="tb.toggleToc()"></button>
+
+
+<style>
+  .cse .gsc-control-cse, .gsc-control-cse {
+    padding: 0;
+  }
+  .gsc-control-cse table, .gsc-control-cse-en table {
+    margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+    border-bottom: 0;
+  }
+</style>
+</body>
+</html>

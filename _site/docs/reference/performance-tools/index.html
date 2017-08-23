@@ -1,0 +1,631 @@
+
+
+<!Doctype html>
+<html id="docs" class="Reference Documentation">
+
+
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- Begin Jekyll SEO tag v2.0.0 -->
+<title>Performance test tools - Thingsboard</title>
+<meta property="og:title" content="Performance test tools" />
+<meta name="description" content="Thingsboard IoT Platform data collection performance test tools" />
+<meta property="og:description" content="Thingsboard IoT Platform data collection performance test tools" />
+<link rel="canonical" href="http://localhost:4000/docs/reference/performance-tools/" />
+<meta property="og:url" content="http://localhost:4000/docs/reference/performance-tools/" />
+<meta property="og:site_name" content="Thingsboard" />
+<meta property="og:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@thingsboard" />
+<meta name="twitter:creator" content="@thingsboard" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "headline": "Performance test tools",
+    "image": "http://localhost:4000/images/thingsboard_logo.png",
+    "description": "Thingsboard IoT Platform data collection performance test tools",
+    "logo": "http://localhost:4000/images/thingsboard_logo.png",
+    "url": "http://localhost:4000/docs/reference/performance-tools/"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+	
+	
+	<meta name="twitter:description" content="Thingsboard IoT Platform data collection performance test tools"/>
+	
+	
+	<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="/css/styles.css">
+	<script type="text/javascript">
+		/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+		!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+		/*! onloadCSS. (onload callback for loadCSS) [c]2017 Filament Group, Inc. MIT License */
+		function onloadCSS(a,b){function c(){!d&&b&&(d=!0,b.call(a))}var d;a.addEventListener&&a.addEventListener("load",c),a.attachEvent&&a.attachEvent("onload",c),"isApplicationInstalled"in navigator&&"onloadcssdefined"in a&&a.onloadcssdefined(c)}
+	</script>
+	<script type="text/javascript">
+
+		function jqueryDefer(method) {
+			if (window.jQuery) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryDefer(method)
+				}, 50);
+			}
+		}
+
+		function jqueryUiDefer(method) {
+			if (window.jQuery && window.jQuery.ui) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryUiDefer(method)
+				}, 50);
+			}
+		}
+
+		function loadScript(src, callback)
+		{
+			var s, r, t;
+			r = false;
+			s = document.createElement('script');
+			s.type = 'text/javascript';
+			s.src = src;
+			s.onload = s.onreadystatechange = function() {
+				if ( !r && (!this.readyState || this.readyState == 'complete') )
+				{
+					r = true;
+					if (callback) {
+						callback();
+					}
+				}
+			};
+			t = document.getElementsByTagName('script')[0];
+			t.parentNode.insertBefore(s, t);
+		}
+
+		function loadCssAsync(src, callback) {
+			var stylesheet = loadCSS( src );
+			if (callback) {
+				onloadCSS(stylesheet, callback);
+			}
+		}
+
+		function loadNextScript(index, scriptsList, completeCallback) {
+			if (index < scriptsList.length) {
+				var script = scriptsList[index];
+				if (script.type === 'script') {
+					loadScript(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				} else if (script.type === 'css') {
+					loadCssAsync(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				}
+			} else if (completeCallback) {
+				completeCallback();
+			}
+		}
+
+		var initialScriptsList = [
+			{src: '/js/jquery-2.2.0.min.js', type: 'script'},
+			{src: '/css/jquery-ui.min.css', type: 'css'},
+			{src: '/js/jquery-ui.min.js', type: 'script'},
+			{src: '/js/script.js', type: 'script'},
+			{src: '/css/sweetalert.css', type: 'css'},
+			{src: '/js/sweetalert.min.js', type: 'script'}
+		];
+
+		loadNextScript(0, initialScriptsList);
+
+	</script>
+	<script type="text/javascript">
+		function _gaLt(event) {
+			/* If GA is blocked or not loaded, or not main|middle|touch click then don't track */
+			if (!ga.hasOwnProperty("loaded") || ga.loaded != true || (event.which != 1 && event.which != 2)) {
+				return;
+			}
+			var el = event.srcElement || event.target;
+
+			while (el && (typeof el.tagName == 'undefined' || el.tagName.toLowerCase() != 'a' || !el.href)) {
+				el = el.parentNode;
+			}
+			if (el && el.href) {
+				var link = el.href;
+				if ((link.indexOf(location.host) == -1 || link.indexOf('.' + location.host) > 0) && !link.match(/^javascript\:/i)) {
+					var target = (el.target && !el.target.match(/^_(self|parent|top)$/i)) ? el.target : false;
+					if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
+						target = "_blank";
+					}
+
+					var hbrun = false; // tracker has not yet run
+					var hitBack = function() {
+						if (hbrun) return;
+						hbrun = true;
+						window.location.href = link;
+					};
+
+					if (target) {
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search
+						);
+					} else {
+						event.preventDefault ? event.preventDefault() : event.returnValue = !1;
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search, {
+									"hitCallback": hitBack
+								}
+						);
+
+						setTimeout(hitBack, 1000);
+					}
+				}
+			}
+		}
+
+		var _w = window;
+		var _gaLtEvt = ("ontouchstart" in _w) ? "click" : "mousedown";
+		_w.addEventListener ? _w.addEventListener("load", function() {document.body.addEventListener(_gaLtEvt, _gaLt, !1)}, !1)
+				: _w.attachEvent && _w.attachEvent("onload", function() {document.body.attachEvent("on" + _gaLtEvt, _gaLt)});
+	</script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-88383331-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+</head>
+<body>
+<div id="cellophane" onclick="tb.toggleMenu()"></div>
+<header>
+	<a href="/" class="logo"></a>
+	<div id="githubButtonContainer">
+		<iframe id="gh-btn-frame" src="https://ghbtns.com/github-btn.html?user=thingsboard&repo=thingsboard&type=star&count=true&size=large"
+				frameborder="0"
+				scrolling="0" width="130px" height="30px"></iframe>
+	</div>
+	<div class="nav-buttons" data-auto-burger="primary">
+		<a href="/docs/" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a>
+		<a href="/iot-use-cases/" class="button" id="useCases" data-auto-burger-exclude>Use cases</a>
+		<a href="/docs/getting-started-guides/helloworld/" class="button" id="gettingStarted" data-auto-burger-exclude>Getting started</a>
+		<a target="_blank" href="https://demo.thingsboard.io/signup" class="button" id="liveDemo" data-auto-burger-exclude>Live demo</a>
+		<button id="hamburger" onclick="tb.toggleMenu()" data-auto-burger-exclude><div></div></button>
+	</div>
+
+	<nav id="mainNav">
+		<main id="headNav" data-auto-burger="primary">
+			<div class="nav-box">
+				<h3><a href="/docs/getting-started-guides/helloworld/">Get Started</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/">Documentation</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/iot-use-cases/">Use cases</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="http://blog.thingsboard.io/">Blog</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/services/">Services</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/contact-us/">Contact us</a></h3>
+			</div>
+		</main>
+		<main data-auto-burger="primary">
+			<div class="center">
+				<div class="social">
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>Twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+			<div class="clear" style="clear: both"></div>
+		</main>
+	</nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Reference Documentation</h1>
+  <h5>Design docs, concept definitions, and references for APIs and CLIs.</h5>
+  <div id="vendorStrip" class="light-text">
+    <div id="docsList">
+        <ul>
+          <li><a href="/docs/" >DOCS HOME</a></li>
+          <li><a href="/docs/api/" >API</a></li>
+          <li><a href="/docs/iot-gateway/" >IOT GATEWAY</a></li>
+          <li><a href="/docs/reference/" class="YAH">REFERENCE</a></li>
+          <li><a href="/docs/samples/" >SAMPLES</a></li>
+          <li><a href="/iot-use-cases/" >USE CASES</a></li>
+          <li><a href="/docs/iot-video-tutorials/" >VIDEO TUTORIALS</a></li>
+          <li><a href="/docs/faq/" >FAQ</a></li>
+          <li><a href="/docs/services/" >SERVICES</a></li>
+          <li><a href="/docs/contact-us/" >CONTACT US</a></li>
+        </ul>
+    </div>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)">
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section id="encyclopedia">
+  
+  <div id="docsToc" >
+        <div class="pi-accordion">
+        
+    <a class="item" data-title="Reference Documentation" href="/docs/reference/"></a>
+    <a class="item" data-title="Thingsboard Architecture" href="/docs/reference/architecture/"></a>
+<div class="item" data-title="Thingsboard Performance">
+  <div class="container">
+    <a class="item" data-title="Data Collection Performance" href="/docs/reference/performance/"></a>
+    <a class="item" data-title="Performance Test Tools" href="/docs/reference/performance-tools/"></a>
+    <a class="item" data-title="How to repeate the tests" href="/docs/reference/performance-tests/"></a>
+  </div>
+</div>
+<div class="item" data-title="Rule Engine components">
+  <div class="container">
+<div class="item" data-title="Filters">
+  <div class="container">
+    <a class="item" data-title="Message Type Filter" href="/docs/reference/filters/message-type-filter/"></a>
+    <a class="item" data-title="Device Attributes Filter" href="/docs/reference/filters/device-attributes-filter/"></a>
+    <a class="item" data-title="Device Telemetry Filter" href="/docs/reference/filters/device-telemetry-filter/"></a>
+    <a class="item" data-title="Method Name Filter" href="/docs/reference/filters/method-name-filter/"></a>
+  </div>
+</div>
+<div class="item" data-title="Processors">
+  <div class="container">
+    <a class="item" data-title="Alarm Deduplication Processor" href="/docs/reference/processors/alarm-deduplication-processor/"></a>
+  </div>
+</div>
+<div class="item" data-title="Actions">
+  <div class="container">
+    <a class="item" data-title="Telemetry Plugin Action" href="/docs/reference/actions/telemetry-plugin-action/"></a>
+    <a class="item" data-title="Send Mail Action" href="/docs/reference/actions/send-mail-action/"></a>
+    <a class="item" data-title="Kafka Plugin Action" href="/docs/reference/actions/kafka-plugin-action/"></a>
+    <a class="item" data-title="RabbitMQ Plugin Action" href="/docs/reference/actions/rabbitmq-plugin-action/"></a>
+    <a class="item" data-title="REST API Call Plugin Action" href="/docs/reference/actions/rest-api-call-plugin-action/"></a>
+    <a class="item" data-title="RPC Plugin Action" href="/docs/reference/actions/rpc-plugin-action/"></a>
+  </div>
+</div>
+<div class="item" data-title="Plugins">
+  <div class="container">
+    <a class="item" data-title="Telemetry Plugin" href="/docs/reference/plugins/telemetry/"></a>
+    <a class="item" data-title="RPC Plugin" href="/docs/reference/plugins/rpc/"></a>
+    <a class="item" data-title="Device Messaging Plugin" href="/docs/reference/plugins/messaging/"></a>
+    <a class="item" data-title="Mail Plugin" href="/docs/reference/plugins/mail/"></a>
+    <a class="item" data-title="Kafka Plugin" href="/docs/reference/plugins/kafka/"></a>
+    <a class="item" data-title="RabbitMQ Plugin" href="/docs/reference/plugins/rabbitmq/"></a>
+    <a class="item" data-title="REST API Call Plugin" href="/docs/reference/plugins/rest/"></a>
+    <a class="item" data-title="Time RPC Plugin" href="/docs/reference/plugins/time/"></a>
+  </div>
+</div>
+  </div>
+</div>
+    <a class="item" data-title="Release Notes" href="https://github.com/thingsboard/thingsboard/releases/" target='_blank'></a>
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="tb.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+  
+  <div id="docsContent" class="">
+    <h1>Performance test tools</h1>
+    <ul id="markdown-toc">
+  <li><a href="#gatling" id="markdown-toc-gatling">Gatling</a>    <ul>
+      <li><a href="#gatling-mqtt-plugin" id="markdown-toc-gatling-mqtt-plugin">Gatling MQTT Plugin</a></li>
+      <li><a href="#gatling-mqtt-plugin-fork" id="markdown-toc-gatling-mqtt-plugin-fork">Gatling MQTT Plugin Fork</a></li>
+    </ul>
+  </li>
+  <li><a href="#performance-tests-project" id="markdown-toc-performance-tests-project">Performance tests project</a></li>
+  <li><a href="#summary" id="markdown-toc-summary">Summary</a></li>
+</ul>
+
+<p>The rapid growth of IoT market dramatically increased the popularity of MQTT protocol. MQTT is supported by the most popular IoT platforms and is used for data collection, push notifications, real-time messaging and other.</p>
+
+<p>We would like to share our experience with running performance tests against MQTT servers in this article. We are going to concentrate on the tools that we used to generate load on the server. The results of the performance tests for our platform will be published as a separate post.</p>
+
+<h2 id="gatling">Gatling</h2>
+
+<p>We have chosen <a href="http://gatling.io/"><strong>Gatling</strong></a> as a framework to run our test due to a number of reasons:</p>
+
+<ul>
+  <li>Generates beautiful reports out-of-the-box.</li>
+  <li>High performance and low overhead.</li>
+  <li>Easy setup of load scenarios.</li>
+  <li><a href="http://gatling.io/docs/2.2.2/cookbook/scaling_out.html"><strong>Scalability</strong></a> of simulations.</li>
+</ul>
+
+<p>Unfortunately Gatling.io framework doesn’t support MQTT protocol out-of-the-box. At the same time Gatling is an open-source framework and we have found an unofficial MQTT plugin.</p>
+
+<h4 id="gatling-mqtt-plugin">Gatling MQTT Plugin</h4>
+
+<p><a href="https://github.com/mnogu/gatling-mqtt"><strong>Gatling-MQTT</strong></a> plugin was developed by <a href="https://github.com/mnogu"><strong>Muneyuki Noguchi</strong></a> and at the moment it is hosted on GitHub under Apache 2.0 License. We have started implementation of Thingsboard performance testing project using Gatling and Gatling-MQTT plugin. Some time later we have realized that plugin doesn’t support scenarios that we would like to verify and the behaviour of default scenario is not something that we have expected.</p>
+
+<p>The problem with the default scenario of the unofficial Gatling-MQTT plugin is that each time when some data is published, client waits for reply from server and sends MQTT disconnect. So, the message sequence looks like this:</p>
+
+<p><img src="/images/reference/performance-tools/connect-publish-disconnect.png" alt="image" /></p>
+
+<p>This approach is very resource consuming and gives minimal benefits comparing to HTTP or other protocols. This behaviour is normal for HTTP requests-response model, but not for MQTT. The typical MQTT session is maintained for certain time and multiple MQTT publish messages are sent and received between client and MQTT broker. Of course, there are other types of MQTT messages, but they were out of scope for our tests. In our scenario, load testing of the IOT platform must be done in the following way:</p>
+
+<p><img src="/images/reference/performance-tools/connect-publish-publish-publish-disconnect.png" alt="image" /></p>
+
+<p>So once we have connected a device to the IOT platform that acts as an MQTT broker, we will reuse session and publish MQTT messages using the same session. Sure, the session could be recreated at some point, but not every time we would like to publish a message to the server.</p>
+
+<p>In order to support this scenario, we have decided not to implement something new from the scratch, but rather to use Gatling-MQTT plugin as a base and considering fact that this is open-source we are free to modify the software as we wish to meet our needs.</p>
+
+<h4 id="gatling-mqtt-plugin-fork">Gatling MQTT Plugin Fork</h4>
+
+<p>We have done the fork of <a href="https://github.com/mnogu/gatling-mqtt"><strong>Gatling-MQTT</strong></a> plugin, spent some time on investigation how the plugin was constructed, modified it and added <strong>Connect</strong>, <strong>Publish</strong> and <strong>Disconnect</strong> actions as separate steps.</p>
+
+<p>Now we were able to support the expected scenario. The extended version of Gatling-MQTT plugin is located here <a href="https://github.com/thingsboard/gatling-mqtt"><strong>Extended Gatling-MQTT</strong></a>.</p>
+
+<p>Finally, we were able to implement the scenario that suits our needs. The Gatling simulation below will create separate MQTT session for 10 simulated devices and will send 100 publish messages for each session.</p>
+
+<p><strong>MqttSimulation.scala</strong></p>
+
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MqttSimulation</span> <span class="k">extends</span> <span class="nc">Simulation</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">mqttConfiguration</span> <span class="k">=</span> <span class="n">mqtt</span>
+        <span class="c1">// MQTT broker
+</span>        <span class="o">.</span><span class="n">host</span><span class="o">(</span><span class="s">"tcp://localhost:1883"</span><span class="o">)</span>
+    
+    <span class="k">val</span> <span class="n">connect</span> <span class="k">=</span> <span class="n">exec</span><span class="o">(</span><span class="n">mqtt</span><span class="o">(</span><span class="s">"connect"</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">connect</span><span class="o">())</span>
+    
+    <span class="c1">// send 100 publish MQTT messages
+</span>    <span class="k">val</span> <span class="n">publish</span> <span class="k">=</span> <span class="n">repeat</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">exec</span><span class="o">(</span><span class="n">mqtt</span><span class="o">(</span><span class="s">"publish"</span><span class="o">)</span>
+            <span class="c1">// topic: "foo"
+</span>            <span class="c1">// payload: "Hello"
+</span>            <span class="c1">// QoS: AT_LEAST_ONCE (1)
+</span>            <span class="c1">// retain: false
+</span>            <span class="o">.</span><span class="n">publish</span><span class="o">(</span><span class="s">"foo"</span><span class="o">,</span> <span class="s">"Hello"</span><span class="o">,</span> <span class="nc">QoS</span><span class="o">.</span><span class="nc">AT_LEAST_ONCE</span><span class="o">,</span> <span class="n">retain</span> <span class="k">=</span> <span class="kc">false</span><span class="o">))</span>
+            <span class="c1">// 1 seconds pause between sending messages
+</span>            <span class="o">.</span><span class="n">pause</span><span class="o">(</span><span class="mi">1000</span> <span class="n">milliseconds</span><span class="o">)</span>
+        <span class="o">}</span>
+    
+    <span class="k">val</span> <span class="n">disconnect</span> <span class="k">=</span> <span class="n">exec</span><span class="o">(</span><span class="n">mqtt</span><span class="o">(</span><span class="s">"disconnect"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">disconnect</span><span class="o">())</span>
+    
+    <span class="k">val</span> <span class="n">scn</span> <span class="k">=</span> <span class="n">scenario</span><span class="o">(</span><span class="s">"MQTT Test"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">exec</span><span class="o">(</span><span class="n">connect</span><span class="o">,</span> <span class="n">publish</span><span class="o">,</span> <span class="n">disconnect</span><span class="o">)</span>
+    
+    <span class="n">setUp</span><span class="o">(</span><span class="n">scn</span>
+        <span class="c1">// linearly connect 10 devices over 1 second 
+</span>        <span class="c1">// and send 100 publish messages
+</span>        <span class="o">.</span><span class="n">inject</span><span class="o">(</span><span class="n">rampUsers</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span> <span class="n">over</span> <span class="o">(</span><span class="mi">1</span> <span class="n">seconds</span><span class="o">))</span>
+    <span class="o">).</span><span class="n">protocols</span><span class="o">(</span><span class="n">mqttConfiguration</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h2 id="performance-tests-project">Performance tests project</h2>
+
+<p>Our performance test project is <a href="https://github.com/thingsboard/performance-tests"><strong>hosted on GitHub</strong></a>. It is mainly written in Java and uses Maven as a build tool. Gatling and Gatling-MQTT plugin are written in Scala, and use SBT tool for building sources and running tests. But here, at Thingsboard, we are more Java guys than Scala, that’s why we have implemented custom Java code that connects to the platform, creates a device, warms it up and provides the <strong>credentials id</strong> string back:</p>
+
+<p><strong>MqttSimulation.scala</strong></p>
+
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="c1">// get the device credential ids of the created devices
+</span><span class="k">val</span> <span class="n">deviceCredentialsIds</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">MqttStressTestTool</span><span class="o">.</span><span class="n">createDevices</span><span class="o">(</span><span class="n">testParams</span><span class="o">).</span><span class="n">asScala</span><span class="o">.</span><span class="n">toArray</span>
+</code></pre>
+</div>
+
+<p><strong>MqttStressTestTool.java</strong></p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">RestClient</span> <span class="n">restClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RestClient</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">getRestApiUrl</span><span class="o">());</span>
+<span class="c1">// login to the Thingsboard server</span>
+<span class="n">restClient</span><span class="o">.</span><span class="na">login</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">getUsername</span><span class="o">(),</span> <span class="n">params</span><span class="o">.</span><span class="na">getPassword</span><span class="o">());</span>
+<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">params</span><span class="o">.</span><span class="na">getDeviceCount</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="c1">// create device using REST API</span>
+    <span class="n">Device</span> <span class="n">device</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">createDevice</span><span class="o">(</span><span class="s">"Device "</span> <span class="o">+</span> <span class="n">UUID</span><span class="o">.</span><span class="na">randomUUID</span><span class="o">());</span>
+    <span class="c1">// get credentials from the created device</span>
+    <span class="n">DeviceCredentials</span> <span class="n">credentials</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">getCredentials</span><span class="o">(</span><span class="n">device</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+    <span class="c1">// store in the array that eventually will be used by Simulation class    </span>
+    <span class="n">deviceCredentialsIds</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">credentials</span><span class="o">.</span><span class="na">getCredentialsId</span><span class="o">());</span>
+    <span class="n">String</span><span class="o">[]</span> <span class="n">mqttUrls</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="na">getMqttUrls</span><span class="o">();</span>
+    <span class="n">String</span> <span class="n">mqttURL</span> <span class="o">=</span> <span class="n">mqttUrls</span><span class="o">[</span><span class="n">i</span> <span class="o">%</span> <span class="n">mqttUrls</span><span class="o">.</span><span class="na">length</span><span class="o">];</span>
+    <span class="n">MqttStressTestClient</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MqttStressTestClient</span><span class="o">(</span><span class="n">results</span><span class="o">,</span> <span class="n">mqttURL</span><span class="o">,</span> <span class="n">credentials</span><span class="o">.</span><span class="na">getCredentialsId</span><span class="o">());</span>
+    <span class="c1">// connect to the server and do the warm up </span>
+    <span class="n">client</span><span class="o">.</span><span class="na">connect</span><span class="o">().</span><span class="na">waitForCompletion</span><span class="o">();</span>
+    <span class="n">client</span><span class="o">.</span><span class="na">warmUp</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="n">client</span><span class="o">.</span><span class="na">disconnect</span><span class="o">();</span>
+<span class="o">}</span>
+<span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+</code></pre>
+</div>
+
+<p>The list of credential ids is used in <strong>MqttSimulation.scala</strong> file to do the stress test itself:</p>
+
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="c1">// get the device credential ids of the created devices
+</span><span class="k">val</span> <span class="n">deviceCredentialsIds</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">MqttStressTestTool</span><span class="o">.</span><span class="n">createDevices</span><span class="o">(</span><span class="n">testParams</span><span class="o">).</span><span class="n">asScala</span><span class="o">.</span><span class="n">toArray</span>
+
+<span class="c1">// provide device credential id as username during the connection phase to the Thingsboard server
+</span><span class="k">val</span> <span class="n">mqttConf</span> <span class="k">=</span> <span class="n">mqtt</span>
+    <span class="o">.</span><span class="n">host</span><span class="o">(</span><span class="n">testParams</span><span class="o">.</span><span class="n">getMqttUrls</span><span class="o">.</span><span class="n">head</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">userName</span><span class="o">(</span><span class="s">"${deviceCredentialsId}"</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">connect</span> <span class="k">=</span> <span class="n">exec</span><span class="o">(</span><span class="n">mqtt</span><span class="o">(</span><span class="s">"connect"</span><span class="o">).</span><span class="n">connect</span><span class="o">())</span>
+
+<span class="k">val</span> <span class="n">publish</span> <span class="k">=</span> <span class="n">repeat</span><span class="o">(</span><span class="n">testParams</span><span class="o">.</span><span class="n">getPublishTelemetryCount</span><span class="o">.</span><span class="n">toInt</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">exec</span><span class="o">(</span><span class="n">mqtt</span><span class="o">(</span><span class="s">"publish"</span><span class="o">)</span> 
+        <span class="c1">// publish single message and verify that it was delivered at least once
+</span>        <span class="o">.</span><span class="n">publish</span><span class="o">(</span><span class="s">"v1/devices/me/telemetry"</span><span class="o">,</span> <span class="s">"{\"temp\":73.2}"</span><span class="o">,</span> <span class="nc">QoS</span><span class="o">.</span><span class="nc">AT_LEAST_ONCE</span><span class="o">,</span> <span class="n">retain</span> <span class="k">=</span> <span class="kc">false</span><span class="o">))</span>
+        <span class="o">.</span><span class="n">pause</span><span class="o">(</span><span class="n">testParams</span><span class="o">.</span><span class="n">getPublishTelemetryPause</span> <span class="n">milliseconds</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">val</span> <span class="n">disconnect</span> <span class="k">=</span> <span class="n">exec</span><span class="o">(</span><span class="n">mqtt</span><span class="o">(</span><span class="s">"disconnect"</span><span class="o">).</span><span class="n">disconnect</span><span class="o">())</span>
+<span class="c1">// create map of device credential ids of the connected devices  
+// and use it as a feeder in the scenario
+</span><span class="k">val</span> <span class="n">deviceCredentialsIdsFeeder</span> <span class="k">=</span> <span class="n">deviceCredentialsIds</span><span class="o">.</span><span class="n">map</span><span class="o">(</span> <span class="n">x</span> <span class="k">=&gt;</span> <span class="o">{</span><span class="nc">Map</span><span class="o">(</span><span class="s">"deviceCredentialsId"</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">)})</span>
+
+<span class="k">val</span> <span class="n">scn</span> <span class="k">=</span> <span class="n">scenario</span><span class="o">(</span><span class="s">"Scenario Name"</span><span class="o">)</span>
+    <span class="c1">// go over the map and take column deviceCredentialsId as username
+</span>    <span class="o">.</span><span class="n">feed</span><span class="o">(</span><span class="n">deviceCredentialsIdsFeeder</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">exec</span><span class="o">(</span><span class="n">connect</span><span class="o">,</span> <span class="n">publish</span><span class="o">,</span> <span class="n">disconnect</span><span class="o">)</span>
+
+<span class="n">setUp</span><span class="o">(</span><span class="n">scn</span>
+    <span class="o">.</span><span class="n">inject</span><span class="o">(</span><span class="n">rampUsers</span><span class="o">(</span><span class="n">deviceCredentialsIds</span><span class="o">.</span><span class="n">length</span><span class="o">)</span> <span class="n">over</span> <span class="o">(</span><span class="mi">1</span> <span class="n">seconds</span><span class="o">))</span>
+<span class="o">).</span><span class="n">protocols</span><span class="o">(</span><span class="n">mqttConf</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<p>For the guys who prefer Java and Maven there is a maven plugin - <strong>gatling-maven-plugin</strong>:</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>io.gatling<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>gatling-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre>
+</div>
+
+<p>This plugin finds <em>Simulation</em> files in your project, compiles and runs them. Results will be stored inside of the target folder in a pretty format that you are able to inspect after the run:</p>
+
+<p><img src="/images/reference/performance-tools/gatling-indicators.png" alt="image" /></p>
+
+<p><img src="/images/reference/performance-tools/gatling-statistics.png" alt="image" /></p>
+
+<p><img src="/images/reference/performance-tools/gatling-number-of-requests-per-second.png" alt="image" /></p>
+
+<p><img src="/images/reference/performance-tools/gatling-number-of-responses-per-second.png" alt="image" /></p>
+
+<p>To run the tests you simply can type:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>mvn clean install gatling:execute
+</code></pre>
+</div>
+
+<h2 id="summary">Summary</h2>
+
+<p>In general, we have described our approach how we have generated high load on our IoT platform and verified that it provides good results.</p>
+
+<p>We will share the results of Thingsboard IoT platform performance tests in the next post.</p>
+
+<p>Also, we’ll describe code changes, improvements and instances tuning that we have done to achieve processing of more than 1 million MQTT messages per minute. These are basically the first steps for us in the direction of performance testing of the platform, and any feedback regarding this approach is more than welcome.</p>
+
+<p>We hope that the experience provided will help you to verify your solutions against load specifications that you expect to see in the production. Stay tuned by subscribing to our twitter, blog or by starring our project on Github.</p>
+
+  </div>
+</section>
+
+<footer>
+	<main class="light-text">
+		<nav>
+			<a href="/docs/getting-started-guides/helloworld/">Get Started</a>
+			<a href="/docs/">Documentation</a>
+			<a href="/iot-use-cases/">Use cases</a>
+			<a href="https://blog.thingsboard.io/">Blog</a>
+			<a href="/docs/services/">Services</a>
+			<a href="/docs/contact-us/">Contact us</a>
+		</nav>
+		<div class="newsletterSubsContainer">
+			<form id="newsletter-form" method="post" onsubmit="return validateNewsletterForm(this)">
+				<fieldset>
+					<div class="newsletterInputs">
+						<p class="subsTitle">Sign up for Thingsboard IoT newsletter</p>
+						<input id="subsEmail" placeholder="Email" class="text-input" name="email" type="text" size="20" maxlength="80">
+						<input type="hidden" name="_next" value="/docs/newsletter-thanks/" />
+						<input type="text" name="_gotcha" style="display:none" />
+						<input class="button" value="Submit" type="submit">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="center">
+			<div class="social">
+				<div>
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+				</div>
+				<div>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+		</div>
+		<div id="miceType" class="center">&copy; 2017 The Thingsboard Authors</div>
+	</main>
+
+	<script type="text/javascript">
+
+		function validateNewsletterForm(form) {
+			var email = $('input[name=email]', form).val();
+
+			if (!validateValue('Email Address', email)) {
+				return false;
+			}
+
+			var emailExp = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+			if(email.match(emailExp)==null) {
+				window.alert("Entered Email Address is not valid.");
+				return false;
+			}
+			return true;
+		}
+
+		function validateValue(name, val) {
+			if (isEmpty(val)) {
+				window.alert("Please fill '" + name + "' field.");
+				return false;
+			}
+			return true;
+		}
+
+		function isEmpty(val) {
+			return val === undefined || val.trim().length == 0;
+		}
+
+	</script>
+
+	<script type="text/javascript">
+
+		var newsletterform =  document.getElementById('newsletter-form');
+		newsletterform.setAttribute('action', 'https://formspree.io/' + 'newsletter' + '@' + 'thingsboard' + '.' + 'io');
+
+	</script>
+
+</footer>
+
+
+
+<button class="flyout-button" onclick="tb.toggleToc()"></button>
+
+
+<style>
+  .cse .gsc-control-cse, .gsc-control-cse {
+    padding: 0;
+  }
+  .gsc-control-cse table, .gsc-control-cse-en table {
+    margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+    border-bottom: 0;
+  }
+</style>
+</body>
+</html>

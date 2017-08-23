@@ -1,0 +1,702 @@
+
+
+<!Doctype html>
+<html id="docs" class="Thingsboard Documentation">
+
+
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- Begin Jekyll SEO tag v2.0.0 -->
+<title>IoT data analytics using Apache Spark, Kafka and Thingsboard - Thingsboard</title>
+<meta property="og:title" content="IoT data analytics using Apache Spark, Kafka and Thingsboard" />
+<meta name="description" content="IoT device data analytics sample using Apache Spark, Kafka and Thingsboard" />
+<meta property="og:description" content="IoT device data analytics sample using Apache Spark, Kafka and Thingsboard" />
+<link rel="canonical" href="http://localhost:4000/docs/samples/analytics/spark-integration-with-thingsboard/" />
+<meta property="og:url" content="http://localhost:4000/docs/samples/analytics/spark-integration-with-thingsboard/" />
+<meta property="og:site_name" content="Thingsboard" />
+<meta property="og:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@thingsboard" />
+<meta name="twitter:creator" content="@thingsboard" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "headline": "IoT data analytics using Apache Spark, Kafka and Thingsboard",
+    "image": "http://localhost:4000/images/thingsboard_logo.png",
+    "description": "IoT device data analytics sample using Apache Spark, Kafka and Thingsboard",
+    "logo": "http://localhost:4000/images/thingsboard_logo.png",
+    "url": "http://localhost:4000/docs/samples/analytics/spark-integration-with-thingsboard/"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+	
+	
+	<meta name="twitter:description" content="IoT device data analytics sample using Apache Spark, Kafka and Thingsboard"/>
+	
+	
+	<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="/css/styles.css">
+	<script type="text/javascript">
+		/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+		!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+		/*! onloadCSS. (onload callback for loadCSS) [c]2017 Filament Group, Inc. MIT License */
+		function onloadCSS(a,b){function c(){!d&&b&&(d=!0,b.call(a))}var d;a.addEventListener&&a.addEventListener("load",c),a.attachEvent&&a.attachEvent("onload",c),"isApplicationInstalled"in navigator&&"onloadcssdefined"in a&&a.onloadcssdefined(c)}
+	</script>
+	<script type="text/javascript">
+
+		function jqueryDefer(method) {
+			if (window.jQuery) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryDefer(method)
+				}, 50);
+			}
+		}
+
+		function jqueryUiDefer(method) {
+			if (window.jQuery && window.jQuery.ui) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryUiDefer(method)
+				}, 50);
+			}
+		}
+
+		function loadScript(src, callback)
+		{
+			var s, r, t;
+			r = false;
+			s = document.createElement('script');
+			s.type = 'text/javascript';
+			s.src = src;
+			s.onload = s.onreadystatechange = function() {
+				if ( !r && (!this.readyState || this.readyState == 'complete') )
+				{
+					r = true;
+					if (callback) {
+						callback();
+					}
+				}
+			};
+			t = document.getElementsByTagName('script')[0];
+			t.parentNode.insertBefore(s, t);
+		}
+
+		function loadCssAsync(src, callback) {
+			var stylesheet = loadCSS( src );
+			if (callback) {
+				onloadCSS(stylesheet, callback);
+			}
+		}
+
+		function loadNextScript(index, scriptsList, completeCallback) {
+			if (index < scriptsList.length) {
+				var script = scriptsList[index];
+				if (script.type === 'script') {
+					loadScript(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				} else if (script.type === 'css') {
+					loadCssAsync(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				}
+			} else if (completeCallback) {
+				completeCallback();
+			}
+		}
+
+		var initialScriptsList = [
+			{src: '/js/jquery-2.2.0.min.js', type: 'script'},
+			{src: '/css/jquery-ui.min.css', type: 'css'},
+			{src: '/js/jquery-ui.min.js', type: 'script'},
+			{src: '/js/script.js', type: 'script'},
+			{src: '/css/sweetalert.css', type: 'css'},
+			{src: '/js/sweetalert.min.js', type: 'script'}
+		];
+
+		loadNextScript(0, initialScriptsList);
+
+	</script>
+	<script type="text/javascript">
+		function _gaLt(event) {
+			/* If GA is blocked or not loaded, or not main|middle|touch click then don't track */
+			if (!ga.hasOwnProperty("loaded") || ga.loaded != true || (event.which != 1 && event.which != 2)) {
+				return;
+			}
+			var el = event.srcElement || event.target;
+
+			while (el && (typeof el.tagName == 'undefined' || el.tagName.toLowerCase() != 'a' || !el.href)) {
+				el = el.parentNode;
+			}
+			if (el && el.href) {
+				var link = el.href;
+				if ((link.indexOf(location.host) == -1 || link.indexOf('.' + location.host) > 0) && !link.match(/^javascript\:/i)) {
+					var target = (el.target && !el.target.match(/^_(self|parent|top)$/i)) ? el.target : false;
+					if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
+						target = "_blank";
+					}
+
+					var hbrun = false; // tracker has not yet run
+					var hitBack = function() {
+						if (hbrun) return;
+						hbrun = true;
+						window.location.href = link;
+					};
+
+					if (target) {
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search
+						);
+					} else {
+						event.preventDefault ? event.preventDefault() : event.returnValue = !1;
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search, {
+									"hitCallback": hitBack
+								}
+						);
+
+						setTimeout(hitBack, 1000);
+					}
+				}
+			}
+		}
+
+		var _w = window;
+		var _gaLtEvt = ("ontouchstart" in _w) ? "click" : "mousedown";
+		_w.addEventListener ? _w.addEventListener("load", function() {document.body.addEventListener(_gaLtEvt, _gaLt, !1)}, !1)
+				: _w.attachEvent && _w.attachEvent("onload", function() {document.body.attachEvent("on" + _gaLtEvt, _gaLt)});
+	</script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-88383331-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+</head>
+<body>
+<div id="cellophane" onclick="tb.toggleMenu()"></div>
+<header>
+	<a href="/" class="logo"></a>
+	<div id="githubButtonContainer">
+		<iframe id="gh-btn-frame" src="https://ghbtns.com/github-btn.html?user=thingsboard&repo=thingsboard&type=star&count=true&size=large"
+				frameborder="0"
+				scrolling="0" width="130px" height="30px"></iframe>
+	</div>
+	<div class="nav-buttons" data-auto-burger="primary">
+		<a href="/docs/" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a>
+		<a href="/iot-use-cases/" class="button" id="useCases" data-auto-burger-exclude>Use cases</a>
+		<a href="/docs/getting-started-guides/helloworld/" class="button" id="gettingStarted" data-auto-burger-exclude>Getting started</a>
+		<a target="_blank" href="https://demo.thingsboard.io/signup" class="button" id="liveDemo" data-auto-burger-exclude>Live demo</a>
+		<button id="hamburger" onclick="tb.toggleMenu()" data-auto-burger-exclude><div></div></button>
+	</div>
+
+	<nav id="mainNav">
+		<main id="headNav" data-auto-burger="primary">
+			<div class="nav-box">
+				<h3><a href="/docs/getting-started-guides/helloworld/">Get Started</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/">Documentation</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/iot-use-cases/">Use cases</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="http://blog.thingsboard.io/">Blog</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/services/">Services</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/contact-us/">Contact us</a></h3>
+			</div>
+		</main>
+		<main data-auto-burger="primary">
+			<div class="center">
+				<div class="social">
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>Twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+			<div class="clear" style="clear: both"></div>
+		</main>
+	</nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Thingsboard Documentation</h1>
+  <h5>Documentation for using Thingsboard IoT Platform.</h5>
+  <div id="vendorStrip" class="light-text">
+    <div id="docsList">
+        <ul>
+          <li><a href="/docs/" class="YAH">DOCS HOME</a></li>
+          <li><a href="/docs/api/" >API</a></li>
+          <li><a href="/docs/iot-gateway/" >IOT GATEWAY</a></li>
+          <li><a href="/docs/reference/" >REFERENCE</a></li>
+          <li><a href="/docs/samples/" >SAMPLES</a></li>
+          <li><a href="/iot-use-cases/" >USE CASES</a></li>
+          <li><a href="/docs/iot-video-tutorials/" >VIDEO TUTORIALS</a></li>
+          <li><a href="/docs/faq/" >FAQ</a></li>
+          <li><a href="/docs/services/" >SERVICES</a></li>
+          <li><a href="/docs/contact-us/" >CONTACT US</a></li>
+        </ul>
+    </div>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)">
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section id="encyclopedia">
+  
+  <div id="docsToc" >
+        <div class="pi-accordion">
+        
+    <a class="item" data-title="Thingsboard Documentation" href="/docs/"></a>
+    <a class="item" data-title="What is Thingsboard?" href="/docs/getting-started-guides/what-is-thingsboard/"></a>
+    <a class="item" data-title="Getting Started" href="/docs/getting-started-guides/helloworld/"></a>
+<div class="item" data-title="Installation">
+  <div class="container">
+    <a class="item" data-title="Installation options" href="/docs/user-guide/install/installation-options/"></a>
+    <a class="item" data-title="Installing Thingsboard on Windows" href="/docs/user-guide/install/windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on Linux (Ubuntu & CentOS)" href="/docs/user-guide/install/linux/"></a>
+    <a class="item" data-title="Installing Thingsboard on Raspberry Pi 3" href="/docs/user-guide/install/rpi/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Linux or Mac OS)" href="/docs/user-guide/install/docker/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Windows)" href="/docs/user-guide/install/docker-windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on AWS EC2" href="/docs/user-guide/install/aws/"></a>
+    <a class="item" data-title="Building from sources" href="/docs/user-guide/install/building-from-source/"></a>
+    <a class="item" data-title="Upgrade instructions" href="/docs/user-guide/install/upgrade-instructions/"></a>
+    <a class="item" data-title="Configuration" href="/docs/user-guide/install/config/"></a>
+    <a class="item" data-title="Cluster setup" href="/docs/user-guide/install/cluster-setup/"></a>
+  </div>
+</div>
+<div class="item" data-title="Features">
+  <div class="container">
+    <a class="item" data-title="Working with device attributes" href="/docs/user-guide/attributes/"></a>
+    <a class="item" data-title="Working with telemetry data" href="/docs/user-guide/telemetry/"></a>
+    <a class="item" data-title="Using RPC capabilities" href="/docs/user-guide/rpc/"></a>
+    <a class="item" data-title="Rule engine" href="/docs/user-guide/rule-engine/"></a>
+    <a class="item" data-title="Data visualization" href="/docs/user-guide/visualization/"></a>
+  </div>
+</div>
+<div class="item" data-title="Integrations Cookbook">
+  <div class="container">
+    <a class="item" data-title="Persist and visualize AWS IoT data" href="/docs/iot-gateway/integration-with-aws-iot/"></a>
+    <a class="item" data-title="IoT data analytics using Apache Spark" href="/docs/samples/analytics/spark-integration-with-thingsboard/"></a>
+    <a class="item" data-title="SigFox IoT data collection and visualization" href="/docs/iot-gateway/sigfox-iot-data-visualization/"></a>
+    <a class="item" data-title="Persist and visualize IBM Watson IoT data" href="/docs/iot-gateway/integration-with-ibm-watson-iot/"></a>
+  </div>
+</div>
+<div class="item" data-title="Security">
+  <div class="container">
+    <a class="item" data-title="MQTT over SSL" href="/docs/user-guide/mqtt-over-ssl/"></a>
+    <a class="item" data-title="Device authentication options" href="/docs/user-guide/device-credentials/"></a>
+    <a class="item" data-title="Access Token based authentication" href="/docs/user-guide/access-token/"></a>
+    <a class="item" data-title="X.509 Certificate based authentication" href="/docs/user-guide/certificates/"></a>
+  </div>
+</div>
+<div class="item" data-title="Administration UI">
+  <div class="container">
+    <a class="item" data-title="Tenants" href="/docs/user-guide/ui/tenants/"></a>
+    <a class="item" data-title="Customers" href="/docs/user-guide/ui/customers/"></a>
+    <a class="item" data-title="Users" href="/docs/user-guide/ui/users/"></a>
+    <a class="item" data-title="Devices" href="/docs/user-guide/ui/devices/"></a>
+    <a class="item" data-title="Rules" href="/docs/user-guide/ui/rules/"></a>
+    <a class="item" data-title="Plugins" href="/docs/user-guide/ui/plugins/"></a>
+    <a class="item" data-title="Widgets Library" href="/docs/user-guide/ui/widget-library/"></a>
+    <a class="item" data-title="Dashboards" href="/docs/user-guide/ui/dashboards/"></a>
+    <a class="item" data-title="Mail Settings" href="/docs/user-guide/ui/mail-settings/"></a>
+  </div>
+</div>
+    <a class="item" data-title="Troubleshooting" href="/docs/user-guide/troubleshooting/"></a>
+<div class="item" data-title="Contribution Guide">
+  <div class="container">
+    <a class="item" data-title="How to contribute" href="/docs/user-guide/contribution/how-to-contribute/"></a>
+    <a class="item" data-title="Extensions (Plugins and Actions) development" href="/docs/user-guide/contribution/extensions-development/"></a>
+  </div>
+</div>
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="tb.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+  
+  <div id="docsContent" class="">
+    <h1>IoT data analytics using Apache Spark, Kafka and Thingsboard</h1>
+    <ul id="markdown-toc">
+  <li><a href="#overview" id="markdown-toc-overview">Overview</a></li>
+  <li><a href="#prerequisites" id="markdown-toc-prerequisites">Prerequisites</a></li>
+  <li><a href="#thingsboard-configuration-steps" id="markdown-toc-thingsboard-configuration-steps">Thingsboard configuration steps</a></li>
+  <li><a href="#step-1-configuration-of-kafka-plugin" id="markdown-toc-step-1-configuration-of-kafka-plugin">Step 1. Configuration of Kafka Plugin</a></li>
+  <li><a href="#step-2-configuration-of-telemetry-forwarding-rule" id="markdown-toc-step-2-configuration-of-telemetry-forwarding-rule">Step 2. Configuration of Telemetry Forwarding Rule</a>    <ul>
+      <li><a href="#attributes-filter" id="markdown-toc-attributes-filter">Attributes filter</a></li>
+      <li><a href="#timeseries-data-filter" id="markdown-toc-timeseries-data-filter">Timeseries data filter</a></li>
+      <li><a href="#kafka-plugin-action" id="markdown-toc-kafka-plugin-action">Kafka plugin action</a></li>
+    </ul>
+  </li>
+  <li><a href="#step-3-configuration-of-the-analytics-gateway-device" id="markdown-toc-step-3-configuration-of-the-analytics-gateway-device">Step 3. Configuration of the Analytics Gateway device</a></li>
+  <li><a href="#spark-application" id="markdown-toc-spark-application">Spark Application</a>    <ul>
+      <li><a href="#step-4-download-the-sample-application-source-code" id="markdown-toc-step-4-download-the-sample-application-source-code">Step 4. Download the sample application source code</a></li>
+      <li><a href="#step-5-dependencies-review" id="markdown-toc-step-5-dependencies-review">Step 5. Dependencies review</a></li>
+      <li><a href="#step-5-source-code-review" id="markdown-toc-step-5-source-code-review">Step 5. Source code review</a></li>
+    </ul>
+  </li>
+  <li><a href="#dry-run" id="markdown-toc-dry-run">Dry Run</a></li>
+</ul>
+
+<p>Thingsboard rule engine supports basic analysis of incoming telemetry data, for example, threshold crossing. 
+The idea behind rule engine is to provide functionality to route data from IoT Devices to different plugins, based on device attributes or the data itself.</p>
+
+<p>However, most of the real-life use cases also require support of advanced analytics: machine learning, predictive analytics, etc.</p>
+
+<p>This tutorial will demonstrate how you can:</p>
+
+<ul>
+  <li>route telemetry device data from Thingsboard to Kafka topic using built-in plugin.</li>
+  <li>aggregate data from multiple devices using simple Apache Spark application.</li>
+  <li>push results of the analytics back to Thingsboard for persistence and visualization.</li>
+</ul>
+
+<p>Of course, analytics in this tutorial is quite simple, our goal is to highlight the integration steps.</p>
+
+<h3 id="overview">Overview</h3>
+
+<p><img src="/images/samples/analytics/spark/spark-thingsboard-integration.svg" alt="image" /></p>
+
+<p>Let’s assume we have big amount of weather stations that are located in different geo-location zones. 
+Thingsboard is used to collect, store and visualize wind speed from this stations, but we are also interested in average wind speed in each geo-location zone.
+Once again, this is completely fake scenario just to demonstrate the integration of all components.</p>
+
+<p>In this scenario we are going to upload wind speed as a telemetry reading, however, the geo-location zone will be a static attribute of the weather station device.
+This is logical, since telemetry readings are going to change often, and the geo-location is static.</p>
+
+<p>We will analyze real-time data from multiple devices using <a href="http://spark.apache.org/docs/latest/streaming-programming-guide.html">Spark Streaming</a> job with 10 seconds batch window.</p>
+
+<p>In order to store and visualize results of the analytics we are going to create one virtual device for each geo-location zone. 
+This is possible using special Thingsboard MQTT Gateway <a href="/docs/reference/gateway-mqtt-api/">API</a>. This API allows to efficiently stream data from multiple devices using single MQTT session.
+So, in our case, the Spark Job itself acts as a gateway that publish data on behalf of several virtual devices. Let’s name this gateway as an <strong>Analytics Gateway</strong>.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<p>We assume you have Thingsboard <a href="/docs/user-guide/install/installation-options/">instance</a> is up and running.
+We also assume you are familiar with Kafka and Spark and have also prepared those environments for this tutorial.</p>
+
+<h3 id="thingsboard-configuration-steps">Thingsboard configuration steps</h3>
+
+<h3 id="step-1-configuration-of-kafka-plugin">Step 1. Configuration of Kafka Plugin</h3>
+
+<p>We need to configure Kafka Plugin that will be used to push telemetry data to Kafka. 
+You can find detail description of Kafka Plugin <a href="/docs/reference/plugins/kafka/">here</a>.</p>
+
+<p><a href="/docs/samples/analytics/resources/kafka_plugin_for_spark_streaming_sample.json"><strong>Download</strong></a> the json with plugin descriptor 
+and use this <a href="/docs/user-guide/ui/plugins/#plugin-import"><strong>instructions</strong></a> to import it to your instance.</p>
+
+<p>Please note that the plugin configuration expects Kafka to be running on the localhost with port 9092.</p>
+
+<p><img src="/images/samples/analytics/spark/kafka-plugin-configuration.png" alt="image" /></p>
+
+<p>Don’t forget to <strong>activate</strong> your new plugin instance by clicking on corresponding button in plugin details!</p>
+
+<h3 id="step-2-configuration-of-telemetry-forwarding-rule">Step 2. Configuration of Telemetry Forwarding Rule</h3>
+
+<p>Now we need to configure the Rule that will be used to push wind speed data from the weather stations to Kafka.</p>
+
+<p><a href="/docs/samples/analytics/resources/windspeed_telemetry_rule.json"><strong>Download</strong></a> the json with plugin descriptor 
+and use this <a href="/docs/user-guide/ui/rules/#rule-import"><strong>instructions</strong></a> to import it to your instance.</p>
+
+<p>Don’t forget to <strong>activate</strong> your new rule instance by clicking on corresponding button in plugin details!</p>
+
+<p>Let’s review main rule configuration below.</p>
+
+<h5 id="attributes-filter">Attributes filter</h5>
+
+<p>Thingsboard may process data from completely different devices. We will use filter by device attributes in order to filter out data that belongs to Weather Station devices.</p>
+
+<p>The filter expression below validates that two attributes are set for particular device: <strong>deviceType</strong> and <strong>geoZone</strong>. 
+You may notice that we check that <strong>deviceType</strong> is equal to “WeatherStation”. The <strong>cs</strong> variable is a map that contains all client-side attributes. 
+See corresponding <a href="/docs/reference/filters/device-attributes-filter/"><strong>filter</strong></a> documentation for more details.</p>
+
+<p><img src="/images/samples/analytics/spark/kafka-rule-attributes.png" alt="image" /></p>
+
+<h5 id="timeseries-data-filter">Timeseries data filter</h5>
+
+<p>Each device connected to Thingsboard may upload multiple telemetry keys simultaneously on independently. 
+In some use cases you may need to process only certain sub-set of the data. We will use telemetry data filter to achieve this.</p>
+
+<p>The filter expression below validates that <strong>windSpeed</strong> telemetry is present in the processed message.</p>
+
+<p><img src="/images/samples/analytics/spark/kafka-rule-timeseries.png" alt="image" /></p>
+
+<p>See corresponding <a href="/docs/reference/filters/device-telemetry-filter/"><strong>filter</strong></a> documentation for more details.</p>
+
+<h5 id="kafka-plugin-action">Kafka plugin action</h5>
+
+<p>Topic name in our case is <strong>‘weather-stations-data’</strong> and the message is a valid JSON that uses client-side attribute <strong>geoZone</strong> and <strong>windSpeed</strong> telemetry value:</p>
+
+<p><img src="/images/samples/analytics/spark/kafka-rule-action.png" alt="image" /></p>
+
+<h3 id="step-3-configuration-of-the-analytics-gateway-device">Step 3. Configuration of the Analytics Gateway device</h3>
+
+<p>Let’s create device that we define ‘Analytics Gateway’ and we’ll send average temperature from Spark Application to this device:</p>
+
+<p><img src="/images/samples/analytics/spark/gateway-device.png" alt="image" /></p>
+
+<p>Once added, open the ‘Analytics Gateway’ device card and click on copy ‘Access Token’ from this device and store it somewhere.</p>
+
+<p><img src="/images/samples/analytics/spark/gateway-device-details.png" alt="image" /></p>
+
+<p>We’ll use this token later in Spark Application for sending analytics results back to Thingsboard and will refer to it as <strong>$GATEWAY_ACCESS_TOKEN</strong>.</p>
+
+<h2 id="spark-application">Spark Application</h2>
+
+<h3 id="step-4-download-the-sample-application-source-code">Step 4. Download the sample application source code</h3>
+
+<p>Feel free to grab the <a href="https://github.com/thingsboard/samples/tree/master/spark-kafka-streaming-integration">code from this sample Thingsboard repository</a> and follow along.</p>
+
+<h3 id="step-5-dependencies-review">Step 5. Dependencies review</h3>
+
+<p>Sample application was developed using Spark version <strong>2.1.0</strong>. Please consider this if you’ll use different version of Spark because in this case you may need to use different version of Kafka Streaming API.</p>
+
+<p>Dependencies that are used in sample project:</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- Spark, Spark Streaming and Kafka Dependencies --&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.spark<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spark-core_2.11<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${spark-version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.spark<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spark-streaming_2.11<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${spark-version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.spark<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spark-streaming-kafka-0-10_2.11<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${spark-version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="c">&lt;!-- MQTT client dependency to send messages to Thingsboard --&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.eclipse.paho<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>org.eclipse.paho.client.mqttv3<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${paho.client.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="step-5-source-code-review">Step 5. Source code review</h3>
+
+<p>Here is a description of particular code snippet from <strong>SparkKafkaStreamingDemoMain</strong> class.
+Main constants are listed below:</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">// Access token for 'Analytics Gateway' Device.</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">GATEWAY_ACCESS_TOKEN</span> <span class="o">=</span> <span class="s">"$GATEWAY_ACCESS_TOKEN"</span><span class="o">;</span>
+<span class="c1">// Kafka brokers URL for Spark Streaming to connect and fetched messages from.</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">KAFKA_BROKER_LIST</span> <span class="o">=</span> <span class="s">"localhost:9092"</span><span class="o">;</span>
+<span class="c1">// URL of Thingsboard MQTT endpoint</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">THINGSBOARD_MQTT_ENDPOINT</span> <span class="o">=</span> <span class="s">"tcp://localhost:1883"</span><span class="o">;</span>
+<span class="c1">// Time interval in milliseconds of Spark Streaming Job, 10 seconds by default.</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">STREAM_WINDOW_MILLISECONDS</span> <span class="o">=</span> <span class="mi">10000</span><span class="o">;</span> <span class="c1">// 10 seconds</span>
+<span class="c1">// Kafka telemetry topic to subscribe to. This should match to the topic in the rule action.</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">TOPICS</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="s">"weather-stations-data"</span><span class="o">);</span>
+</code></pre>
+</div>
+
+<p>Main processing logic is listed below:</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>
+<span class="k">try</span> <span class="o">(</span><span class="n">JavaStreamingContext</span> <span class="n">ssc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JavaStreamingContext</span><span class="o">(</span><span class="n">conf</span><span class="o">,</span> <span class="k">new</span> <span class="n">Duration</span><span class="o">(</span><span class="n">STREAM_WINDOW_MILLISECONDS</span><span class="o">)))</span> <span class="o">{</span>
+
+    <span class="n">connectToThingsboard</span><span class="o">();</span>
+
+    <span class="n">JavaInputDStream</span><span class="o">&lt;</span><span class="n">ConsumerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;&gt;</span> <span class="n">stream</span> <span class="o">=</span>
+            <span class="n">KafkaUtils</span><span class="o">.</span><span class="na">createDirectStream</span><span class="o">(</span>
+                    <span class="n">ssc</span><span class="o">,</span>
+                    <span class="n">LocationStrategies</span><span class="o">.</span><span class="na">PreferConsistent</span><span class="o">(),</span>
+                    <span class="n">ConsumerStrategies</span><span class="o">.&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span><span class="n">Subscribe</span><span class="o">(</span><span class="n">TOPICS</span><span class="o">,</span> <span class="n">getKafkaParams</span><span class="o">())</span>
+            <span class="o">);</span>
+
+    <span class="n">stream</span><span class="o">.</span><span class="na">foreachRDD</span><span class="o">(</span><span class="n">rdd</span> <span class="o">-&gt;</span>
+    <span class="o">{</span>
+        <span class="c1">// Map incoming JSON to WindSpeedData objects</span>
+        <span class="n">JavaRDD</span><span class="o">&lt;</span><span class="n">WindSpeedData</span><span class="o">&gt;</span> <span class="n">windRdd</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="k">new</span> <span class="n">WeatherStationDataMapper</span><span class="o">());</span>
+        <span class="c1">// Map WindSpeedData objects by GeoZone</span>
+        <span class="n">JavaPairRDD</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">AvgWindSpeedData</span><span class="o">&gt;</span> <span class="n">windByZoneRdd</span> <span class="o">=</span> <span class="n">windRdd</span><span class="o">.</span><span class="na">mapToPair</span><span class="o">(</span><span class="n">d</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="n">Tuple2</span><span class="o">&lt;&gt;(</span><span class="n">d</span><span class="o">.</span><span class="na">getGeoZone</span><span class="o">(),</span> <span class="k">new</span> <span class="n">AvgWindSpeedData</span><span class="o">(</span><span class="n">d</span><span class="o">.</span><span class="na">getWindSpeed</span><span class="o">())));</span>
+        <span class="c1">// Reduce all data volume by GeoZone key</span>
+        <span class="n">windByZoneRdd</span> <span class="o">=</span> <span class="n">windByZoneRdd</span><span class="o">.</span><span class="na">reduceByKey</span><span class="o">((</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">AvgWindSpeedData</span><span class="o">.</span><span class="na">sum</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">));</span>
+        <span class="c1">// Map &lt;GeoZone, AvgWindSpeedData&gt; back to WindSpeedData</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">WindSpeedData</span><span class="o">&gt;</span> <span class="n">aggData</span> <span class="o">=</span> <span class="n">windByZoneRdd</span><span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">t</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="n">WindSpeedData</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">_1</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="na">_2</span><span class="o">.</span><span class="na">getAvgValue</span><span class="o">())).</span><span class="na">collect</span><span class="o">();</span>
+        <span class="c1">// Push aggregated data to Thingsboard using Gateway MQTT API</span>
+        <span class="n">publishTelemetryToThingsboard</span><span class="o">(</span><span class="n">aggData</span><span class="o">);</span>
+    <span class="o">});</span>
+
+    <span class="n">ssc</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="n">ssc</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Following method is responsbile for publishing the telemetry data:</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">publishTelemetryToThingsboard</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">WindSpeedData</span><span class="o">&gt;</span> <span class="n">aggData</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">aggData</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">WindSpeedData</span> <span class="n">d</span> <span class="o">:</span> <span class="n">aggData</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">MqttMessage</span> <span class="n">connectMsg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MqttMessage</span><span class="o">(</span><span class="n">toConnectJson</span><span class="o">(</span><span class="n">d</span><span class="o">.</span><span class="na">getGeoZone</span><span class="o">()).</span><span class="na">getBytes</span><span class="o">(</span><span class="n">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">));</span>
+            <span class="n">client</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="s">"v1/gateway/connect"</span><span class="o">,</span> <span class="n">connectMsg</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">getCallback</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="n">MqttMessage</span> <span class="n">dataMsg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MqttMessage</span><span class="o">(</span><span class="n">toDataJson</span><span class="o">(</span><span class="n">aggData</span><span class="o">).</span><span class="na">getBytes</span><span class="o">(</span><span class="n">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">));</span>
+        <span class="n">client</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="s">"v1/gateway/telemetry"</span><span class="o">,</span> <span class="n">dataMsg</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">getCallback</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Now let’s run <strong>SparkKafkaStreamingDemoMain</strong> class from the IDE or submit it to Spark cluster. Sample app will be fetching all the messages from Kafka topic and send average temperature telemetry to appropriate <strong>‘Average Temperature Device’</strong> in <em>Thingsboard</em>.</p>
+
+<h2 id="dry-run">Dry Run</h2>
+
+<p>Once <em>Kafka Plugin</em> is configured, <em>‘Analytics Gateway device’</em> is provisioned and <em>Spark Streaming Application</em> is running please start sending <strong>windSpeed</strong> telemetry from different devices.</p>
+
+<p>The following command will provision <strong>deviceType</strong> and <strong>geoZone</strong> attributes. You may change zone to different values for different devices.</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>mosquitto_pub -d -h <span class="s2">"localhost"</span> -p 1883 -t <span class="s2">"v1/devices/me/attributes"</span> -u <span class="s2">"</span><span class="nv">$YOUR_DEVICE_ACCESS_TOKEN</span><span class="s2">"</span> -m <span class="s1">'{"deviceType":"WeatherStation", "geoZone":"Zone A"}'</span>
+</code></pre>
+</div>
+
+<p>The following command will report <strong>windSpeed</strong> telemetry for particular device.</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>mosquitto_pub -d -h <span class="s2">"localhost"</span> -p 1883 -t <span class="s2">"v1/devices/me/telemetry"</span> -u <span class="s2">"</span><span class="nv">$YOUR_DEVICE_ACCESS_TOKEN</span><span class="s2">"</span> -m <span class="s1">'{"windSpeed":42}'</span>
+</code></pre>
+</div>
+
+<p>Once you sent the telemetry data to Thingsboard, wait up to 10 seconds for new device that identifies your <strong>geoZone</strong> to become available.</p>
+
+<p><img src="/images/samples/analytics/spark/zone-device-telemetry.png" alt="image" /></p>
+
+  </div>
+</section>
+
+<footer>
+	<main class="light-text">
+		<nav>
+			<a href="/docs/getting-started-guides/helloworld/">Get Started</a>
+			<a href="/docs/">Documentation</a>
+			<a href="/iot-use-cases/">Use cases</a>
+			<a href="https://blog.thingsboard.io/">Blog</a>
+			<a href="/docs/services/">Services</a>
+			<a href="/docs/contact-us/">Contact us</a>
+		</nav>
+		<div class="newsletterSubsContainer">
+			<form id="newsletter-form" method="post" onsubmit="return validateNewsletterForm(this)">
+				<fieldset>
+					<div class="newsletterInputs">
+						<p class="subsTitle">Sign up for Thingsboard IoT newsletter</p>
+						<input id="subsEmail" placeholder="Email" class="text-input" name="email" type="text" size="20" maxlength="80">
+						<input type="hidden" name="_next" value="/docs/newsletter-thanks/" />
+						<input type="text" name="_gotcha" style="display:none" />
+						<input class="button" value="Submit" type="submit">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="center">
+			<div class="social">
+				<div>
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+				</div>
+				<div>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+		</div>
+		<div id="miceType" class="center">&copy; 2017 The Thingsboard Authors</div>
+	</main>
+
+	<script type="text/javascript">
+
+		function validateNewsletterForm(form) {
+			var email = $('input[name=email]', form).val();
+
+			if (!validateValue('Email Address', email)) {
+				return false;
+			}
+
+			var emailExp = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+			if(email.match(emailExp)==null) {
+				window.alert("Entered Email Address is not valid.");
+				return false;
+			}
+			return true;
+		}
+
+		function validateValue(name, val) {
+			if (isEmpty(val)) {
+				window.alert("Please fill '" + name + "' field.");
+				return false;
+			}
+			return true;
+		}
+
+		function isEmpty(val) {
+			return val === undefined || val.trim().length == 0;
+		}
+
+	</script>
+
+	<script type="text/javascript">
+
+		var newsletterform =  document.getElementById('newsletter-form');
+		newsletterform.setAttribute('action', 'https://formspree.io/' + 'newsletter' + '@' + 'thingsboard' + '.' + 'io');
+
+	</script>
+
+</footer>
+
+
+
+<button class="flyout-button" onclick="tb.toggleToc()"></button>
+
+
+<style>
+  .cse .gsc-control-cse, .gsc-control-cse {
+    padding: 0;
+  }
+  .gsc-control-cse table, .gsc-control-cse-en table {
+    margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+    border-bottom: 0;
+  }
+</style>
+</body>
+</html>

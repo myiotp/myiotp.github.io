@@ -1,0 +1,615 @@
+
+
+<!Doctype html>
+<html id="docs" class="Thingsboard Documentation">
+
+
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- Begin Jekyll SEO tag v2.0.0 -->
+<title>Contribution Guide - Thingsboard</title>
+<meta property="og:title" content="Contribution Guide" />
+<link rel="canonical" href="http://localhost:4000/docs/user-guide/contribution/how-to-contribute/" />
+<meta property="og:url" content="http://localhost:4000/docs/user-guide/contribution/how-to-contribute/" />
+<meta property="og:site_name" content="Thingsboard" />
+<meta property="og:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@thingsboard" />
+<meta name="twitter:creator" content="@thingsboard" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "headline": "Contribution Guide",
+    "image": "http://localhost:4000/images/thingsboard_logo.png",
+    "logo": "http://localhost:4000/images/thingsboard_logo.png",
+    "url": "http://localhost:4000/docs/user-guide/contribution/how-to-contribute/"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+	
+	
+	
+	<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="/css/styles.css">
+	<script type="text/javascript">
+		/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+		!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+		/*! onloadCSS. (onload callback for loadCSS) [c]2017 Filament Group, Inc. MIT License */
+		function onloadCSS(a,b){function c(){!d&&b&&(d=!0,b.call(a))}var d;a.addEventListener&&a.addEventListener("load",c),a.attachEvent&&a.attachEvent("onload",c),"isApplicationInstalled"in navigator&&"onloadcssdefined"in a&&a.onloadcssdefined(c)}
+	</script>
+	<script type="text/javascript">
+
+		function jqueryDefer(method) {
+			if (window.jQuery) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryDefer(method)
+				}, 50);
+			}
+		}
+
+		function jqueryUiDefer(method) {
+			if (window.jQuery && window.jQuery.ui) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryUiDefer(method)
+				}, 50);
+			}
+		}
+
+		function loadScript(src, callback)
+		{
+			var s, r, t;
+			r = false;
+			s = document.createElement('script');
+			s.type = 'text/javascript';
+			s.src = src;
+			s.onload = s.onreadystatechange = function() {
+				if ( !r && (!this.readyState || this.readyState == 'complete') )
+				{
+					r = true;
+					if (callback) {
+						callback();
+					}
+				}
+			};
+			t = document.getElementsByTagName('script')[0];
+			t.parentNode.insertBefore(s, t);
+		}
+
+		function loadCssAsync(src, callback) {
+			var stylesheet = loadCSS( src );
+			if (callback) {
+				onloadCSS(stylesheet, callback);
+			}
+		}
+
+		function loadNextScript(index, scriptsList, completeCallback) {
+			if (index < scriptsList.length) {
+				var script = scriptsList[index];
+				if (script.type === 'script') {
+					loadScript(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				} else if (script.type === 'css') {
+					loadCssAsync(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				}
+			} else if (completeCallback) {
+				completeCallback();
+			}
+		}
+
+		var initialScriptsList = [
+			{src: '/js/jquery-2.2.0.min.js', type: 'script'},
+			{src: '/css/jquery-ui.min.css', type: 'css'},
+			{src: '/js/jquery-ui.min.js', type: 'script'},
+			{src: '/js/script.js', type: 'script'},
+			{src: '/css/sweetalert.css', type: 'css'},
+			{src: '/js/sweetalert.min.js', type: 'script'}
+		];
+
+		loadNextScript(0, initialScriptsList);
+
+	</script>
+	<script type="text/javascript">
+		function _gaLt(event) {
+			/* If GA is blocked or not loaded, or not main|middle|touch click then don't track */
+			if (!ga.hasOwnProperty("loaded") || ga.loaded != true || (event.which != 1 && event.which != 2)) {
+				return;
+			}
+			var el = event.srcElement || event.target;
+
+			while (el && (typeof el.tagName == 'undefined' || el.tagName.toLowerCase() != 'a' || !el.href)) {
+				el = el.parentNode;
+			}
+			if (el && el.href) {
+				var link = el.href;
+				if ((link.indexOf(location.host) == -1 || link.indexOf('.' + location.host) > 0) && !link.match(/^javascript\:/i)) {
+					var target = (el.target && !el.target.match(/^_(self|parent|top)$/i)) ? el.target : false;
+					if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
+						target = "_blank";
+					}
+
+					var hbrun = false; // tracker has not yet run
+					var hitBack = function() {
+						if (hbrun) return;
+						hbrun = true;
+						window.location.href = link;
+					};
+
+					if (target) {
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search
+						);
+					} else {
+						event.preventDefault ? event.preventDefault() : event.returnValue = !1;
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search, {
+									"hitCallback": hitBack
+								}
+						);
+
+						setTimeout(hitBack, 1000);
+					}
+				}
+			}
+		}
+
+		var _w = window;
+		var _gaLtEvt = ("ontouchstart" in _w) ? "click" : "mousedown";
+		_w.addEventListener ? _w.addEventListener("load", function() {document.body.addEventListener(_gaLtEvt, _gaLt, !1)}, !1)
+				: _w.attachEvent && _w.attachEvent("onload", function() {document.body.attachEvent("on" + _gaLtEvt, _gaLt)});
+	</script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-88383331-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+</head>
+<body>
+<div id="cellophane" onclick="tb.toggleMenu()"></div>
+<header>
+	<a href="/" class="logo"></a>
+	<div id="githubButtonContainer">
+		<iframe id="gh-btn-frame" src="https://ghbtns.com/github-btn.html?user=thingsboard&repo=thingsboard&type=star&count=true&size=large"
+				frameborder="0"
+				scrolling="0" width="130px" height="30px"></iframe>
+	</div>
+	<div class="nav-buttons" data-auto-burger="primary">
+		<a href="/docs/" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a>
+		<a href="/iot-use-cases/" class="button" id="useCases" data-auto-burger-exclude>Use cases</a>
+		<a href="/docs/getting-started-guides/helloworld/" class="button" id="gettingStarted" data-auto-burger-exclude>Getting started</a>
+		<a target="_blank" href="https://demo.thingsboard.io/signup" class="button" id="liveDemo" data-auto-burger-exclude>Live demo</a>
+		<button id="hamburger" onclick="tb.toggleMenu()" data-auto-burger-exclude><div></div></button>
+	</div>
+
+	<nav id="mainNav">
+		<main id="headNav" data-auto-burger="primary">
+			<div class="nav-box">
+				<h3><a href="/docs/getting-started-guides/helloworld/">Get Started</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/">Documentation</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/iot-use-cases/">Use cases</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="http://blog.thingsboard.io/">Blog</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/services/">Services</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/contact-us/">Contact us</a></h3>
+			</div>
+		</main>
+		<main data-auto-burger="primary">
+			<div class="center">
+				<div class="social">
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>Twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+			<div class="clear" style="clear: both"></div>
+		</main>
+	</nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Thingsboard Documentation</h1>
+  <h5>Documentation for using Thingsboard IoT Platform.</h5>
+  <div id="vendorStrip" class="light-text">
+    <div id="docsList">
+        <ul>
+          <li><a href="/docs/" class="YAH">DOCS HOME</a></li>
+          <li><a href="/docs/api/" >API</a></li>
+          <li><a href="/docs/iot-gateway/" >IOT GATEWAY</a></li>
+          <li><a href="/docs/reference/" >REFERENCE</a></li>
+          <li><a href="/docs/samples/" >SAMPLES</a></li>
+          <li><a href="/iot-use-cases/" >USE CASES</a></li>
+          <li><a href="/docs/iot-video-tutorials/" >VIDEO TUTORIALS</a></li>
+          <li><a href="/docs/faq/" >FAQ</a></li>
+          <li><a href="/docs/services/" >SERVICES</a></li>
+          <li><a href="/docs/contact-us/" >CONTACT US</a></li>
+        </ul>
+    </div>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)">
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section id="encyclopedia">
+  
+  <div id="docsToc" >
+        <div class="pi-accordion">
+        
+    <a class="item" data-title="Thingsboard Documentation" href="/docs/"></a>
+    <a class="item" data-title="What is Thingsboard?" href="/docs/getting-started-guides/what-is-thingsboard/"></a>
+    <a class="item" data-title="Getting Started" href="/docs/getting-started-guides/helloworld/"></a>
+<div class="item" data-title="Installation">
+  <div class="container">
+    <a class="item" data-title="Installation options" href="/docs/user-guide/install/installation-options/"></a>
+    <a class="item" data-title="Installing Thingsboard on Windows" href="/docs/user-guide/install/windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on Linux (Ubuntu & CentOS)" href="/docs/user-guide/install/linux/"></a>
+    <a class="item" data-title="Installing Thingsboard on Raspberry Pi 3" href="/docs/user-guide/install/rpi/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Linux or Mac OS)" href="/docs/user-guide/install/docker/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Windows)" href="/docs/user-guide/install/docker-windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on AWS EC2" href="/docs/user-guide/install/aws/"></a>
+    <a class="item" data-title="Building from sources" href="/docs/user-guide/install/building-from-source/"></a>
+    <a class="item" data-title="Upgrade instructions" href="/docs/user-guide/install/upgrade-instructions/"></a>
+    <a class="item" data-title="Configuration" href="/docs/user-guide/install/config/"></a>
+    <a class="item" data-title="Cluster setup" href="/docs/user-guide/install/cluster-setup/"></a>
+  </div>
+</div>
+<div class="item" data-title="Features">
+  <div class="container">
+    <a class="item" data-title="Working with device attributes" href="/docs/user-guide/attributes/"></a>
+    <a class="item" data-title="Working with telemetry data" href="/docs/user-guide/telemetry/"></a>
+    <a class="item" data-title="Using RPC capabilities" href="/docs/user-guide/rpc/"></a>
+    <a class="item" data-title="Rule engine" href="/docs/user-guide/rule-engine/"></a>
+    <a class="item" data-title="Data visualization" href="/docs/user-guide/visualization/"></a>
+  </div>
+</div>
+<div class="item" data-title="Integrations Cookbook">
+  <div class="container">
+    <a class="item" data-title="Persist and visualize AWS IoT data" href="/docs/iot-gateway/integration-with-aws-iot/"></a>
+    <a class="item" data-title="IoT data analytics using Apache Spark" href="/docs/samples/analytics/spark-integration-with-thingsboard/"></a>
+    <a class="item" data-title="SigFox IoT data collection and visualization" href="/docs/iot-gateway/sigfox-iot-data-visualization/"></a>
+    <a class="item" data-title="Persist and visualize IBM Watson IoT data" href="/docs/iot-gateway/integration-with-ibm-watson-iot/"></a>
+  </div>
+</div>
+<div class="item" data-title="Security">
+  <div class="container">
+    <a class="item" data-title="MQTT over SSL" href="/docs/user-guide/mqtt-over-ssl/"></a>
+    <a class="item" data-title="Device authentication options" href="/docs/user-guide/device-credentials/"></a>
+    <a class="item" data-title="Access Token based authentication" href="/docs/user-guide/access-token/"></a>
+    <a class="item" data-title="X.509 Certificate based authentication" href="/docs/user-guide/certificates/"></a>
+  </div>
+</div>
+<div class="item" data-title="Administration UI">
+  <div class="container">
+    <a class="item" data-title="Tenants" href="/docs/user-guide/ui/tenants/"></a>
+    <a class="item" data-title="Customers" href="/docs/user-guide/ui/customers/"></a>
+    <a class="item" data-title="Users" href="/docs/user-guide/ui/users/"></a>
+    <a class="item" data-title="Devices" href="/docs/user-guide/ui/devices/"></a>
+    <a class="item" data-title="Rules" href="/docs/user-guide/ui/rules/"></a>
+    <a class="item" data-title="Plugins" href="/docs/user-guide/ui/plugins/"></a>
+    <a class="item" data-title="Widgets Library" href="/docs/user-guide/ui/widget-library/"></a>
+    <a class="item" data-title="Dashboards" href="/docs/user-guide/ui/dashboards/"></a>
+    <a class="item" data-title="Mail Settings" href="/docs/user-guide/ui/mail-settings/"></a>
+  </div>
+</div>
+    <a class="item" data-title="Troubleshooting" href="/docs/user-guide/troubleshooting/"></a>
+<div class="item" data-title="Contribution Guide">
+  <div class="container">
+    <a class="item" data-title="How to contribute" href="/docs/user-guide/contribution/how-to-contribute/"></a>
+    <a class="item" data-title="Extensions (Plugins and Actions) development" href="/docs/user-guide/contribution/extensions-development/"></a>
+  </div>
+</div>
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="tb.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+  
+  <div id="docsContent" class="">
+    <h1>Contribution Guide</h1>
+    <ul id="markdown-toc">
+  <li><a href="#required-tools" id="markdown-toc-required-tools">Required tools</a></li>
+  <li><a href="#fork-and-build-thingsboard-repository" id="markdown-toc-fork-and-build-thingsboard-repository">Fork and build Thingsboard repository</a></li>
+  <li><a href="#cassandra-installation-and-configuration" id="markdown-toc-cassandra-installation-and-configuration">Cassandra installation and configuration</a>    <ul>
+      <li><a href="#database-installation" id="markdown-toc-database-installation">Database installation</a></li>
+      <li><a href="#provision-schema" id="markdown-toc-provision-schema">Provision Schema</a></li>
+      <li><a href="#thingsboard-configuration" id="markdown-toc-thingsboard-configuration">Thingsboard configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="#running-development-environment" id="markdown-toc-running-development-environment">Running development environment</a>    <ul>
+      <li><a href="#running-ui-container-in-hot-redeploy-mode" id="markdown-toc-running-ui-container-in-hot-redeploy-mode">Running UI container in hot redeploy mode.</a></li>
+      <li><a href="#running-server-side-container" id="markdown-toc-running-server-side-container">Running server-side container</a></li>
+      <li><a href="#dry-run" id="markdown-toc-dry-run">Dry run</a></li>
+    </ul>
+  </li>
+  <li><a href="#code-changes" id="markdown-toc-code-changes">Code changes</a>    <ul>
+      <li><a href="#verify-build" id="markdown-toc-verify-build">Verify build</a></li>
+      <li><a href="#push-changes-to-your-fork" id="markdown-toc-push-changes-to-your-fork">Push changes to your fork</a></li>
+      <li><a href="#create-pull-request" id="markdown-toc-create-pull-request">Create pull request</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p>We are constantly looking for a feedback from our community on how to improve Thingsboard.
+If you have an idea or you have some new features in mind, please open an issue at Thingsboard <a href="https://github.com/thingsboard/thingsboard/issues"><strong>github issue page</strong></a>.
+Зlease make sure that the same ticket is not already opened in the issues list (or something very similar).</p>
+
+<p>Before you start any implementation please wait from the Thingsboard team to comment on your ticket. We’ll try to get back to you ASAP.</p>
+
+<h4 id="required-tools">Required tools</h4>
+
+<p>To build and run Thingsboard instance make sure that you hava <strong>Java</strong> and <strong>Maven</strong> installed onto your system.</p>
+
+<p>Please refer to <a href="/docs/user-guide/install/building-from-source"><strong>Building from sources</strong></a> section where <a href="/docs/user-guide/install/building-from-source/#java"><strong>Java</strong></a> and <a href="/docs/user-guide/install/building-from-source/#maven"><strong>Maven</strong></a> install processes are described.</p>
+
+<h4 id="fork-and-build-thingsboard-repository">Fork and build Thingsboard repository</h4>
+
+<p>Once you have completed installation of required tools please fork official <a href="https://github.com/thingsboard/thingsboard"><strong>Thingsboard repository</strong></a>.</p>
+
+<p>Now you can clone source code of the forked project.</p>
+
+<p><strong>NOTE:</strong> We will refer later to the folder where you have cloned repository as <strong>${TB_WORK_DIR}</strong>.</p>
+
+<p>Before importing project into <em>IDE</em> please build it using <strong>Maven</strong> tool from the root folder:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nb">cd</span> <span class="k">${</span><span class="nv">TB_WORK_DIR</span><span class="k">}</span>
+mvn clean install -DskipTests
+</code></pre>
+</div>
+
+<p>Build will create all other appropriate <em>protobuf</em> files in the <em>application</em> module that needed for correct compilation in your <em>IDE</em>.</p>
+
+<p>As next step import project into your favorite <em>IDE</em> as <strong>Maven</strong> project. 
+See separate instructions for <a href="https://www.jetbrains.com/help/idea/2016.3/importing-project-from-maven-model.html"><strong>IDEA</strong></a> and <a href="http://javapapers.com/java/import-maven-project-into-eclipse/"><strong>Eclipse</strong></a>.</p>
+
+<h4 id="cassandra-installation-and-configuration">Cassandra installation and configuration</h4>
+
+<p>Before you run Thingsboard application server you need to install cassandra and provision Thingsboard keyspace.</p>
+
+<h5 id="database-installation">Database installation</h5>
+
+<p>Please refer to appropriate section where you find instructions on how to install cassandra:</p>
+
+<ul>
+  <li><a href="/docs/user-guide/install/linux/#cassandra">Cassandra installation on <strong>Linux</strong></a></li>
+  <li><a href="/docs/user-guide/install/windows/#cassandra">Cassandra installation on <strong>Windows</strong></a></li>
+</ul>
+
+<h5 id="provision-schema">Provision Schema</h5>
+
+<p>Once Cassandra is installed, you can execute following scripts:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>cqlsh -f <span class="k">${</span><span class="nv">TB_WORK_DIR</span><span class="k">}</span>/dao/src/main/resources/schema.cql
+cqlsh -f <span class="k">${</span><span class="nv">TB_WORK_DIR</span><span class="k">}</span>/dao/src/main/resources/system-data.cql
+cqlsh -f <span class="k">${</span><span class="nv">TB_WORK_DIR</span><span class="k">}</span>/dao/src/main/resources/demo-data.cql
+</code></pre>
+</div>
+
+<p>This commands will provision Thingsboard schema, system and demo data.</p>
+
+<h5 id="thingsboard-configuration">Thingsboard configuration</h5>
+
+<p><strong>NOTE:</strong> This step is optional. It is required only if your Cassandra server is installed on remote machine or is bind to custom interface/port.</p>
+
+<p>Update Thingsboard configuration properties located in 
+<strong>${TB_WORK_DIR}/application/src/main/resources/thingsboard.yml</strong> file and specify cassandra connection parameters.</p>
+
+<p>Refer to <a href="/docs/user-guide/install/config/"><strong>configuration guide</strong></a> for the detail description of <strong>thingsboard.yml</strong> file and what properties are used for cassandra connection configuration.</p>
+
+<h4 id="running-development-environment">Running development environment</h4>
+
+<h5 id="running-ui-container-in-hot-redeploy-mode">Running UI container in hot redeploy mode.</h5>
+
+<p>By default, Thingsboard UI is served at 8080 port. However, you may want to run UI in the hot redeploy mode.</p>
+
+<p><strong>NOTE:</strong> This step is optional. It is required only if you are going to do changes to UI.</p>
+
+<p>To start UI container in hot redeploy mode you will need to install <strong>node.js</strong> first. Once <strong>node.js</strong> is installed you can start container by executing next command:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nb">cd</span> <span class="k">${</span><span class="nv">TB_WORK_DIR</span><span class="k">}</span>/ui
+mvn clean install -P npm-start
+</code></pre>
+</div>
+
+<p>This will launch special server that will listen on 3000 port. All REST API and websocket requests will be forwarded to 8080 port.</p>
+
+<h5 id="running-server-side-container">Running server-side container</h5>
+
+<p>To start server-side container you can use couple options.</p>
+
+<p>As a first option, you can run main method of <strong>org.thingsboard.server.ThingsboardServerApplication</strong> class that is located in <em>application</em> module from your <em>IDE</em>.</p>
+
+<p>As a second an option, you can start server-side from command line as a regular <strong>Spring boot</strong> application:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nb">cd</span> <span class="k">${</span><span class="nv">TB_WORK_DIR</span><span class="k">}</span>
+java -jar application/targer/thingsboard-<span class="k">${</span><span class="nv">VERSION</span><span class="k">}</span>-boot.jar
+</code></pre>
+</div>
+
+<h5 id="dry-run">Dry run</h5>
+
+<p>Navigate to http://localhost:3000/ or http://localhost:8080/ and login into Thingsboard using demo data credentials:</p>
+
+<ul>
+  <li><em>login</em> <strong>tenant@thingsboard.org</strong></li>
+  <li><em>password</em> <strong>tenant</strong></li>
+</ul>
+
+<p>Make sure that you are able to login and everything has started correctly.</p>
+
+<h4 id="code-changes">Code changes</h4>
+
+<p>Now you are ready to start to do some changes to the codebase.
+Update server-side or UI code.
+Verify that changes that you have done met your requirements and expectations from user perspective.</p>
+
+<h5 id="verify-build">Verify build</h5>
+
+<p>Before you commit your changes to remote repository build it locally with tests run using <em>Maven</em>:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>mvn clean install
+</code></pre>
+</div>
+
+<p>Make sure that build is fine and all the tests are successful.</p>
+
+<h5 id="push-changes-to-your-fork">Push changes to your fork</h5>
+
+<p>When you are done with code changes commit and push them to your forked repository with some meaningful comment:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>git commit -m <span class="s1">'Some meaningful comment'</span>
+git push origin master
+</code></pre>
+</div>
+
+<h5 id="create-pull-request">Create pull request</h5>
+
+<p>Please create pull request into <strong>master</strong> branch by default (if needed additional <em>branch</em> name will be provided during initial stage of github issue discussion).</p>
+
+<p>If there are some conflicts because new stuff has arrived into Thingsboard master branch before your commit, please resolve those conflicts to continue.</p>
+
+<p>Sign up contribution license agreement (CLA) and verify that remote build has been successful. The CLA is signed atumatically using github CLA bot.</p>
+
+<p><img src="/images/user-guide/pr_cla.png" alt="image" /></p>
+
+<p>Be patient, pull request may take several days to review.</p>
+
+
+  </div>
+</section>
+
+<footer>
+	<main class="light-text">
+		<nav>
+			<a href="/docs/getting-started-guides/helloworld/">Get Started</a>
+			<a href="/docs/">Documentation</a>
+			<a href="/iot-use-cases/">Use cases</a>
+			<a href="https://blog.thingsboard.io/">Blog</a>
+			<a href="/docs/services/">Services</a>
+			<a href="/docs/contact-us/">Contact us</a>
+		</nav>
+		<div class="newsletterSubsContainer">
+			<form id="newsletter-form" method="post" onsubmit="return validateNewsletterForm(this)">
+				<fieldset>
+					<div class="newsletterInputs">
+						<p class="subsTitle">Sign up for Thingsboard IoT newsletter</p>
+						<input id="subsEmail" placeholder="Email" class="text-input" name="email" type="text" size="20" maxlength="80">
+						<input type="hidden" name="_next" value="/docs/newsletter-thanks/" />
+						<input type="text" name="_gotcha" style="display:none" />
+						<input class="button" value="Submit" type="submit">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="center">
+			<div class="social">
+				<div>
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+				</div>
+				<div>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+		</div>
+		<div id="miceType" class="center">&copy; 2017 The Thingsboard Authors</div>
+	</main>
+
+	<script type="text/javascript">
+
+		function validateNewsletterForm(form) {
+			var email = $('input[name=email]', form).val();
+
+			if (!validateValue('Email Address', email)) {
+				return false;
+			}
+
+			var emailExp = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+			if(email.match(emailExp)==null) {
+				window.alert("Entered Email Address is not valid.");
+				return false;
+			}
+			return true;
+		}
+
+		function validateValue(name, val) {
+			if (isEmpty(val)) {
+				window.alert("Please fill '" + name + "' field.");
+				return false;
+			}
+			return true;
+		}
+
+		function isEmpty(val) {
+			return val === undefined || val.trim().length == 0;
+		}
+
+	</script>
+
+	<script type="text/javascript">
+
+		var newsletterform =  document.getElementById('newsletter-form');
+		newsletterform.setAttribute('action', 'https://formspree.io/' + 'newsletter' + '@' + 'thingsboard' + '.' + 'io');
+
+	</script>
+
+</footer>
+
+
+
+<button class="flyout-button" onclick="tb.toggleToc()"></button>
+
+
+<style>
+  .cse .gsc-control-cse, .gsc-control-cse {
+    padding: 0;
+  }
+  .gsc-control-cse table, .gsc-control-cse-en table {
+    margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+    border-bottom: 0;
+  }
+</style>
+</body>
+</html>

@@ -1,0 +1,705 @@
+
+
+<!Doctype html>
+<html id="docs" class="Thingsboard Documentation">
+
+
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- Begin Jekyll SEO tag v2.0.0 -->
+<title>Rule Engine - Thingsboard</title>
+<meta property="og:title" content="Rule Engine" />
+<meta name="description" content="IoT devices data analytics using Thingsboard Rule engine" />
+<meta property="og:description" content="IoT devices data analytics using Thingsboard Rule engine" />
+<link rel="canonical" href="http://localhost:4000/docs/user-guide/rule-engine/" />
+<meta property="og:url" content="http://localhost:4000/docs/user-guide/rule-engine/" />
+<meta property="og:site_name" content="Thingsboard" />
+<meta property="og:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@thingsboard" />
+<meta name="twitter:creator" content="@thingsboard" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "headline": "Rule Engine",
+    "image": "http://localhost:4000/images/thingsboard_logo.png",
+    "description": "IoT devices data analytics using Thingsboard Rule engine",
+    "logo": "http://localhost:4000/images/thingsboard_logo.png",
+    "url": "http://localhost:4000/docs/user-guide/rule-engine/"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+	
+	
+	<meta name="twitter:description" content="IoT devices data analytics using Thingsboard Rule engine"/>
+	
+	
+	<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="/css/styles.css">
+	<script type="text/javascript">
+		/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+		!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+		/*! onloadCSS. (onload callback for loadCSS) [c]2017 Filament Group, Inc. MIT License */
+		function onloadCSS(a,b){function c(){!d&&b&&(d=!0,b.call(a))}var d;a.addEventListener&&a.addEventListener("load",c),a.attachEvent&&a.attachEvent("onload",c),"isApplicationInstalled"in navigator&&"onloadcssdefined"in a&&a.onloadcssdefined(c)}
+	</script>
+	<script type="text/javascript">
+
+		function jqueryDefer(method) {
+			if (window.jQuery) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryDefer(method)
+				}, 50);
+			}
+		}
+
+		function jqueryUiDefer(method) {
+			if (window.jQuery && window.jQuery.ui) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryUiDefer(method)
+				}, 50);
+			}
+		}
+
+		function loadScript(src, callback)
+		{
+			var s, r, t;
+			r = false;
+			s = document.createElement('script');
+			s.type = 'text/javascript';
+			s.src = src;
+			s.onload = s.onreadystatechange = function() {
+				if ( !r && (!this.readyState || this.readyState == 'complete') )
+				{
+					r = true;
+					if (callback) {
+						callback();
+					}
+				}
+			};
+			t = document.getElementsByTagName('script')[0];
+			t.parentNode.insertBefore(s, t);
+		}
+
+		function loadCssAsync(src, callback) {
+			var stylesheet = loadCSS( src );
+			if (callback) {
+				onloadCSS(stylesheet, callback);
+			}
+		}
+
+		function loadNextScript(index, scriptsList, completeCallback) {
+			if (index < scriptsList.length) {
+				var script = scriptsList[index];
+				if (script.type === 'script') {
+					loadScript(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				} else if (script.type === 'css') {
+					loadCssAsync(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				}
+			} else if (completeCallback) {
+				completeCallback();
+			}
+		}
+
+		var initialScriptsList = [
+			{src: '/js/jquery-2.2.0.min.js', type: 'script'},
+			{src: '/css/jquery-ui.min.css', type: 'css'},
+			{src: '/js/jquery-ui.min.js', type: 'script'},
+			{src: '/js/script.js', type: 'script'},
+			{src: '/css/sweetalert.css', type: 'css'},
+			{src: '/js/sweetalert.min.js', type: 'script'}
+		];
+
+		loadNextScript(0, initialScriptsList);
+
+	</script>
+	<script type="text/javascript">
+		function _gaLt(event) {
+			/* If GA is blocked or not loaded, or not main|middle|touch click then don't track */
+			if (!ga.hasOwnProperty("loaded") || ga.loaded != true || (event.which != 1 && event.which != 2)) {
+				return;
+			}
+			var el = event.srcElement || event.target;
+
+			while (el && (typeof el.tagName == 'undefined' || el.tagName.toLowerCase() != 'a' || !el.href)) {
+				el = el.parentNode;
+			}
+			if (el && el.href) {
+				var link = el.href;
+				if ((link.indexOf(location.host) == -1 || link.indexOf('.' + location.host) > 0) && !link.match(/^javascript\:/i)) {
+					var target = (el.target && !el.target.match(/^_(self|parent|top)$/i)) ? el.target : false;
+					if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
+						target = "_blank";
+					}
+
+					var hbrun = false; // tracker has not yet run
+					var hitBack = function() {
+						if (hbrun) return;
+						hbrun = true;
+						window.location.href = link;
+					};
+
+					if (target) {
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search
+						);
+					} else {
+						event.preventDefault ? event.preventDefault() : event.returnValue = !1;
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search, {
+									"hitCallback": hitBack
+								}
+						);
+
+						setTimeout(hitBack, 1000);
+					}
+				}
+			}
+		}
+
+		var _w = window;
+		var _gaLtEvt = ("ontouchstart" in _w) ? "click" : "mousedown";
+		_w.addEventListener ? _w.addEventListener("load", function() {document.body.addEventListener(_gaLtEvt, _gaLt, !1)}, !1)
+				: _w.attachEvent && _w.attachEvent("onload", function() {document.body.attachEvent("on" + _gaLtEvt, _gaLt)});
+	</script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-88383331-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+</head>
+<body>
+<div id="cellophane" onclick="tb.toggleMenu()"></div>
+<header>
+	<a href="/" class="logo"></a>
+	<div id="githubButtonContainer">
+		<iframe id="gh-btn-frame" src="https://ghbtns.com/github-btn.html?user=thingsboard&repo=thingsboard&type=star&count=true&size=large"
+				frameborder="0"
+				scrolling="0" width="130px" height="30px"></iframe>
+	</div>
+	<div class="nav-buttons" data-auto-burger="primary">
+		<a href="/docs/" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a>
+		<a href="/iot-use-cases/" class="button" id="useCases" data-auto-burger-exclude>Use cases</a>
+		<a href="/docs/getting-started-guides/helloworld/" class="button" id="gettingStarted" data-auto-burger-exclude>Getting started</a>
+		<a target="_blank" href="https://demo.thingsboard.io/signup" class="button" id="liveDemo" data-auto-burger-exclude>Live demo</a>
+		<button id="hamburger" onclick="tb.toggleMenu()" data-auto-burger-exclude><div></div></button>
+	</div>
+
+	<nav id="mainNav">
+		<main id="headNav" data-auto-burger="primary">
+			<div class="nav-box">
+				<h3><a href="/docs/getting-started-guides/helloworld/">Get Started</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/">Documentation</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/iot-use-cases/">Use cases</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="http://blog.thingsboard.io/">Blog</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/services/">Services</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/contact-us/">Contact us</a></h3>
+			</div>
+		</main>
+		<main data-auto-burger="primary">
+			<div class="center">
+				<div class="social">
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>Twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+			<div class="clear" style="clear: both"></div>
+		</main>
+	</nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Thingsboard Documentation</h1>
+  <h5>Documentation for using Thingsboard IoT Platform.</h5>
+  <div id="vendorStrip" class="light-text">
+    <div id="docsList">
+        <ul>
+          <li><a href="/docs/" class="YAH">DOCS HOME</a></li>
+          <li><a href="/docs/api/" >API</a></li>
+          <li><a href="/docs/iot-gateway/" >IOT GATEWAY</a></li>
+          <li><a href="/docs/reference/" >REFERENCE</a></li>
+          <li><a href="/docs/samples/" >SAMPLES</a></li>
+          <li><a href="/iot-use-cases/" >USE CASES</a></li>
+          <li><a href="/docs/iot-video-tutorials/" >VIDEO TUTORIALS</a></li>
+          <li><a href="/docs/faq/" >FAQ</a></li>
+          <li><a href="/docs/services/" >SERVICES</a></li>
+          <li><a href="/docs/contact-us/" >CONTACT US</a></li>
+        </ul>
+    </div>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)">
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section id="encyclopedia">
+  
+  <div id="docsToc" >
+        <div class="pi-accordion">
+        
+    <a class="item" data-title="Thingsboard Documentation" href="/docs/"></a>
+    <a class="item" data-title="What is Thingsboard?" href="/docs/getting-started-guides/what-is-thingsboard/"></a>
+    <a class="item" data-title="Getting Started" href="/docs/getting-started-guides/helloworld/"></a>
+<div class="item" data-title="Installation">
+  <div class="container">
+    <a class="item" data-title="Installation options" href="/docs/user-guide/install/installation-options/"></a>
+    <a class="item" data-title="Installing Thingsboard on Windows" href="/docs/user-guide/install/windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on Linux (Ubuntu & CentOS)" href="/docs/user-guide/install/linux/"></a>
+    <a class="item" data-title="Installing Thingsboard on Raspberry Pi 3" href="/docs/user-guide/install/rpi/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Linux or Mac OS)" href="/docs/user-guide/install/docker/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Windows)" href="/docs/user-guide/install/docker-windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on AWS EC2" href="/docs/user-guide/install/aws/"></a>
+    <a class="item" data-title="Building from sources" href="/docs/user-guide/install/building-from-source/"></a>
+    <a class="item" data-title="Upgrade instructions" href="/docs/user-guide/install/upgrade-instructions/"></a>
+    <a class="item" data-title="Configuration" href="/docs/user-guide/install/config/"></a>
+    <a class="item" data-title="Cluster setup" href="/docs/user-guide/install/cluster-setup/"></a>
+  </div>
+</div>
+<div class="item" data-title="Features">
+  <div class="container">
+    <a class="item" data-title="Working with device attributes" href="/docs/user-guide/attributes/"></a>
+    <a class="item" data-title="Working with telemetry data" href="/docs/user-guide/telemetry/"></a>
+    <a class="item" data-title="Using RPC capabilities" href="/docs/user-guide/rpc/"></a>
+    <a class="item" data-title="Rule engine" href="/docs/user-guide/rule-engine/"></a>
+    <a class="item" data-title="Data visualization" href="/docs/user-guide/visualization/"></a>
+  </div>
+</div>
+<div class="item" data-title="Integrations Cookbook">
+  <div class="container">
+    <a class="item" data-title="Persist and visualize AWS IoT data" href="/docs/iot-gateway/integration-with-aws-iot/"></a>
+    <a class="item" data-title="IoT data analytics using Apache Spark" href="/docs/samples/analytics/spark-integration-with-thingsboard/"></a>
+    <a class="item" data-title="SigFox IoT data collection and visualization" href="/docs/iot-gateway/sigfox-iot-data-visualization/"></a>
+    <a class="item" data-title="Persist and visualize IBM Watson IoT data" href="/docs/iot-gateway/integration-with-ibm-watson-iot/"></a>
+  </div>
+</div>
+<div class="item" data-title="Security">
+  <div class="container">
+    <a class="item" data-title="MQTT over SSL" href="/docs/user-guide/mqtt-over-ssl/"></a>
+    <a class="item" data-title="Device authentication options" href="/docs/user-guide/device-credentials/"></a>
+    <a class="item" data-title="Access Token based authentication" href="/docs/user-guide/access-token/"></a>
+    <a class="item" data-title="X.509 Certificate based authentication" href="/docs/user-guide/certificates/"></a>
+  </div>
+</div>
+<div class="item" data-title="Administration UI">
+  <div class="container">
+    <a class="item" data-title="Tenants" href="/docs/user-guide/ui/tenants/"></a>
+    <a class="item" data-title="Customers" href="/docs/user-guide/ui/customers/"></a>
+    <a class="item" data-title="Users" href="/docs/user-guide/ui/users/"></a>
+    <a class="item" data-title="Devices" href="/docs/user-guide/ui/devices/"></a>
+    <a class="item" data-title="Rules" href="/docs/user-guide/ui/rules/"></a>
+    <a class="item" data-title="Plugins" href="/docs/user-guide/ui/plugins/"></a>
+    <a class="item" data-title="Widgets Library" href="/docs/user-guide/ui/widget-library/"></a>
+    <a class="item" data-title="Dashboards" href="/docs/user-guide/ui/dashboards/"></a>
+    <a class="item" data-title="Mail Settings" href="/docs/user-guide/ui/mail-settings/"></a>
+  </div>
+</div>
+    <a class="item" data-title="Troubleshooting" href="/docs/user-guide/troubleshooting/"></a>
+<div class="item" data-title="Contribution Guide">
+  <div class="container">
+    <a class="item" data-title="How to contribute" href="/docs/user-guide/contribution/how-to-contribute/"></a>
+    <a class="item" data-title="Extensions (Plugins and Actions) development" href="/docs/user-guide/contribution/extensions-development/"></a>
+  </div>
+</div>
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="tb.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+  
+  <div id="docsContent" class="">
+    <h1>Rule Engine</h1>
+    <ul id="markdown-toc">
+  <li><a href="#rule-vs-plugin" id="markdown-toc-rule-vs-plugin">Rule vs Plugin</a></li>
+  <li><a href="#scopes" id="markdown-toc-scopes">Scopes</a></li>
+  <li><a href="#lifecycle" id="markdown-toc-lifecycle">Lifecycle</a></li>
+  <li><a href="#rules" id="markdown-toc-rules">Rules</a>    <ul>
+      <li><a href="#filters" id="markdown-toc-filters">Filters</a></li>
+      <li><a href="#processors" id="markdown-toc-processors">Processors</a></li>
+      <li><a href="#actions" id="markdown-toc-actions">Actions</a></li>
+    </ul>
+  </li>
+  <li><a href="#plugins" id="markdown-toc-plugins">Plugins</a>    <ul>
+      <li><a href="#rest-api" id="markdown-toc-rest-api">REST API</a></li>
+      <li><a href="#websocket-api" id="markdown-toc-websocket-api">Websocket API</a></li>
+      <li><a href="#clustering-api" id="markdown-toc-clustering-api">Clustering API</a></li>
+      <li><a href="#implementations" id="markdown-toc-implementations">Implementations</a></li>
+    </ul>
+  </li>
+  <li><a href="#troubleshooting-and-statistics" id="markdown-toc-troubleshooting-and-statistics">Troubleshooting and statistics</a>    <ul>
+      <li><a href="#statistics" id="markdown-toc-statistics">Statistics</a></li>
+      <li><a href="#errors" id="markdown-toc-errors">Errors</a></li>
+      <li><a href="#lifecycle-events" id="markdown-toc-lifecycle-events">Lifecycle events</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Rule engine allows you to process messages from devices with configurable set of rules.
+With Rule Engine you can:</p>
+
+<ul>
+  <li>send an email when device attribute changes.</li>
+  <li>create alarm when telemetry value exceeds certain threshold.</li>
+  <li>forward telemetry data to Kafka, RabbitMQ or external RESTful server.</li>
+  <li>and much more using other rules and plugins.</li>
+</ul>
+
+<p><strong>Please Note</strong> we recommend to get familiar with basic Thingsboard features - (
+<a href="/docs/user-guide/attributes/">Attributes</a>, 
+<a href="/docs/user-guide/telemetry/">Telemetry</a> and 
+<a href="/docs/user-guide/rpc/">RPC</a> 
+) before you proceed.</p>
+
+<p>Rule engine operates with two main components: Rules and Plugins. 
+The job of Rule Engine is to sequentially apply configured rules to incoming messages.
+Although rules are applied sequentially, rule execution is asynchronous and is based on <a href="http://akka.io/">actors</a>. 
+This allows processing of messages from the device in the same order in which they are received without sacrificing performance.</p>
+
+<p>The results of processing may or may not be delivered back to device application. 
+This depends on rule configuration.
+For example, you may push incoming telemetry data to internal Cassandra DB, and simultaneously send them to Kafka. 
+You are able to configure to ignore Kafka errors or report error back to device. 
+In this case, device may either retry the operation, re-send the data to different server or simply ignore the error.</p>
+
+<p><img src="/images/user-guide/rule-engine.svg" alt="image" /></p>
+
+<h2 id="rule-vs-plugin">Rule vs Plugin</h2>
+
+<p>We will review following example to explain the difference between Rule and Plugin.
+Let’s assume you want to send an email to engineer when engine temperature is too high.
+In this case Rule is responsible for analyzing telemetry data and building email (body, to, cc, etc).
+However, plugin is responsible for actual communication with email server and sending email.
+So, multiple rules may use same email plugin that is configured once.</p>
+
+<h2 id="scopes">Scopes</h2>
+
+<p>Rules and Plugins may be operating on <em>System</em> and <em>Tenant</em> levels.</p>
+
+<p><strong>System</strong> level rules and plugins are managed by System Administrator. 
+They process messages from all devices.</p>
+
+<p><strong>Tenant</strong> level rules and plugins are managed by corresponding Tenant Administrator. 
+They process messages from devices that belong to particular tenant. 
+Tenant level rules are able to target system level plugins. 
+For example, you can configure plugin that sends notifications on system level. 
+You will need to specify your email account in the plugin configuration.
+However, all tenant level rules may use this plugin to send email notifications.</p>
+
+<h2 id="lifecycle">Lifecycle</h2>
+
+<p>Thingsboard Rules and Plugins components have same lifecycle events:</p>
+
+<ul>
+  <li>Created - component is provisioned, but is not processing any messages yet.</li>
+  <li>Activated - component is able to receive and process new device messages.</li>
+  <li>Suspended - component is not able to receive new device messages.</li>
+  <li>Deleted - component is stopped and deleted from database.</li>
+</ul>
+
+<h2 id="rules">Rules</h2>
+
+<p>Thingsboard Rule consists of three main components: Filters, Processor and Action.
+Depending on implementation, each component may require certain configuration before it can be used.
+In order to configure Rule you need to specify at least one filter and one action. 
+Rule Processors are optional.</p>
+
+<p>Let’s review role of each component.</p>
+
+<h5 id="filters">Filters</h5>
+
+<p>Rule Filter is responsible for filtering incoming messages. 
+You can treat it as a boolean function that has device attributes and message as a parameters:</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>   <span class="kt">boolean</span> <span class="nf">filter</span><span class="o">(</span><span class="n">DeviceAttributes</span> <span class="n">attributes</span><span class="o">,</span> <span class="n">FromDeviceMessage</span> <span class="n">message</span><span class="o">)</span> 
+</code></pre>
+</div>
+<p>Thingsboard provide following Rule filters out of the box:</p>
+
+<ul>
+  <li><a href="/docs/reference/filters/message-type-filter">Message Type Filter</a> - allows to filter incoming messages by type.</li>
+  <li><a href="/docs/reference/filters/device-attributes-filter">Device Attributes Filter</a> - allows to filter incoming messages based on current device attributes. 
+You can define filter using javascript. See filter documentation for more details.</li>
+  <li><a href="/docs/reference/filters/device-telemetry-filter">Device Telemetry Filter</a> - allows to filter incoming “Post Telemetry” message based on it’s values. 
+You can define filter using javascript. See filter documentation for more details.</li>
+  <li><a href="/docs/reference/filters/method-name-filter">Method Name Filter</a> - allows to filter incoming “RPC Request” message based on it’s method name.</li>
+</ul>
+
+<p>Single Rule may contain multiple filters. Usually one can filter based on message type and device attributes first 
+and then apply additional filtering based on content of the message.</p>
+
+<h5 id="processors">Processors</h5>
+
+<p>Rule Processor is responsible for processing incoming message and adding metadata to it.
+You can treat it as a function that has device attributes and message as a parameters and return certain metadata:</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>   <span class="n">MessageMetadata</span> <span class="nf">process</span><span class="o">(</span><span class="n">DeviceAttributes</span> <span class="n">attributes</span><span class="o">,</span> <span class="n">FromDeviceMessage</span> <span class="n">message</span><span class="o">)</span> 
+</code></pre>
+</div>
+
+<p>Thingsboard provide following Rule processors out of the box:</p>
+
+<ul>
+  <li><a href="/docs/reference/processors/alarm-deduplication-processor">Alarm Deduplication Processor</a> generates and persists unique alarms. 
+  Populates certain metadata tag to identify new alarms. See filter documentation for more details.</li>
+</ul>
+
+<h5 id="actions">Actions</h5>
+
+<p>Plugin Action is responsible for converting incoming message and metadata to new custom message that is forwarded to certain plugin.
+Action may be <strong>oneway</strong> or <strong>twoway</strong>. 
+In case of <em>oneway</em> action, rule is not expecting reply from plugin. 
+In case of <em>twoway</em> action, rule is expecting reply from plugin with certain timeout.
+If there is not reply within configured timeout, rule will report error to the device.</p>
+
+<p>For example, storing data into internal storage is <em>twoway</em> action, however, pushing data into external system may be <em>oneway</em> (optional).</p>
+
+<p>Although particular Action is part of corresponding Rule, you can also treat it as part of corresponding Plugin.
+So, you can treat action as a following interface between Rule and Plugin:</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>   <span class="n">RuleToPluginMessage</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">convert</span><span class="o">(</span><span class="n">DeviceAttributes</span> <span class="n">attributes</span><span class="o">,</span> <span class="n">FromDeviceMessage</span> <span class="n">message</span><span class="o">,</span> <span class="n">MessageMetadata</span> <span class="n">metadata</span><span class="o">)</span>
+   
+   <span class="n">ToDeviceMsg</span> <span class="nf">convert</span><span class="o">(</span><span class="n">PluginToRuleMsg</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">message</span><span class="o">)</span>
+   
+   <span class="kt">boolean</span> <span class="nf">isOneWay</span><span class="o">()</span>
+</code></pre>
+</div>
+
+<p>Thingsboard provide following Actions out of the box:</p>
+
+<ul>
+  <li><a href="/docs/reference/actions/telemetry-plugin-action">Telemetry Plugin Action</a> - system action that push data to system <a href="/docs/reference/plugins/telemetry/">Telemetry Plugin</a>.</li>
+  <li><a href="/docs/reference/actions/send-mail-action">Send Mail Action</a> - action that allows to send emails. You can specify templates for email body and recipients. 
+  During templates evaluation you may substitute device attributes and data from incoming messages. See action documentation for more details.</li>
+  <li><a href="/docs/reference/actions/kafka-plugin-action">Kafka Plugin Action</a> - action that allows to push messages to kafka topics. You can specify template for message body. 
+  During templates evaluation you may substitute device attributes and data from incoming messages. See action documentation for more details.</li>
+  <li><a href="/docs/reference/actions/rabbitmq-plugin-action">RabbitMQ Plugin Action</a> - similar to Kafka action but pushes data to RabbitMQ.</li>
+  <li><a href="/docs/reference/actions/rest-api-call-plugin-action">REST API Call Plugin Action</a> - similar to Kafka action but executes a REST API call.</li>
+  <li><a href="/docs/reference/actions/rpc-plugin-action">RPC Plugin Action</a> - forwards device RPC call to corresponding plugin.</li>
+</ul>
+
+<h2 id="plugins">Plugins</h2>
+
+<p>Thingsboard Plugins allow you to configure and customize system behaviour. 
+Although plugins are able to process messages from Rules, they also provide APIs to integrate with your server-side applications.
+With Plugin you can:</p>
+
+<ul>
+  <li>process messages from devices</li>
+  <li>process REST API calls from server side applications</li>
+  <li>communicate with server-side applications using websockets.</li>
+  <li>communicate between instances of the same plugin in the Thingsboard cluster using asynchronous RPC calls.</li>
+  <li>persist and query events, telemetry data and device attributes.</li>
+</ul>
+
+<p><img src="/images/user-guide/plugin-api.svg" alt="image" /></p>
+
+<p>As we already discussed, Rules may communicate with Plugins using <a href="#actions">Actions</a>. Let’s review other Plugin APIs.</p>
+
+<h5 id="rest-api">REST API</h5>
+
+<p>Plugins are able to process REST API calls from authorized users - customers and system or tenant administrators. 
+This may be useful for server-side integrations. For example, System RPC Plugin allows to execute RPC calls to devices using REST API.</p>
+
+<h5 id="websocket-api">Websocket API</h5>
+
+<p>Plugins are able to handle websocket messages from authorized users - customers and system or tenant administrators. 
+This may be useful for integrations with server-side applications that want to receive real-time updates. 
+For example, System Telemetry Plugin allows to subscribe to device attributes and timeseries data changes using websockets.</p>
+
+<h5 id="clustering-api">Clustering API</h5>
+
+<p>When plugin is provisioned, Thingsboard creates an instance of the plugin actor on each Thingsboard server in the cluster.
+In order to implement complex use-cases, plugin instances may require a way to communicate between each other.</p>
+
+<p>For example, let’s assume that we have a three node cluster (nodes A, B and C). 
+Device may be connected via MQTT session to node A. 
+Customer users may open a Web UI to observe telemetry data in real time and load balancer will forward their browsers to different nodes (B and C in our case).
+Telemetry plugin need to keep track of websocket subscriptions for particular device in order to push update to customer’s browser.</p>
+
+<p><img src="/images/user-guide/plugin-rpc.svg" alt="image" /></p>
+
+<p>Thingsboard Clustering and Actor models are covered in Thingsboard Architecture.</p>
+
+<p><a href="/docs/reference/architecture" class="button">Thingsboard Architecture</a></p>
+
+<h5 id="implementations">Implementations</h5>
+
+<p>Thingsboard provide following Plugins out of the box:</p>
+
+<ul>
+  <li><a href="/docs/reference/plugins/telemetry">Telemetry Plugin</a> - system plugin that is responsible for processing various requests 
+  related to device attributes and telemetry.</li>
+  <li><a href="/docs/reference/plugins/rpc">RPC Plugin</a> - allows to execute RPC calls to devices using REST API. RPC call will be delivered to device using supported network protocols.</li>
+  <li><a href="/docs/reference/plugins/messaging">Device Messaging Plugin</a> - allows devices that are assigned to the same customer exchange events.</li>
+  <li><a href="/docs/reference/plugins/mail">Send Mail Plugin</a> - allows to send emails. You can specify mail server properties. See plugin documentation for more details.</li>
+  <li><a href="/docs/reference/plugins/kafka">Kafka Plugin</a> - allows to push telemetry messages to Apache Kafka. See plugin documentation for more details.</li>
+  <li><a href="/docs/reference/plugins/rabbitmq">RabbitMQ Plugin</a> - allows to push telemetry messages to RabbitMQ. See plugin documentation for more details.</li>
+  <li><a href="/docs/reference/plugins/rest">REST API Call Plugin</a> - allows to push telemetry messages to external servers using REST API. See plugin documentation for more details.</li>
+  <li><a href="/docs/reference/plugins/time">Time RPC Plugin</a> - allows to send RPC requests from device to get current server-side timestamp.</li>
+</ul>
+
+<h2 id="troubleshooting-and-statistics">Troubleshooting and statistics</h2>
+
+<p>Thingsboard keeps track of usage statistics, errors and lifecycle events for each rule and plugin.</p>
+
+<h5 id="statistics">Statistics</h5>
+
+<p>Thingsboard collect and periodically persist usage statistics to internal database.
+You can review this statistics via <a href="/docs/user-guide/ui/rules/">Web UI</a> or get it using <a href="/docs/reference/rest-api/">REST API</a>.
+Statistics contain amount of successfully processed messages and amount of errors during processing.</p>
+
+<h5 id="errors">Errors</h5>
+
+<p>Whenever exception or error occurs, Thingsboard persist it to internal database.
+You can review this errors via <a href="/docs/user-guide/ui/rules/">Web UI</a> or get it using <a href="/docs/reference/rest-api/">REST API</a>.
+In case of misconfiguration or critical issue with plugin, errors may happen quite frequently. 
+Persisting all errors may significantly reduce performance, so you can <a href="/docs/user-guide/install/config/">configure</a> how often errors are persisted.</p>
+
+<h5 id="lifecycle-events">Lifecycle events</h5>
+
+<p>Whenever plugin or rule <a href="#lifecycle">lifecycle event</a> happens, Thingsboard persist it to internal database.
+You can observe status of the lifecycle, stack trace in case of errors, event time and server address. 
+In case of misconfiguration, you can easily detect the root cause by browsing the error stack trace.</p>
+
+
+  </div>
+</section>
+
+<footer>
+	<main class="light-text">
+		<nav>
+			<a href="/docs/getting-started-guides/helloworld/">Get Started</a>
+			<a href="/docs/">Documentation</a>
+			<a href="/iot-use-cases/">Use cases</a>
+			<a href="https://blog.thingsboard.io/">Blog</a>
+			<a href="/docs/services/">Services</a>
+			<a href="/docs/contact-us/">Contact us</a>
+		</nav>
+		<div class="newsletterSubsContainer">
+			<form id="newsletter-form" method="post" onsubmit="return validateNewsletterForm(this)">
+				<fieldset>
+					<div class="newsletterInputs">
+						<p class="subsTitle">Sign up for Thingsboard IoT newsletter</p>
+						<input id="subsEmail" placeholder="Email" class="text-input" name="email" type="text" size="20" maxlength="80">
+						<input type="hidden" name="_next" value="/docs/newsletter-thanks/" />
+						<input type="text" name="_gotcha" style="display:none" />
+						<input class="button" value="Submit" type="submit">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="center">
+			<div class="social">
+				<div>
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+				</div>
+				<div>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+		</div>
+		<div id="miceType" class="center">&copy; 2017 The Thingsboard Authors</div>
+	</main>
+
+	<script type="text/javascript">
+
+		function validateNewsletterForm(form) {
+			var email = $('input[name=email]', form).val();
+
+			if (!validateValue('Email Address', email)) {
+				return false;
+			}
+
+			var emailExp = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+			if(email.match(emailExp)==null) {
+				window.alert("Entered Email Address is not valid.");
+				return false;
+			}
+			return true;
+		}
+
+		function validateValue(name, val) {
+			if (isEmpty(val)) {
+				window.alert("Please fill '" + name + "' field.");
+				return false;
+			}
+			return true;
+		}
+
+		function isEmpty(val) {
+			return val === undefined || val.trim().length == 0;
+		}
+
+	</script>
+
+	<script type="text/javascript">
+
+		var newsletterform =  document.getElementById('newsletter-form');
+		newsletterform.setAttribute('action', 'https://formspree.io/' + 'newsletter' + '@' + 'thingsboard' + '.' + 'io');
+
+	</script>
+
+</footer>
+
+
+
+<button class="flyout-button" onclick="tb.toggleToc()"></button>
+
+
+<style>
+  .cse .gsc-control-cse, .gsc-control-cse {
+    padding: 0;
+  }
+  .gsc-control-cse table, .gsc-control-cse-en table {
+    margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+    border-bottom: 0;
+  }
+</style>
+</body>
+</html>

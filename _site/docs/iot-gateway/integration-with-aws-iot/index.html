@@ -1,0 +1,616 @@
+
+
+<!Doctype html>
+<html id="docs" class="Thingsboard Documentation">
+
+
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- Begin Jekyll SEO tag v2.0.0 -->
+<title>Integration with AWS IoT - Thingsboard</title>
+<meta property="og:title" content="Integration with AWS IoT" />
+<meta name="description" content="Streaming AWS IoT data to Thingsboard for advanced IoT data visualization" />
+<meta property="og:description" content="Streaming AWS IoT data to Thingsboard for advanced IoT data visualization" />
+<link rel="canonical" href="http://localhost:4000/docs/iot-gateway/integration-with-aws-iot/" />
+<meta property="og:url" content="http://localhost:4000/docs/iot-gateway/integration-with-aws-iot/" />
+<meta property="og:site_name" content="Thingsboard" />
+<meta property="og:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@thingsboard" />
+<meta name="twitter:creator" content="@thingsboard" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "headline": "Integration with AWS IoT",
+    "image": "http://localhost:4000/images/thingsboard_logo.png",
+    "description": "Streaming AWS IoT data to Thingsboard for advanced IoT data visualization",
+    "logo": "http://localhost:4000/images/thingsboard_logo.png",
+    "url": "http://localhost:4000/docs/iot-gateway/integration-with-aws-iot/"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+	
+	
+	<meta name="twitter:description" content="Streaming AWS IoT data to Thingsboard for advanced IoT data visualization"/>
+	
+	
+	<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="/css/styles.css">
+	<script type="text/javascript">
+		/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+		!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+		/*! onloadCSS. (onload callback for loadCSS) [c]2017 Filament Group, Inc. MIT License */
+		function onloadCSS(a,b){function c(){!d&&b&&(d=!0,b.call(a))}var d;a.addEventListener&&a.addEventListener("load",c),a.attachEvent&&a.attachEvent("onload",c),"isApplicationInstalled"in navigator&&"onloadcssdefined"in a&&a.onloadcssdefined(c)}
+	</script>
+	<script type="text/javascript">
+
+		function jqueryDefer(method) {
+			if (window.jQuery) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryDefer(method)
+				}, 50);
+			}
+		}
+
+		function jqueryUiDefer(method) {
+			if (window.jQuery && window.jQuery.ui) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryUiDefer(method)
+				}, 50);
+			}
+		}
+
+		function loadScript(src, callback)
+		{
+			var s, r, t;
+			r = false;
+			s = document.createElement('script');
+			s.type = 'text/javascript';
+			s.src = src;
+			s.onload = s.onreadystatechange = function() {
+				if ( !r && (!this.readyState || this.readyState == 'complete') )
+				{
+					r = true;
+					if (callback) {
+						callback();
+					}
+				}
+			};
+			t = document.getElementsByTagName('script')[0];
+			t.parentNode.insertBefore(s, t);
+		}
+
+		function loadCssAsync(src, callback) {
+			var stylesheet = loadCSS( src );
+			if (callback) {
+				onloadCSS(stylesheet, callback);
+			}
+		}
+
+		function loadNextScript(index, scriptsList, completeCallback) {
+			if (index < scriptsList.length) {
+				var script = scriptsList[index];
+				if (script.type === 'script') {
+					loadScript(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				} else if (script.type === 'css') {
+					loadCssAsync(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				}
+			} else if (completeCallback) {
+				completeCallback();
+			}
+		}
+
+		var initialScriptsList = [
+			{src: '/js/jquery-2.2.0.min.js', type: 'script'},
+			{src: '/css/jquery-ui.min.css', type: 'css'},
+			{src: '/js/jquery-ui.min.js', type: 'script'},
+			{src: '/js/script.js', type: 'script'},
+			{src: '/css/sweetalert.css', type: 'css'},
+			{src: '/js/sweetalert.min.js', type: 'script'}
+		];
+
+		loadNextScript(0, initialScriptsList);
+
+	</script>
+	<script type="text/javascript">
+		function _gaLt(event) {
+			/* If GA is blocked or not loaded, or not main|middle|touch click then don't track */
+			if (!ga.hasOwnProperty("loaded") || ga.loaded != true || (event.which != 1 && event.which != 2)) {
+				return;
+			}
+			var el = event.srcElement || event.target;
+
+			while (el && (typeof el.tagName == 'undefined' || el.tagName.toLowerCase() != 'a' || !el.href)) {
+				el = el.parentNode;
+			}
+			if (el && el.href) {
+				var link = el.href;
+				if ((link.indexOf(location.host) == -1 || link.indexOf('.' + location.host) > 0) && !link.match(/^javascript\:/i)) {
+					var target = (el.target && !el.target.match(/^_(self|parent|top)$/i)) ? el.target : false;
+					if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
+						target = "_blank";
+					}
+
+					var hbrun = false; // tracker has not yet run
+					var hitBack = function() {
+						if (hbrun) return;
+						hbrun = true;
+						window.location.href = link;
+					};
+
+					if (target) {
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search
+						);
+					} else {
+						event.preventDefault ? event.preventDefault() : event.returnValue = !1;
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search, {
+									"hitCallback": hitBack
+								}
+						);
+
+						setTimeout(hitBack, 1000);
+					}
+				}
+			}
+		}
+
+		var _w = window;
+		var _gaLtEvt = ("ontouchstart" in _w) ? "click" : "mousedown";
+		_w.addEventListener ? _w.addEventListener("load", function() {document.body.addEventListener(_gaLtEvt, _gaLt, !1)}, !1)
+				: _w.attachEvent && _w.attachEvent("onload", function() {document.body.attachEvent("on" + _gaLtEvt, _gaLt)});
+	</script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-88383331-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+</head>
+<body>
+<div id="cellophane" onclick="tb.toggleMenu()"></div>
+<header>
+	<a href="/" class="logo"></a>
+	<div id="githubButtonContainer">
+		<iframe id="gh-btn-frame" src="https://ghbtns.com/github-btn.html?user=thingsboard&repo=thingsboard&type=star&count=true&size=large"
+				frameborder="0"
+				scrolling="0" width="130px" height="30px"></iframe>
+	</div>
+	<div class="nav-buttons" data-auto-burger="primary">
+		<a href="/docs/" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a>
+		<a href="/iot-use-cases/" class="button" id="useCases" data-auto-burger-exclude>Use cases</a>
+		<a href="/docs/getting-started-guides/helloworld/" class="button" id="gettingStarted" data-auto-burger-exclude>Getting started</a>
+		<a target="_blank" href="https://demo.thingsboard.io/signup" class="button" id="liveDemo" data-auto-burger-exclude>Live demo</a>
+		<button id="hamburger" onclick="tb.toggleMenu()" data-auto-burger-exclude><div></div></button>
+	</div>
+
+	<nav id="mainNav">
+		<main id="headNav" data-auto-burger="primary">
+			<div class="nav-box">
+				<h3><a href="/docs/getting-started-guides/helloworld/">Get Started</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/">Documentation</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/iot-use-cases/">Use cases</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="http://blog.thingsboard.io/">Blog</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/services/">Services</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/contact-us/">Contact us</a></h3>
+			</div>
+		</main>
+		<main data-auto-burger="primary">
+			<div class="center">
+				<div class="social">
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>Twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+			<div class="clear" style="clear: both"></div>
+		</main>
+	</nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Thingsboard Documentation</h1>
+  <h5>Documentation for using Thingsboard IoT Platform.</h5>
+  <div id="vendorStrip" class="light-text">
+    <div id="docsList">
+        <ul>
+          <li><a href="/docs/" class="YAH">DOCS HOME</a></li>
+          <li><a href="/docs/api/" >API</a></li>
+          <li><a href="/docs/iot-gateway/" >IOT GATEWAY</a></li>
+          <li><a href="/docs/reference/" >REFERENCE</a></li>
+          <li><a href="/docs/samples/" >SAMPLES</a></li>
+          <li><a href="/iot-use-cases/" >USE CASES</a></li>
+          <li><a href="/docs/iot-video-tutorials/" >VIDEO TUTORIALS</a></li>
+          <li><a href="/docs/faq/" >FAQ</a></li>
+          <li><a href="/docs/services/" >SERVICES</a></li>
+          <li><a href="/docs/contact-us/" >CONTACT US</a></li>
+        </ul>
+    </div>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)">
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section id="encyclopedia">
+  
+  <div id="docsToc" >
+        <div class="pi-accordion">
+        
+    <a class="item" data-title="Thingsboard Documentation" href="/docs/"></a>
+    <a class="item" data-title="What is Thingsboard?" href="/docs/getting-started-guides/what-is-thingsboard/"></a>
+    <a class="item" data-title="Getting Started" href="/docs/getting-started-guides/helloworld/"></a>
+<div class="item" data-title="Installation">
+  <div class="container">
+    <a class="item" data-title="Installation options" href="/docs/user-guide/install/installation-options/"></a>
+    <a class="item" data-title="Installing Thingsboard on Windows" href="/docs/user-guide/install/windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on Linux (Ubuntu & CentOS)" href="/docs/user-guide/install/linux/"></a>
+    <a class="item" data-title="Installing Thingsboard on Raspberry Pi 3" href="/docs/user-guide/install/rpi/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Linux or Mac OS)" href="/docs/user-guide/install/docker/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Windows)" href="/docs/user-guide/install/docker-windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on AWS EC2" href="/docs/user-guide/install/aws/"></a>
+    <a class="item" data-title="Building from sources" href="/docs/user-guide/install/building-from-source/"></a>
+    <a class="item" data-title="Upgrade instructions" href="/docs/user-guide/install/upgrade-instructions/"></a>
+    <a class="item" data-title="Configuration" href="/docs/user-guide/install/config/"></a>
+    <a class="item" data-title="Cluster setup" href="/docs/user-guide/install/cluster-setup/"></a>
+  </div>
+</div>
+<div class="item" data-title="Features">
+  <div class="container">
+    <a class="item" data-title="Working with device attributes" href="/docs/user-guide/attributes/"></a>
+    <a class="item" data-title="Working with telemetry data" href="/docs/user-guide/telemetry/"></a>
+    <a class="item" data-title="Using RPC capabilities" href="/docs/user-guide/rpc/"></a>
+    <a class="item" data-title="Rule engine" href="/docs/user-guide/rule-engine/"></a>
+    <a class="item" data-title="Data visualization" href="/docs/user-guide/visualization/"></a>
+  </div>
+</div>
+<div class="item" data-title="Integrations Cookbook">
+  <div class="container">
+    <a class="item" data-title="Persist and visualize AWS IoT data" href="/docs/iot-gateway/integration-with-aws-iot/"></a>
+    <a class="item" data-title="IoT data analytics using Apache Spark" href="/docs/samples/analytics/spark-integration-with-thingsboard/"></a>
+    <a class="item" data-title="SigFox IoT data collection and visualization" href="/docs/iot-gateway/sigfox-iot-data-visualization/"></a>
+    <a class="item" data-title="Persist and visualize IBM Watson IoT data" href="/docs/iot-gateway/integration-with-ibm-watson-iot/"></a>
+  </div>
+</div>
+<div class="item" data-title="Security">
+  <div class="container">
+    <a class="item" data-title="MQTT over SSL" href="/docs/user-guide/mqtt-over-ssl/"></a>
+    <a class="item" data-title="Device authentication options" href="/docs/user-guide/device-credentials/"></a>
+    <a class="item" data-title="Access Token based authentication" href="/docs/user-guide/access-token/"></a>
+    <a class="item" data-title="X.509 Certificate based authentication" href="/docs/user-guide/certificates/"></a>
+  </div>
+</div>
+<div class="item" data-title="Administration UI">
+  <div class="container">
+    <a class="item" data-title="Tenants" href="/docs/user-guide/ui/tenants/"></a>
+    <a class="item" data-title="Customers" href="/docs/user-guide/ui/customers/"></a>
+    <a class="item" data-title="Users" href="/docs/user-guide/ui/users/"></a>
+    <a class="item" data-title="Devices" href="/docs/user-guide/ui/devices/"></a>
+    <a class="item" data-title="Rules" href="/docs/user-guide/ui/rules/"></a>
+    <a class="item" data-title="Plugins" href="/docs/user-guide/ui/plugins/"></a>
+    <a class="item" data-title="Widgets Library" href="/docs/user-guide/ui/widget-library/"></a>
+    <a class="item" data-title="Dashboards" href="/docs/user-guide/ui/dashboards/"></a>
+    <a class="item" data-title="Mail Settings" href="/docs/user-guide/ui/mail-settings/"></a>
+  </div>
+</div>
+    <a class="item" data-title="Troubleshooting" href="/docs/user-guide/troubleshooting/"></a>
+<div class="item" data-title="Contribution Guide">
+  <div class="container">
+    <a class="item" data-title="How to contribute" href="/docs/user-guide/contribution/how-to-contribute/"></a>
+    <a class="item" data-title="Extensions (Plugins and Actions) development" href="/docs/user-guide/contribution/extensions-development/"></a>
+  </div>
+</div>
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="tb.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+  
+  <div id="docsContent" class="">
+    <h1>Integration with AWS IoT</h1>
+    <ul id="markdown-toc">
+  <li><a href="#overview" id="markdown-toc-overview">Overview</a></li>
+  <li><a href="#prerequisites" id="markdown-toc-prerequisites">Prerequisites</a></li>
+  <li><a href="#aws-iot-configuration-steps" id="markdown-toc-aws-iot-configuration-steps">AWS IoT configuration steps</a>    <ul>
+      <li><a href="#step-1-custom-endpoint-url-of-the-aws-iot" id="markdown-toc-step-1-custom-endpoint-url-of-the-aws-iot">Step 1. Custom Endpoint URL of the AWS IoT</a></li>
+      <li><a href="#step-2-aws-iot-certificates" id="markdown-toc-step-2-aws-iot-certificates">Step 2. AWS IoT certificates</a></li>
+      <li><a href="#step-3-aws-iot-policy-configuration" id="markdown-toc-step-3-aws-iot-policy-configuration">Step 3. AWS IoT policy configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="#thingsboard-iot-gateway-configuration-steps" id="markdown-toc-thingsboard-iot-gateway-configuration-steps">Thingsboard IoT Gateway configuration steps</a>    <ul>
+      <li><a href="#step-4-enable-mqtt-extension" id="markdown-toc-step-4-enable-mqtt-extension">Step 4. Enable MQTT extension</a></li>
+      <li><a href="#step-5-mqtt-extension-configuration" id="markdown-toc-step-5-mqtt-extension-configuration">Step 5. MQTT extension configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="#dry-run" id="markdown-toc-dry-run">Dry Run</a></li>
+</ul>
+
+<p>While some of the AWS IoT and Thingsboard features overlap, you are able to integrate them and leverage best features from both.
+For example, you can collect data using AWS IoT and then push it to Thingsboard for storage and data visualization on customizable end-user dashboards.</p>
+
+<p>There are two options how one can integrate AWS IoT and Thingsboard.</p>
+
+<p><strong>First option</strong> is to write custom <a href="http://docs.aws.amazon.com/lambda/latest/dg/lambda-introduction-function.html">lambda function</a> based on Thingsboard <a href="/docs/reference/gateway-mqtt-api/">APIs</a>. 
+This is quite simple solution, however, it allows only to push data to Thingsboard and does not provide ability to control your devices using Thingsboard widgets.</p>
+
+<p><strong>Second option</strong> is to use Thingsboard <strong><a href="/docs/iot-gateway/what-is-iot-gateway/">IoT Gateway</a></strong>, which is an open-source solution that allows you to integrate devices connected to legacy and third-party systems with Thingsboard.
+We recommend to use second option and will cover basic configuration steps below.</p>
+
+<h3 id="overview">Overview</h3>
+
+<p><img src="/images/gateway/aws-iot/aws-iot-gateway-integration.svg" alt="image" /></p>
+
+<p>Thingsboard IoT Gateway is a light-weight service that connects to both AWS IoT MQTT broker and Thingsboard MQTT server and acts as aproxy or API bridge.
+You are able to configure the Gateway to subscribe to certain AWS IoT topics, convert incoming data to unified format and push it to Thingsboard.
+This article provides basic configuration steps. You can refer to advanced configuration topic for <a href="/docs/iot-gateway/mqtt/">more details</a>.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<p>We assume you have already <a href="/docs/iot-gateway/installation/"><strong>installed</strong></a> Thingsboard IoT Gateway and <a href="/docs/iot-gateway/getting-started/#step-3-gateway-provisioning"><strong>provisioned</strong></a> it within your local or demo Thingsboard instance.</p>
+
+<h3 id="aws-iot-configuration-steps">AWS IoT configuration steps</h3>
+
+<p>Before configuration of the Thingsboard <strong>IoT Gateway</strong> we must prepare certificates, policies and copy Rest URL from the <strong>AWS IoT</strong> console.</p>
+
+<h4 id="step-1-custom-endpoint-url-of-the-aws-iot">Step 1. Custom Endpoint URL of the AWS IoT</h4>
+
+<p>Get <strong>Custom Endpoint URL</strong> of the <strong>AWS IoT</strong> that we will use later in this guide. This URL is located in the AWS IoT <strong>Settings</strong> page:</p>
+
+<p><img src="/images/gateway/aws-iot/mqtt-url.png" alt="image" /></p>
+
+<p>We will refer later to this URL as <strong>“$MQTT_ENDPOINT”</strong>.</p>
+
+<h4 id="step-2-aws-iot-certificates">Step 2. AWS IoT certificates</h4>
+
+<p>Download certificates from <strong>AWS IoT</strong> and copy them beside Thingsboard <strong>IoT Gateway</strong> in the configuration folder:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>Windows: YOUR_INSTALL_DIR/conf
+Linux: /etc/tb-gateway/conf
+</code></pre>
+</div>
+
+<p>You can put it inside <em>conf</em> folder or create new sub-folder <em>cert</em> for example.</p>
+
+<p><img src="/images/gateway/aws-iot/aws-certificate-creation.png" alt="image" /></p>
+
+<p>We need to copy private key (<strong>2f3b7147dd.private.key</strong> in the example), certificate (<strong>2f3b7147dd.cert.pem</strong> in the example) and root CA certificate that you are able to download from Symantec.</p>
+
+<p>Please copy these three PEM files to configuration folder of Thingsboard <strong>IoT Gateway</strong> as described above.</p>
+
+<p>Later we will refer to the path where private key PEM file is located as <strong>“$PRIVATE_KEY”</strong>, certificate as <strong>“$CERTIFICATE”</strong> and root CA as <strong>“$ROOT_CA_CERT”</strong></p>
+
+<h4 id="step-3-aws-iot-policy-configuration">Step 3. AWS IoT policy configuration</h4>
+
+<p>Configure security policy.</p>
+
+<p><img src="/images/gateway/aws-iot/aws-policy-config.png" alt="image" /></p>
+
+<p>In the example below we have allowed any IoT action and for any resources, but you definitely can restrict these values based on your security rules.</p>
+
+<h3 id="thingsboard-iot-gateway-configuration-steps">Thingsboard IoT Gateway configuration steps</h3>
+
+<h4 id="step-4-enable-mqtt-extension">Step 4. Enable MQTT extension</h4>
+
+<p>Navigate to the gateway configuration folder and edit <strong>tb-gateway.yml</strong> file. Please change <strong>mqtt.enabled</strong> property value to <strong>true</strong> to enable Gateway MQTT extension.</p>
+
+<h4 id="step-5-mqtt-extension-configuration">Step 5. MQTT extension configuration</h4>
+
+<p>Now it’s time to configure Thingsboard <strong>IoT Gateway</strong> to connect to your <strong>AWS IoT</strong> broker.</p>
+
+<p>Configuration of the brokers is located in <strong>mqtt-config.json</strong> file.</p>
+
+<p>You should update it using next values:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+</span><span class="nt">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$MQTT_ENDPOINT"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8883</span><span class="p">,</span><span class="w">
+</span><span class="nt">"ssl"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+</span><span class="nt">"retryInterval"</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="p">,</span><span class="w">
+</span><span class="nt">"credentials"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cert.PEM"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"caCert"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"$ROOT_CA_CERT"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"privateKey"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"$PRIVATE_KEY"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"cert"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"$CERTIFICATE"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+ </span><span class="err">...</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>here is sample with real values:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+</span><span class="nt">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a2ljyhf3dvidme.iot.us-east-1.amazonaws.com"</span><span class="p">,</span><span class="w">
+</span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8883</span><span class="p">,</span><span class="w">
+</span><span class="nt">"ssl"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+</span><span class="nt">"retryInterval"</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="p">,</span><span class="w">
+</span><span class="nt">"credentials"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cert.PEM"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"caCert"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"/etc/tb-gateway/conf/cert/rootCA.pem"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"privateKey"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"/etc/tb-gateway/conf/cert/privateKey.pem"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"cert"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"/etc/tb-gateway/conf/cert/cert.pem"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+ </span><span class="err">...</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Configuration of the broker is done. Now you are ready to start Thingsboard <strong>IoT Gateway</strong> and publish messages to <strong>AWS IoT</strong> topics that will be consumed by Thingsboard <strong>IoT Gateway</strong> and republished to <strong>Thingsboard</strong> instance.</p>
+
+<h3 id="dry-run">Dry Run</h3>
+
+<p>Consider that we have next default configuration of the mapping:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"topicFilter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sensor/+/temperature"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"converter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"json"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"filterExpression"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"deviceNameTopicExpression"</span><span class="p">:</span><span class="w"> </span><span class="s2">"(?&lt;=sensor\/)(.*?)(?=\/temperature)"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"timeseries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"double"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"temperature"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${$.value}"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>To check that everything is configured correctly you are able to use <strong>mosquitto_pub</strong> tool that is able to publish messages to <strong>AWS IoT</strong>.</p>
+
+<p>Here is a sample of the command that will publish temperature readings to AWS IoT topic <strong>sensor/SN-001/temperature</strong>. 
+Thingsboard <strong>IoT Gateway</strong> will receive this values, create or update device <strong>SN-001</strong> inside <strong>Thingsboard</strong>, and publish telemetry <em>‘temperature’</em> using value <strong>73.8</strong></p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>mosquitto_pub --cert ./cert/cert.pem --key ./cert/privateKey.pem --cafile ./cert/rootCA.pem -h a2ljyhf3dvipme.iot.us-east-1.amazonaws.com -p 8883 -t sensor/SN-001/temperature -m <span class="s1">'{"value":73.8}'</span>
+</code></pre>
+</div>
+
+<p>To validate that data arrived to Thingsboard, please open the administration UI and navigate to <strong>Devices-&gt;SN-001-&gt;Latest Telemetry</strong>. See screen-shoot attached.</p>
+
+<p><img src="/images/gateway/aws-iot/dry-run.png" alt="image" /></p>
+
+  </div>
+</section>
+
+<footer>
+	<main class="light-text">
+		<nav>
+			<a href="/docs/getting-started-guides/helloworld/">Get Started</a>
+			<a href="/docs/">Documentation</a>
+			<a href="/iot-use-cases/">Use cases</a>
+			<a href="https://blog.thingsboard.io/">Blog</a>
+			<a href="/docs/services/">Services</a>
+			<a href="/docs/contact-us/">Contact us</a>
+		</nav>
+		<div class="newsletterSubsContainer">
+			<form id="newsletter-form" method="post" onsubmit="return validateNewsletterForm(this)">
+				<fieldset>
+					<div class="newsletterInputs">
+						<p class="subsTitle">Sign up for Thingsboard IoT newsletter</p>
+						<input id="subsEmail" placeholder="Email" class="text-input" name="email" type="text" size="20" maxlength="80">
+						<input type="hidden" name="_next" value="/docs/newsletter-thanks/" />
+						<input type="text" name="_gotcha" style="display:none" />
+						<input class="button" value="Submit" type="submit">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="center">
+			<div class="social">
+				<div>
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+				</div>
+				<div>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+		</div>
+		<div id="miceType" class="center">&copy; 2017 The Thingsboard Authors</div>
+	</main>
+
+	<script type="text/javascript">
+
+		function validateNewsletterForm(form) {
+			var email = $('input[name=email]', form).val();
+
+			if (!validateValue('Email Address', email)) {
+				return false;
+			}
+
+			var emailExp = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+			if(email.match(emailExp)==null) {
+				window.alert("Entered Email Address is not valid.");
+				return false;
+			}
+			return true;
+		}
+
+		function validateValue(name, val) {
+			if (isEmpty(val)) {
+				window.alert("Please fill '" + name + "' field.");
+				return false;
+			}
+			return true;
+		}
+
+		function isEmpty(val) {
+			return val === undefined || val.trim().length == 0;
+		}
+
+	</script>
+
+	<script type="text/javascript">
+
+		var newsletterform =  document.getElementById('newsletter-form');
+		newsletterform.setAttribute('action', 'https://formspree.io/' + 'newsletter' + '@' + 'thingsboard' + '.' + 'io');
+
+	</script>
+
+</footer>
+
+
+
+<button class="flyout-button" onclick="tb.toggleToc()"></button>
+
+
+<style>
+  .cse .gsc-control-cse, .gsc-control-cse {
+    padding: 0;
+  }
+  .gsc-control-cse table, .gsc-control-cse-en table {
+    margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+    border-bottom: 0;
+  }
+</style>
+</body>
+</html>

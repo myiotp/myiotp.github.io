@@ -1,0 +1,913 @@
+
+
+<!Doctype html>
+<html id="docs" class="Thingsboard Documentation">
+
+
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- Begin Jekyll SEO tag v2.0.0 -->
+<title>Getting Started - Thingsboard</title>
+<meta property="og:title" content="Getting Started" />
+<meta name="description" content="Getting started with Thingsboard open-source IoT platform and simulated IoT devices" />
+<meta property="og:description" content="Getting started with Thingsboard open-source IoT platform and simulated IoT devices" />
+<link rel="canonical" href="http://localhost:4000/docs/getting-started-guides/helloworld/" />
+<meta property="og:url" content="http://localhost:4000/docs/getting-started-guides/helloworld/" />
+<meta property="og:site_name" content="Thingsboard" />
+<meta property="og:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@thingsboard" />
+<meta name="twitter:creator" content="@thingsboard" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "headline": "Getting Started",
+    "image": "http://localhost:4000/images/thingsboard_logo.png",
+    "description": "Getting started with Thingsboard open-source IoT platform and simulated IoT devices",
+    "logo": "http://localhost:4000/images/thingsboard_logo.png",
+    "url": "http://localhost:4000/docs/getting-started-guides/helloworld/"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+	
+	
+	<meta name="twitter:description" content="Getting started with Thingsboard open-source IoT platform and simulated IoT devices"/>
+	
+	
+	<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="/css/styles.css">
+	<script type="text/javascript">
+		/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+		!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+		/*! onloadCSS. (onload callback for loadCSS) [c]2017 Filament Group, Inc. MIT License */
+		function onloadCSS(a,b){function c(){!d&&b&&(d=!0,b.call(a))}var d;a.addEventListener&&a.addEventListener("load",c),a.attachEvent&&a.attachEvent("onload",c),"isApplicationInstalled"in navigator&&"onloadcssdefined"in a&&a.onloadcssdefined(c)}
+	</script>
+	<script type="text/javascript">
+
+		function jqueryDefer(method) {
+			if (window.jQuery) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryDefer(method)
+				}, 50);
+			}
+		}
+
+		function jqueryUiDefer(method) {
+			if (window.jQuery && window.jQuery.ui) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryUiDefer(method)
+				}, 50);
+			}
+		}
+
+		function loadScript(src, callback)
+		{
+			var s, r, t;
+			r = false;
+			s = document.createElement('script');
+			s.type = 'text/javascript';
+			s.src = src;
+			s.onload = s.onreadystatechange = function() {
+				if ( !r && (!this.readyState || this.readyState == 'complete') )
+				{
+					r = true;
+					if (callback) {
+						callback();
+					}
+				}
+			};
+			t = document.getElementsByTagName('script')[0];
+			t.parentNode.insertBefore(s, t);
+		}
+
+		function loadCssAsync(src, callback) {
+			var stylesheet = loadCSS( src );
+			if (callback) {
+				onloadCSS(stylesheet, callback);
+			}
+		}
+
+		function loadNextScript(index, scriptsList, completeCallback) {
+			if (index < scriptsList.length) {
+				var script = scriptsList[index];
+				if (script.type === 'script') {
+					loadScript(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				} else if (script.type === 'css') {
+					loadCssAsync(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				}
+			} else if (completeCallback) {
+				completeCallback();
+			}
+		}
+
+		var initialScriptsList = [
+			{src: '/js/jquery-2.2.0.min.js', type: 'script'},
+			{src: '/css/jquery-ui.min.css', type: 'css'},
+			{src: '/js/jquery-ui.min.js', type: 'script'},
+			{src: '/js/script.js', type: 'script'},
+			{src: '/css/sweetalert.css', type: 'css'},
+			{src: '/js/sweetalert.min.js', type: 'script'}
+		];
+
+		loadNextScript(0, initialScriptsList);
+
+	</script>
+	<script type="text/javascript">
+		function _gaLt(event) {
+			/* If GA is blocked or not loaded, or not main|middle|touch click then don't track */
+			if (!ga.hasOwnProperty("loaded") || ga.loaded != true || (event.which != 1 && event.which != 2)) {
+				return;
+			}
+			var el = event.srcElement || event.target;
+
+			while (el && (typeof el.tagName == 'undefined' || el.tagName.toLowerCase() != 'a' || !el.href)) {
+				el = el.parentNode;
+			}
+			if (el && el.href) {
+				var link = el.href;
+				if ((link.indexOf(location.host) == -1 || link.indexOf('.' + location.host) > 0) && !link.match(/^javascript\:/i)) {
+					var target = (el.target && !el.target.match(/^_(self|parent|top)$/i)) ? el.target : false;
+					if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
+						target = "_blank";
+					}
+
+					var hbrun = false; // tracker has not yet run
+					var hitBack = function() {
+						if (hbrun) return;
+						hbrun = true;
+						window.location.href = link;
+					};
+
+					if (target) {
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search
+						);
+					} else {
+						event.preventDefault ? event.preventDefault() : event.returnValue = !1;
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search, {
+									"hitCallback": hitBack
+								}
+						);
+
+						setTimeout(hitBack, 1000);
+					}
+				}
+			}
+		}
+
+		var _w = window;
+		var _gaLtEvt = ("ontouchstart" in _w) ? "click" : "mousedown";
+		_w.addEventListener ? _w.addEventListener("load", function() {document.body.addEventListener(_gaLtEvt, _gaLt, !1)}, !1)
+				: _w.attachEvent && _w.attachEvent("onload", function() {document.body.attachEvent("on" + _gaLtEvt, _gaLt)});
+	</script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-88383331-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+</head>
+<body>
+<div id="cellophane" onclick="tb.toggleMenu()"></div>
+<header>
+	<a href="/" class="logo"></a>
+	<div id="githubButtonContainer">
+		<iframe id="gh-btn-frame" src="https://ghbtns.com/github-btn.html?user=thingsboard&repo=thingsboard&type=star&count=true&size=large"
+				frameborder="0"
+				scrolling="0" width="130px" height="30px"></iframe>
+	</div>
+	<div class="nav-buttons" data-auto-burger="primary">
+		<a href="/docs/" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a>
+		<a href="/iot-use-cases/" class="button" id="useCases" data-auto-burger-exclude>Use cases</a>
+		<a href="/docs/getting-started-guides/helloworld/" class="button" id="gettingStarted" data-auto-burger-exclude>Getting started</a>
+		<a target="_blank" href="https://demo.thingsboard.io/signup" class="button" id="liveDemo" data-auto-burger-exclude>Live demo</a>
+		<button id="hamburger" onclick="tb.toggleMenu()" data-auto-burger-exclude><div></div></button>
+	</div>
+
+	<nav id="mainNav">
+		<main id="headNav" data-auto-burger="primary">
+			<div class="nav-box">
+				<h3><a href="/docs/getting-started-guides/helloworld/">Get Started</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/">Documentation</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/iot-use-cases/">Use cases</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="http://blog.thingsboard.io/">Blog</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/services/">Services</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/contact-us/">Contact us</a></h3>
+			</div>
+		</main>
+		<main data-auto-burger="primary">
+			<div class="center">
+				<div class="social">
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>Twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+			<div class="clear" style="clear: both"></div>
+		</main>
+	</nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Thingsboard Documentation</h1>
+  <h5>Documentation for using Thingsboard IoT Platform.</h5>
+  <div id="vendorStrip" class="light-text">
+    <div id="docsList">
+        <ul>
+          <li><a href="/docs/" class="YAH">DOCS HOME</a></li>
+          <li><a href="/docs/api/" >API</a></li>
+          <li><a href="/docs/iot-gateway/" >IOT GATEWAY</a></li>
+          <li><a href="/docs/reference/" >REFERENCE</a></li>
+          <li><a href="/docs/samples/" >SAMPLES</a></li>
+          <li><a href="/iot-use-cases/" >USE CASES</a></li>
+          <li><a href="/docs/iot-video-tutorials/" >VIDEO TUTORIALS</a></li>
+          <li><a href="/docs/faq/" >FAQ</a></li>
+          <li><a href="/docs/services/" >SERVICES</a></li>
+          <li><a href="/docs/contact-us/" >CONTACT US</a></li>
+        </ul>
+    </div>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)">
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section id="encyclopedia">
+  
+  <div id="docsToc" >
+        <div class="pi-accordion">
+        
+    <a class="item" data-title="Thingsboard Documentation" href="/docs/"></a>
+    <a class="item" data-title="What is Thingsboard?" href="/docs/getting-started-guides/what-is-thingsboard/"></a>
+    <a class="item" data-title="Getting Started" href="/docs/getting-started-guides/helloworld/"></a>
+<div class="item" data-title="Installation">
+  <div class="container">
+    <a class="item" data-title="Installation options" href="/docs/user-guide/install/installation-options/"></a>
+    <a class="item" data-title="Installing Thingsboard on Windows" href="/docs/user-guide/install/windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on Linux (Ubuntu & CentOS)" href="/docs/user-guide/install/linux/"></a>
+    <a class="item" data-title="Installing Thingsboard on Raspberry Pi 3" href="/docs/user-guide/install/rpi/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Linux or Mac OS)" href="/docs/user-guide/install/docker/"></a>
+    <a class="item" data-title="Installing Thingsboard using Docker (Windows)" href="/docs/user-guide/install/docker-windows/"></a>
+    <a class="item" data-title="Installing Thingsboard on AWS EC2" href="/docs/user-guide/install/aws/"></a>
+    <a class="item" data-title="Building from sources" href="/docs/user-guide/install/building-from-source/"></a>
+    <a class="item" data-title="Upgrade instructions" href="/docs/user-guide/install/upgrade-instructions/"></a>
+    <a class="item" data-title="Configuration" href="/docs/user-guide/install/config/"></a>
+    <a class="item" data-title="Cluster setup" href="/docs/user-guide/install/cluster-setup/"></a>
+  </div>
+</div>
+<div class="item" data-title="Features">
+  <div class="container">
+    <a class="item" data-title="Working with device attributes" href="/docs/user-guide/attributes/"></a>
+    <a class="item" data-title="Working with telemetry data" href="/docs/user-guide/telemetry/"></a>
+    <a class="item" data-title="Using RPC capabilities" href="/docs/user-guide/rpc/"></a>
+    <a class="item" data-title="Rule engine" href="/docs/user-guide/rule-engine/"></a>
+    <a class="item" data-title="Data visualization" href="/docs/user-guide/visualization/"></a>
+  </div>
+</div>
+<div class="item" data-title="Integrations Cookbook">
+  <div class="container">
+    <a class="item" data-title="Persist and visualize AWS IoT data" href="/docs/iot-gateway/integration-with-aws-iot/"></a>
+    <a class="item" data-title="IoT data analytics using Apache Spark" href="/docs/samples/analytics/spark-integration-with-thingsboard/"></a>
+    <a class="item" data-title="SigFox IoT data collection and visualization" href="/docs/iot-gateway/sigfox-iot-data-visualization/"></a>
+    <a class="item" data-title="Persist and visualize IBM Watson IoT data" href="/docs/iot-gateway/integration-with-ibm-watson-iot/"></a>
+  </div>
+</div>
+<div class="item" data-title="Security">
+  <div class="container">
+    <a class="item" data-title="MQTT over SSL" href="/docs/user-guide/mqtt-over-ssl/"></a>
+    <a class="item" data-title="Device authentication options" href="/docs/user-guide/device-credentials/"></a>
+    <a class="item" data-title="Access Token based authentication" href="/docs/user-guide/access-token/"></a>
+    <a class="item" data-title="X.509 Certificate based authentication" href="/docs/user-guide/certificates/"></a>
+  </div>
+</div>
+<div class="item" data-title="Administration UI">
+  <div class="container">
+    <a class="item" data-title="Tenants" href="/docs/user-guide/ui/tenants/"></a>
+    <a class="item" data-title="Customers" href="/docs/user-guide/ui/customers/"></a>
+    <a class="item" data-title="Users" href="/docs/user-guide/ui/users/"></a>
+    <a class="item" data-title="Devices" href="/docs/user-guide/ui/devices/"></a>
+    <a class="item" data-title="Rules" href="/docs/user-guide/ui/rules/"></a>
+    <a class="item" data-title="Plugins" href="/docs/user-guide/ui/plugins/"></a>
+    <a class="item" data-title="Widgets Library" href="/docs/user-guide/ui/widget-library/"></a>
+    <a class="item" data-title="Dashboards" href="/docs/user-guide/ui/dashboards/"></a>
+    <a class="item" data-title="Mail Settings" href="/docs/user-guide/ui/mail-settings/"></a>
+  </div>
+</div>
+    <a class="item" data-title="Troubleshooting" href="/docs/user-guide/troubleshooting/"></a>
+<div class="item" data-title="Contribution Guide">
+  <div class="container">
+    <a class="item" data-title="How to contribute" href="/docs/user-guide/contribution/how-to-contribute/"></a>
+    <a class="item" data-title="Extensions (Plugins and Actions) development" href="/docs/user-guide/contribution/extensions-development/"></a>
+  </div>
+</div>
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="tb.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+  
+  <div id="docsContent" class="">
+    <h1>Getting Started</h1>
+    <ul id="markdown-toc">
+  <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
+  <li><a href="#setup-and-requirements" id="markdown-toc-setup-and-requirements">Setup and Requirements</a></li>
+  <li><a href="#demo-account" id="markdown-toc-demo-account">Demo account</a></li>
+  <li><a href="#login-as-a-tenant-administrator" id="markdown-toc-login-as-a-tenant-administrator">Login as a tenant administrator</a></li>
+  <li><a href="#provision-your-device" id="markdown-toc-provision-your-device">Provision your device</a></li>
+  <li><a href="#manage-device-credentials" id="markdown-toc-manage-device-credentials">Manage device credentials</a></li>
+  <li><a href="#pushing-data-from-the-device" id="markdown-toc-pushing-data-from-the-device">Pushing data from the device</a>    <ul>
+      <li><a href="#client-side-libraries-installation" id="markdown-toc-client-side-libraries-installation">Client-side libraries installation</a></li>
+      <li><a href="#sample-data-files" id="markdown-toc-sample-data-files">Sample data files</a></li>
+      <li><a href="#pushing-data-using-mqtt-coap-or-http" id="markdown-toc-pushing-data-using-mqtt-coap-or-http">Pushing data using MQTT, CoAP or HTTP</a></li>
+    </ul>
+  </li>
+  <li><a href="#observe-device-data-on-the-web-ui" id="markdown-toc-observe-device-data-on-the-web-ui">Observe device data on the Web UI</a></li>
+  <li><a href="#create-new-dashboard-to-visualize-the-data" id="markdown-toc-create-new-dashboard-to-visualize-the-data">Create new dashboard to visualize the data</a></li>
+  <li><a href="#next-steps" id="markdown-toc-next-steps">Next steps</a></li>
+  <li><a href="#your-feedback" id="markdown-toc-your-feedback">Your feedback</a></li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>The goal of this guide is for you to collect and visualize some IoT device data using Thingsboard. 
+This guide will let you:</p>
+
+<ul>
+  <li>Provision your device</li>
+  <li>Manage device credentials</li>
+  <li>Push data from device to your Thingsboard instance using MQTT, CoAP or HTTP protocols</li>
+  <li>Create dashboard to visualize the data</li>
+</ul>
+
+<div id="video">
+  <div id="video_wrapper">
+    <iframe src="https://www.youtube.com/embed/dIKXFxpfB_Q" frameborder="0" allowfullscreen=""></iframe>
+  </div>
+</div>
+
+<h2 id="setup-and-requirements">Setup and Requirements</h2>
+
+<p>If you don’t have access to a running Thingsboard instance, use either <a href="https://demo.thingsboard.io/signup">Live Demo</a> or 
+<a href="/docs/user-guide/install/installation-options/">Installation Guide</a> 
+to fix this.</p>
+
+<h2 id="demo-account">Demo account</h2>
+
+<p>All Thingsboard installations are equipped with demo account that simplifies first user experience.
+This demo account contains several pre-provisioned devices, dashboards, rules and plugins installed.
+Please note that you are free to delete this account in production deployment.</p>
+
+<p>You can use Thingsboard device emulators to simulate real-life devices and play-around with server-side APIs, data visualization and processing logic.</p>
+
+<p>We will use this emulators in advanced tutorials, however, the for the purpose of this guide, we will just use pre-provisioned tenant administrator account.</p>
+
+<h2 id="login-as-a-tenant-administrator">Login as a tenant administrator</h2>
+
+<p>The first step is to login to administration Web UI.</p>
+
+<p>If you are using local Thingsboard installation you can login to administration Web UI using default account:</p>
+
+<ul>
+  <li>Username: <strong>tenant@thingsboard.org</strong></li>
+  <li>Password: <strong>tenant</strong></li>
+</ul>
+
+<p>If you are using Live Demo you can login to <a href="https://demo.thingsboard.io/login">Live Demo</a> server using Tenant Administrator account (the one that you created during sign-up).</p>
+
+<p style="text-align: center;"><img src="/images/helloworld/login.png" alt="image" /></p>
+
+<h2 id="provision-your-device">Provision your device</h2>
+
+<p>Open Devices panel and click on “+” button in the bottom-right corner of the page.</p>
+
+<p style="text-align: center;"><img src="/images/helloworld/devices.png" alt="image" /></p>
+
+<p>Populate and save device name (for example, “SN-001”). It will be referred to later as $DEVICE_NAME.
+Device names must be unique. Populating device name based on unique serial number or other device identifier is generally a good idea.
+Click “Add” button will add corresponding device card to the panel.</p>
+
+<p style="text-align: center;"><img src="/images/helloworld/add-device.png" alt="image" /></p>
+
+<h2 id="manage-device-credentials">Manage device credentials</h2>
+
+<p>Click on the “device card” we have created in the previous step. This action will open “device details” panel.</p>
+
+<p>Click on the “manage credentials” button on the top of the panel. This action will open popup window with device credentials.</p>
+
+<p style="text-align: center;"><img src="/images/helloworld/manage-credentials.png" alt="image" /></p>
+
+<p>Device credentials window will show auto-generated device access token that you can change. 
+Please save this device token. It will be referred to later as <strong>$ACCESS_TOKEN</strong>.</p>
+
+<p style="text-align: center;"><img src="/images/helloworld/device-credentials.png" alt="image" /></p>
+
+<p>Congratulations! You have just provisioned your first device! 
+Now you can push some data from this device to Thingsboard for visualization and analysis.</p>
+
+<h2 id="pushing-data-from-the-device">Pushing data from the device</h2>
+
+<p>In order to simplify this guide, we will push data using MQTT, CoAP or HTTP protocol from your local PC.
+Please refer to <a href="/docs/samples/">samples</a> for advanced examples of for various hardware platforms.</p>
+
+<h3 id="client-side-libraries-installation">Client-side libraries installation</h3>
+
+<p>Install preferred MQTT (Mosquitto or MQTT.js), CoAP (CoAP.js) or HTTP (cURL) client using following commands.</p>
+
+<script>
+  jqueryUiDefer(initTabs);
+  function initTabs() {
+    $(function(){$("#mqtt-client").tabs();});
+  }
+</script>
+
+<div id="mqtt-client">
+  <ul>
+    <li><a href="#ClientA">MQTT.js</a></li>
+    <li><a href="#ClientB">Mosquitto (Ubuntu)</a></li>
+    <li><a href="#ClientC">Mosquitto (macOS)</a></li>
+    <li><a href="#ClientD">CoAP.js</a></li>
+    <li><a href="#ClientE">cURL (Ubuntu)</a></li>
+    <li><a href="#ClientF">cURL (macOS)</a></li>
+  </ul>
+  <div id="ClientA">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/node-mqtt.sh" download="resources/node-mqtt.sh"><code>resources/node-mqtt.sh</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/node-mqtt.sh')" title="Copy resources/node-mqtt.sh to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/node-mqtt.sh" class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># Assuming you have Node.js and NPM installed on your Windows/Linux/MacOS machine</span>
+npm install mqtt -g
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+  <div id="ClientB">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/mosquitto-ubuntu.sh" download="resources/mosquitto-ubuntu.sh"><code>resources/mosquitto-ubuntu.sh</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/mosquitto-ubuntu.sh')" title="Copy resources/mosquitto-ubuntu.sh to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/mosquitto-ubuntu.sh" class="language-shell highlighter-rouge"><pre class="highlight"><code>sudo apt-get install mosquitto-clients
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+  <div id="ClientC">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/mosquitto-macos.sh" download="resources/mosquitto-macos.sh"><code>resources/mosquitto-macos.sh</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/mosquitto-macos.sh')" title="Copy resources/mosquitto-macos.sh to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/mosquitto-macos.sh" class="language-shell highlighter-rouge"><pre class="highlight"><code>brew install mosquitto-clients
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+  <div id="ClientD">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/node-coap.sh" download="resources/node-coap.sh"><code>resources/node-coap.sh</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/node-coap.sh')" title="Copy resources/node-coap.sh to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/node-coap.sh" class="language-shell highlighter-rouge"><pre class="highlight"><code>sudo npm install coap-cli -g
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+  <div id="ClientE">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/curl-ubuntu.sh" download="resources/curl-ubuntu.sh"><code>resources/curl-ubuntu.sh</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/curl-ubuntu.sh')" title="Copy resources/curl-ubuntu.sh to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/curl-ubuntu.sh" class="language-shell highlighter-rouge"><pre class="highlight"><code>sudo apt-get install curl
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+  <div id="ClientF">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/curl-macos.sh" download="resources/curl-macos.sh"><code>resources/curl-macos.sh</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/curl-macos.sh')" title="Copy resources/curl-macos.sh to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/curl-macos.sh" class="language-shell highlighter-rouge"><pre class="highlight"><code>brew install curl
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+</div>
+
+<h3 id="sample-data-files">Sample data files</h3>
+
+<p><strong>Create some folder</strong> to store all necessary files for this tutorial.
+Download to this folder or create the following data files:</p>
+
+<ul>
+  <li><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/attributes-data.json" target="_blank" download="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/attributes-data.json"><strong>attributes-data.json</strong></a> - contains two device attributes values: firmware version and serial number.</li>
+  <li><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/telemetry-data.json" target="_blank" download="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/telemetry-data.json"><strong>telemetry-data.json</strong></a> - contains three time-series values: temperature, humidity and active flag.</li>
+</ul>
+
+<p>Please note that data in this files is basically in key-value format. You can use your own keys and values. 
+See <a href="/docs/reference/mqtt-api/#key-value-format">MQTT</a>, <a href="/docs/reference/coap-api/#key-value-format">CoAP</a>
+or <a href="/docs/reference/http-api/#key-value-format">HTTP</a> protocol reference for more details.</p>
+
+<script>
+  jqueryUiDefer(initTabs);
+  function initTabs() {
+    $(function(){$("#data").tabs();});
+  }
+</script>
+
+<div id="data">
+  <ul>
+    <li><a href="#A">attributes-data.json</a></li>
+    <li><a href="#B">telemetry-data.json</a></li>
+  </ul>
+  <div id="A">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/attributes-data.json" download="resources/attributes-data.json"><code>resources/attributes-data.json</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/attributes-data.json')" title="Copy resources/attributes-data.json to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/attributes-data.json" class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="nt">"firmware_version"</span><span class="p">:</span><span class="s2">"1.0.1"</span><span class="p">,</span><span class="w"> </span><span class="nt">"serial_number"</span><span class="p">:</span><span class="s2">"SN-001"</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+</td></tr></table>
+  </div>
+  <div id="B">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/telemetry-data.json" download="resources/telemetry-data.json"><code>resources/telemetry-data.json</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/telemetry-data.json')" title="Copy resources/telemetry-data.json to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/telemetry-data.json" class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="nt">"temperature"</span><span class="p">:</span><span class="mi">21</span><span class="p">,</span><span class="w"> </span><span class="nt">"humidity"</span><span class="p">:</span><span class="mf">55.0</span><span class="p">,</span><span class="w"> </span><span class="nt">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+</td></tr></table>
+  </div>
+</div>
+
+<h3 id="pushing-data-using-mqtt-coap-or-http">Pushing data using MQTT, CoAP or HTTP</h3>
+
+<p>Download the following files to <strong>previously created folder</strong> according to the preferred client:</p>
+
+<ul>
+  <li><strong>MQTT.js (MQTT)</strong>
+    <ul>
+      <li><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/mqtt-js.sh" target="_blank" download="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/mqtt-js.sh">mqtt-js.sh</a> (Ubuntu &amp; MacOS) or 
+<a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/mqtt-js.bat" target="_blank" download="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/mqtt-js.bat">mqtt-js.bat</a> (Windows)</li>
+      <li><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/publish.js" target="_blank" download="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/publish.js">publish.js</a></li>
+    </ul>
+  </li>
+  <li><strong>Mosquitto (MQTT)</strong>
+    <ul>
+      <li><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/mosquitto.sh" target="_blank" download="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/mosquitto.sh">mosquitto.sh</a></li>
+    </ul>
+  </li>
+  <li><strong>CoAP.js (CoAP)</strong>
+    <ul>
+      <li><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/coap-js.sh" target="_blank" download="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/coap-js.sh">coap-js.sh</a></li>
+    </ul>
+  </li>
+  <li><strong>cURL (HTTP)</strong>
+    <ul>
+      <li><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/curl.sh" target="_blank" download="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/curl.sh">curl.sh</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p>If you are using shell script (*.sh) make sure that it is executable:</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>chmod +x <span class="k">*</span>.sh
+</code></pre>
+</div>
+
+<p>Before executing script don’t forget to:</p>
+
+<ul>
+  <li>replace <strong>$ACCESS_TOKEN</strong> with one from <strong>Device credentials</strong> window.</li>
+  <li>replace <strong>$THINGSBOARD_HOST</strong> with either <strong>127.0.0.1</strong> (in case of local installation) or <strong>demo.thingsboard.io</strong> (in case of live-demo).</li>
+</ul>
+
+<p>Finally execute corresponding *.sh or *.bat script to push data to the server.</p>
+
+<p>Below are tabs with content of provided scripts.</p>
+
+<script>
+  jqueryUiDefer(initTabs);
+  function initTabs() {
+    $(function(){$("#mqtt-telemetry-upload").tabs();});
+  }
+</script>
+
+<div id="mqtt-telemetry-upload">
+  <ul>
+    <li><a href="#A">MQTT.js (Ubuntu &amp; MacOS)</a></li>
+    <li><a href="#B">MQTT.js (Windows)</a></li>
+    <li><a href="#C">publish.js</a></li>
+    <li><a href="#D">Mosquitto (MQTT)</a></li>
+    <li><a href="#E">CoAP.js (CoAP)</a></li>
+    <li><a href="#F">cURL (HTTP)</a></li>
+  </ul>
+  <div id="A">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/mqtt-js.sh" download="resources/mqtt-js.sh"><code>resources/mqtt-js.sh</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/mqtt-js.sh')" title="Copy resources/mqtt-js.sh to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/mqtt-js.sh" class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/sh</span>
+
+<span class="c"># Set Thingsboard host to "demo.thingsboard.io" or "localhost"</span>
+<span class="nb">export </span><span class="nv">THINGSBOARD_HOST</span><span class="o">=</span>demo.thingsboard.io
+
+<span class="c"># Replace YOUR_ACCESS_TOKEN with one from Device credentials window.</span>
+<span class="nb">export </span><span class="nv">ACCESS_TOKEN</span><span class="o">=</span>YOUR_ACCESS_TOKEN
+
+<span class="c"># Read serial number and firmware version attributes</span>
+<span class="nv">ATTRIBUTES</span><span class="o">=</span><span class="k">$(</span> cat attributes-data.json <span class="k">)</span>
+<span class="nb">export </span>ATTRIBUTES
+
+<span class="c"># Read timeseries data as an object without timestamp (server-side timestamp will be used)</span>
+<span class="nv">TELEMETRY</span><span class="o">=</span><span class="k">$(</span> cat telemetry-data.json <span class="k">)</span>
+<span class="nb">export </span>TELEMETRY
+
+<span class="c"># publish attributes and telemetry data via mqtt client</span>
+node publish.js
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+  <div id="B">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/mqtt-js.bat" download="resources/mqtt-js.bat"><code>resources/mqtt-js.bat</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/mqtt-js.bat')" title="Copy resources/mqtt-js.bat to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/mqtt-js.bat" class="language-shell highlighter-rouge"><pre class="highlight"><code>@echo off
+
+REM Set Thingsboard host to <span class="s2">"demo.thingsboard.io"</span> or <span class="s2">"localhost"</span>
+<span class="nb">set </span><span class="nv">THINGSBOARD_HOST</span><span class="o">=</span>demo.thingsboard.io
+
+REM Replace YOUR_ACCESS_TOKEN with one from Device credentials window.
+<span class="nb">set </span><span class="nv">ACCESS_TOKEN</span><span class="o">=</span>YOUR_ACCESS_TOKEN
+
+REM Read serial number and firmware version attributes
+<span class="nb">set</span> /p <span class="nv">ATTRIBUTES</span><span class="o">=</span>&lt;attributes-data.json
+
+REM Read timeseries data as an object without timestamp <span class="o">(</span>server-side timestamp will be used<span class="o">)</span>
+<span class="nb">set</span> /p <span class="nv">TELEMETRY</span><span class="o">=</span>&lt;telemetry-data.json
+
+REM publish attributes and telemetry data via mqtt client
+node publish.js
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+  <div id="C">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/publish.js" download="resources/publish.js"><code>resources/publish.js</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/publish.js')" title="Copy resources/publish.js to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/publish.js" class="language-shell highlighter-rouge"><pre class="highlight"><code>var mqtt <span class="o">=</span> require<span class="o">(</span><span class="s1">'mqtt'</span><span class="o">)</span>;
+
+console.log<span class="o">(</span><span class="s1">'Connecting to: %s using access token: %s'</span>, process.env.THINGSBOARD_HOST, process.env.ACCESS_TOKEN<span class="o">)</span>;
+
+var client  <span class="o">=</span> mqtt.connect<span class="o">(</span><span class="s1">'mqtt://'</span>+ process.env.THINGSBOARD_HOST,<span class="o">{</span>
+    username: process.env.ACCESS_TOKEN
+<span class="o">})</span>;
+
+client.on<span class="o">(</span><span class="s1">'connect'</span>, <span class="k">function</span> <span class="o">()</span> <span class="o">{</span>
+    console.log<span class="o">(</span><span class="s1">'Client connected!'</span><span class="o">)</span>;
+    client.publish<span class="o">(</span><span class="s1">'v1/devices/me/attributes'</span>, process.env.ATTRIBUTES<span class="o">)</span>;
+    console.log<span class="o">(</span><span class="s1">'Attributes published!'</span><span class="o">)</span>;
+    client.publish<span class="o">(</span><span class="s1">'v1/devices/me/telemetry'</span>, process.env.TELEMETRY<span class="o">)</span>;
+    console.log<span class="o">(</span><span class="s1">'Telemetry published!'</span><span class="o">)</span>;
+    client.end<span class="o">()</span>;
+<span class="o">})</span>;
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+  <div id="D">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/mosquitto.sh" download="resources/mosquitto.sh"><code>resources/mosquitto.sh</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/mosquitto.sh')" title="Copy resources/mosquitto.sh to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/mosquitto.sh" class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/sh</span>
+
+<span class="c"># Set Thingsboard host to "demo.thingsboard.io" or "localhost"</span>
+<span class="nv">THINGSBOARD_HOST</span><span class="o">=</span><span class="s2">"demo.thingsboard.io"</span>
+<span class="c"># Replace YOUR_ACCESS_TOKEN with one from Device credentials window.</span>
+<span class="nv">ACCESS_TOKEN</span><span class="o">=</span><span class="s2">"YOUR_ACCESS_TOKEN"</span>
+<span class="c"># Publish serial number and firmware version attributes</span>
+mosquitto_pub -d -h <span class="s2">"</span><span class="nv">$THINGSBOARD_HOST</span><span class="s2">"</span> -t <span class="s2">"v1/devices/me/attributes"</span> -u <span class="s2">"</span><span class="nv">$ACCESS_TOKEN</span><span class="s2">"</span> -f <span class="s2">"attributes-data.json"</span>
+<span class="c"># Publish timeseries data as an object without timestamp (server-side timestamp will be used)</span>
+mosquitto_pub -d -h <span class="s2">"</span><span class="nv">$THINGSBOARD_HOST</span><span class="s2">"</span> -t <span class="s2">"v1/devices/me/telemetry"</span> -u <span class="s2">"</span><span class="nv">$ACCESS_TOKEN</span><span class="s2">"</span> -f <span class="s2">"telemetry-data.json"</span>
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+  <div id="E">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/coap-js.sh" download="resources/coap-js.sh"><code>resources/coap-js.sh</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/coap-js.sh')" title="Copy resources/coap-js.sh to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/coap-js.sh" class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># Publish serial number and firmware version attributes</span>
+cat attributes-data.json | coap post coap://<span class="nv">$THINGSBOARD_HOST</span>/api/v1/<span class="nv">$ACCESS_TOKEN</span>/attributes
+<span class="c"># Publish timeseries data as an object without timestamp (server-side timestamp will be used)</span>
+cat telemetry-data.json | coap post coap://<span class="nv">$THINGSBOARD_HOST</span>/api/v1/<span class="nv">$ACCESS_TOKEN</span>/telemetry
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+  <div id="F">
+    <table class="includecode"><thead><tr><th><a href="https://raw.githubusercontent.com/thingsboard/thingsboard.github.io/master/docs/getting-started-guides/resources/curl.sh" download="resources/curl.sh"><code>resources/curl.sh</code></a><img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('resources/curl.sh')" title="Copy resources/curl.sh to clipboard" /></th></tr></thead>
+<tr><td>
+<div id="resources/curl.sh" class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># Publish serial number and firmware version attributes</span>
+<span class="c"># replace $THINGSBOARD_PORT with 8080 (in case of local installation) or 80 (in case of live-demo).</span>
+curl -v -X POST -d @attributes-data.json http://<span class="nv">$THINGSBOARD_HOST</span>:<span class="nv">$THINGSBOARD_PORT</span>/api/v1/<span class="nv">$ACCESS_TOKEN</span>/attributes --header <span class="s2">"Content-Type:application/json"</span>
+<span class="c"># Publish timeseries data as an object without timestamp (server-side timestamp will be used)</span>
+<span class="c"># replace $THINGSBOARD_PORT with 8080 (in case of local installation) or 80 (in case of live-demo).</span>
+curl -v -X POST -d @telemetry-data.json http://<span class="nv">$THINGSBOARD_HOST</span>:<span class="nv">$THINGSBOARD_PORT</span>/api/v1/<span class="nv">$ACCESS_TOKEN</span>/telemetry --header <span class="s2">"Content-Type:application/json"</span>
+</code></pre>
+</div>
+</td></tr></table>
+  </div>
+</div>
+
+<h2 id="observe-device-data-on-the-web-ui">Observe device data on the Web UI</h2>
+
+<p>Once you execute commands listed above you should see <a href="/docs/user-guide/attributes/">attributes</a> and latest <a href="/docs/user-guide/telemetry/">telemetry data</a> in corresponding device detail tabs.</p>
+
+<p style="text-align: center;"><img src="/images/helloworld/device-attributes.png" alt="image" /></p>
+
+<p style="text-align: center;"><img src="/images/helloworld/device-telemetry.png" alt="image" /></p>
+
+<h2 id="create-new-dashboard-to-visualize-the-data">Create new dashboard to visualize the data</h2>
+
+<p>The easiest way to create new dashboard is to select device attributes and show them on widget</p>
+
+<p style="text-align: center;"><img src="/images/helloworld/attributes-selected.png" alt="image" /></p>
+
+<p>Once you click on “Show on widget” button, you will see a “widget preview” panel where you can</p>
+
+<ul>
+  <li>Select widget bundle</li>
+  <li>Select preferred widget</li>
+  <li>Add widget to new or existing dashboard</li>
+</ul>
+
+<p style="text-align: center;"><img src="/images/helloworld/widget-selected.png" alt="image" /></p>
+
+<p>Let’s add our first widget to new dashboard named “SN-001 Dashboard”</p>
+
+<p style="text-align: center;"><img src="/images/helloworld/add-widget.png" alt="image" /></p>
+
+<p>Let’s also add widget to visualize temperature</p>
+
+<p style="text-align: center;"><img src="/images/helloworld/temperature-selected.png" alt="image" /></p>
+
+<p>Click <strong>Show on widget</strong> and select <strong>Digital gauges</strong> bundle. Use carousel to select thermometer widget as shown below.</p>
+
+<p style="text-align: center;"><img src="/images/helloworld/termometer-widget.png" alt="image" /></p>
+
+<p><strong>Please note</strong> that in this case we will add widget to already existing dashboard. We will also select “Open dashboard” option to see results of our work.</p>
+
+<p style="text-align: center;"><img src="/images/helloworld/add-termometer.png" alt="image" /></p>
+
+<p>Finally, we are able to see our new dashboard. Now we can edit the dashboard to</p>
+
+<ul>
+  <li>Configure dashboard settings</li>
+  <li>Tune widget sizes and layout</li>
+  <li>Modify advanced settings of individual widget</li>
+  <li>Add new widgets or remove existing</li>
+  <li>Widgets import/export</li>
+</ul>
+
+<p style="text-align: center;"><img src="/images/helloworld/new-dashboard.png" alt="image" /></p>
+
+<h2 id="next-steps">Next steps</h2>
+
+<p>Explore guides related to main Thingsboard features:</p>
+
+<ul>
+  <li><a href="/docs/user-guide/attributes/">Device attributes</a> - how to use device attributes.</li>
+  <li><a href="/docs/user-guide/telemetry/">Telemetry data collection</a> - how to collect telemetry data.</li>
+  <li><a href="/docs/user-guide/rpc/">Using RPC capabilities</a> - how to send commands to/from devices.</li>
+  <li><a href="/docs/user-guide/rule-engine/">Rule Engine</a> - how to use rule engine to analyze data from devices.</li>
+  <li><a href="/docs/user-guide/visualization/">Data Visualization</a> - how to visualize collected data.</li>
+</ul>
+
+<h2 id="your-feedback">Your feedback</h2>
+
+<p>Don’t hesitate to star Thingsboard on <strong><a href="https://github.com/thingsboard/thingsboard">github</a></strong> to help us spread the word.
+If you have some questions about this sample - post it on the <strong><a href="https://groups.google.com/forum/#!forum/thingsboard">forum</a></strong>.</p>
+
+  </div>
+</section>
+
+<footer>
+	<main class="light-text">
+		<nav>
+			<a href="/docs/getting-started-guides/helloworld/">Get Started</a>
+			<a href="/docs/">Documentation</a>
+			<a href="/iot-use-cases/">Use cases</a>
+			<a href="https://blog.thingsboard.io/">Blog</a>
+			<a href="/docs/services/">Services</a>
+			<a href="/docs/contact-us/">Contact us</a>
+		</nav>
+		<div class="newsletterSubsContainer">
+			<form id="newsletter-form" method="post" onsubmit="return validateNewsletterForm(this)">
+				<fieldset>
+					<div class="newsletterInputs">
+						<p class="subsTitle">Sign up for Thingsboard IoT newsletter</p>
+						<input id="subsEmail" placeholder="Email" class="text-input" name="email" type="text" size="20" maxlength="80">
+						<input type="hidden" name="_next" value="/docs/newsletter-thanks/" />
+						<input type="text" name="_gotcha" style="display:none" />
+						<input class="button" value="Submit" type="submit">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="center">
+			<div class="social">
+				<div>
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+				</div>
+				<div>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+		</div>
+		<div id="miceType" class="center">&copy; 2017 The Thingsboard Authors</div>
+	</main>
+
+	<script type="text/javascript">
+
+		function validateNewsletterForm(form) {
+			var email = $('input[name=email]', form).val();
+
+			if (!validateValue('Email Address', email)) {
+				return false;
+			}
+
+			var emailExp = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+			if(email.match(emailExp)==null) {
+				window.alert("Entered Email Address is not valid.");
+				return false;
+			}
+			return true;
+		}
+
+		function validateValue(name, val) {
+			if (isEmpty(val)) {
+				window.alert("Please fill '" + name + "' field.");
+				return false;
+			}
+			return true;
+		}
+
+		function isEmpty(val) {
+			return val === undefined || val.trim().length == 0;
+		}
+
+	</script>
+
+	<script type="text/javascript">
+
+		var newsletterform =  document.getElementById('newsletter-form');
+		newsletterform.setAttribute('action', 'https://formspree.io/' + 'newsletter' + '@' + 'thingsboard' + '.' + 'io');
+
+	</script>
+
+</footer>
+
+
+
+<button class="flyout-button" onclick="tb.toggleToc()"></button>
+
+
+<style>
+  .cse .gsc-control-cse, .gsc-control-cse {
+    padding: 0;
+  }
+  .gsc-control-cse table, .gsc-control-cse-en table {
+    margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+    border-bottom: 0;
+  }
+</style>
+</body>
+</html>

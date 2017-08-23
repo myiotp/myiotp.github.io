@@ -1,0 +1,604 @@
+
+
+<!Doctype html>
+<html id="docs" class="Thingsboard IoT Gateway">
+
+
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- Begin Jekyll SEO tag v2.0.0 -->
+<title>OPC-UA Extension Configuration - Thingsboard</title>
+<meta property="og:title" content="OPC-UA Extension Configuration" />
+<meta name="description" content="OPC-UA protocol support for Thingsboard IoT Gateway" />
+<meta property="og:description" content="OPC-UA protocol support for Thingsboard IoT Gateway" />
+<link rel="canonical" href="http://localhost:4000/docs/iot-gateway/opc-ua/" />
+<meta property="og:url" content="http://localhost:4000/docs/iot-gateway/opc-ua/" />
+<meta property="og:site_name" content="Thingsboard" />
+<meta property="og:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@thingsboard" />
+<meta name="twitter:creator" content="@thingsboard" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "headline": "OPC-UA Extension Configuration",
+    "image": "http://localhost:4000/images/thingsboard_logo.png",
+    "description": "OPC-UA protocol support for Thingsboard IoT Gateway",
+    "logo": "http://localhost:4000/images/thingsboard_logo.png",
+    "url": "http://localhost:4000/docs/iot-gateway/opc-ua/"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+	
+	
+	<meta name="twitter:description" content="OPC-UA protocol support for Thingsboard IoT Gateway"/>
+	
+	
+	<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="/css/styles.css">
+	<script type="text/javascript">
+		/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+		!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+		/*! onloadCSS. (onload callback for loadCSS) [c]2017 Filament Group, Inc. MIT License */
+		function onloadCSS(a,b){function c(){!d&&b&&(d=!0,b.call(a))}var d;a.addEventListener&&a.addEventListener("load",c),a.attachEvent&&a.attachEvent("onload",c),"isApplicationInstalled"in navigator&&"onloadcssdefined"in a&&a.onloadcssdefined(c)}
+	</script>
+	<script type="text/javascript">
+
+		function jqueryDefer(method) {
+			if (window.jQuery) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryDefer(method)
+				}, 50);
+			}
+		}
+
+		function jqueryUiDefer(method) {
+			if (window.jQuery && window.jQuery.ui) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryUiDefer(method)
+				}, 50);
+			}
+		}
+
+		function loadScript(src, callback)
+		{
+			var s, r, t;
+			r = false;
+			s = document.createElement('script');
+			s.type = 'text/javascript';
+			s.src = src;
+			s.onload = s.onreadystatechange = function() {
+				if ( !r && (!this.readyState || this.readyState == 'complete') )
+				{
+					r = true;
+					if (callback) {
+						callback();
+					}
+				}
+			};
+			t = document.getElementsByTagName('script')[0];
+			t.parentNode.insertBefore(s, t);
+		}
+
+		function loadCssAsync(src, callback) {
+			var stylesheet = loadCSS( src );
+			if (callback) {
+				onloadCSS(stylesheet, callback);
+			}
+		}
+
+		function loadNextScript(index, scriptsList, completeCallback) {
+			if (index < scriptsList.length) {
+				var script = scriptsList[index];
+				if (script.type === 'script') {
+					loadScript(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				} else if (script.type === 'css') {
+					loadCssAsync(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				}
+			} else if (completeCallback) {
+				completeCallback();
+			}
+		}
+
+		var initialScriptsList = [
+			{src: '/js/jquery-2.2.0.min.js', type: 'script'},
+			{src: '/css/jquery-ui.min.css', type: 'css'},
+			{src: '/js/jquery-ui.min.js', type: 'script'},
+			{src: '/js/script.js', type: 'script'},
+			{src: '/css/sweetalert.css', type: 'css'},
+			{src: '/js/sweetalert.min.js', type: 'script'}
+		];
+
+		loadNextScript(0, initialScriptsList);
+
+	</script>
+	<script type="text/javascript">
+		function _gaLt(event) {
+			/* If GA is blocked or not loaded, or not main|middle|touch click then don't track */
+			if (!ga.hasOwnProperty("loaded") || ga.loaded != true || (event.which != 1 && event.which != 2)) {
+				return;
+			}
+			var el = event.srcElement || event.target;
+
+			while (el && (typeof el.tagName == 'undefined' || el.tagName.toLowerCase() != 'a' || !el.href)) {
+				el = el.parentNode;
+			}
+			if (el && el.href) {
+				var link = el.href;
+				if ((link.indexOf(location.host) == -1 || link.indexOf('.' + location.host) > 0) && !link.match(/^javascript\:/i)) {
+					var target = (el.target && !el.target.match(/^_(self|parent|top)$/i)) ? el.target : false;
+					if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
+						target = "_blank";
+					}
+
+					var hbrun = false; // tracker has not yet run
+					var hitBack = function() {
+						if (hbrun) return;
+						hbrun = true;
+						window.location.href = link;
+					};
+
+					if (target) {
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search
+						);
+					} else {
+						event.preventDefault ? event.preventDefault() : event.returnValue = !1;
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search, {
+									"hitCallback": hitBack
+								}
+						);
+
+						setTimeout(hitBack, 1000);
+					}
+				}
+			}
+		}
+
+		var _w = window;
+		var _gaLtEvt = ("ontouchstart" in _w) ? "click" : "mousedown";
+		_w.addEventListener ? _w.addEventListener("load", function() {document.body.addEventListener(_gaLtEvt, _gaLt, !1)}, !1)
+				: _w.attachEvent && _w.attachEvent("onload", function() {document.body.attachEvent("on" + _gaLtEvt, _gaLt)});
+	</script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-88383331-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+</head>
+<body>
+<div id="cellophane" onclick="tb.toggleMenu()"></div>
+<header>
+	<a href="/" class="logo"></a>
+	<div id="githubButtonContainer">
+		<iframe id="gh-btn-frame" src="https://ghbtns.com/github-btn.html?user=thingsboard&repo=thingsboard&type=star&count=true&size=large"
+				frameborder="0"
+				scrolling="0" width="130px" height="30px"></iframe>
+	</div>
+	<div class="nav-buttons" data-auto-burger="primary">
+		<a href="/docs/" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a>
+		<a href="/iot-use-cases/" class="button" id="useCases" data-auto-burger-exclude>Use cases</a>
+		<a href="/docs/getting-started-guides/helloworld/" class="button" id="gettingStarted" data-auto-burger-exclude>Getting started</a>
+		<a target="_blank" href="https://demo.thingsboard.io/signup" class="button" id="liveDemo" data-auto-burger-exclude>Live demo</a>
+		<button id="hamburger" onclick="tb.toggleMenu()" data-auto-burger-exclude><div></div></button>
+	</div>
+
+	<nav id="mainNav">
+		<main id="headNav" data-auto-burger="primary">
+			<div class="nav-box">
+				<h3><a href="/docs/getting-started-guides/helloworld/">Get Started</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/">Documentation</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/iot-use-cases/">Use cases</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="http://blog.thingsboard.io/">Blog</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/services/">Services</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/contact-us/">Contact us</a></h3>
+			</div>
+		</main>
+		<main data-auto-burger="primary">
+			<div class="center">
+				<div class="social">
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>Twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+			<div class="clear" style="clear: both"></div>
+		</main>
+	</nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Thingsboard IoT Gateway</h1>
+  <h5>Integrate legacy and third-party systems with Thingsboard platform using IoT Gateway.</h5>
+  <div id="vendorStrip" class="light-text">
+    <div id="docsList">
+        <ul>
+          <li><a href="/docs/" >DOCS HOME</a></li>
+          <li><a href="/docs/api/" >API</a></li>
+          <li><a href="/docs/iot-gateway/" class="YAH">IOT GATEWAY</a></li>
+          <li><a href="/docs/reference/" >REFERENCE</a></li>
+          <li><a href="/docs/samples/" >SAMPLES</a></li>
+          <li><a href="/iot-use-cases/" >USE CASES</a></li>
+          <li><a href="/docs/iot-video-tutorials/" >VIDEO TUTORIALS</a></li>
+          <li><a href="/docs/faq/" >FAQ</a></li>
+          <li><a href="/docs/services/" >SERVICES</a></li>
+          <li><a href="/docs/contact-us/" >CONTACT US</a></li>
+        </ul>
+    </div>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)">
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section id="encyclopedia">
+  
+  <div id="docsToc" >
+        <div class="pi-accordion">
+        
+    <a class="item" data-title="IoT Gateway" href="/docs/iot-gateway/"></a>
+    <a class="item" data-title="What is Thingsboard IoT Gateway?" href="/docs/iot-gateway/what-is-iot-gateway/"></a>
+    <a class="item" data-title="Getting Started" href="/docs/iot-gateway/getting-started/"></a>
+<div class="item" data-title="Installation guide">
+  <div class="container">
+    <a class="item" data-title="Installation options" href="/docs/iot-gateway/installation/"></a>
+    <a class="item" data-title="Windows" href="/docs/iot-gateway/install/windows/"></a>
+    <a class="item" data-title="Linux (Ubuntu & CentOS)" href="/docs/iot-gateway/install/linux/"></a>
+    <a class="item" data-title="Raspberry Pi" href="/docs/iot-gateway/install/rpi/"></a>
+    <a class="item" data-title="Building from sources" href="/docs/iot-gateway/install/building-from-source/"></a>
+    <a class="item" data-title="Upgrade instructions" href="/docs/iot-gateway/install/upgrade-instructions/"></a>
+  </div>
+</div>
+<div class="item" data-title="Configuration guide">
+  <div class="container">
+    <a class="item" data-title="General configuration" href="/docs/iot-gateway/configuration/"></a>
+    <a class="item" data-title="OPC-UA Extension" href="/docs/iot-gateway/opc-ua/"></a>
+    <a class="item" data-title="MQTT Extension" href="/docs/iot-gateway/mqtt/"></a>
+    <a class="item" data-title="Sigfox Extension" href="/docs/iot-gateway/sigfox/"></a>
+  </div>
+</div>
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="tb.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+  
+  <div id="docsContent" class="">
+    <h1>OPC-UA Extension Configuration</h1>
+    <ul id="markdown-toc">
+  <li><a href="#extension-configuration-opc-configjson" id="markdown-toc-extension-configuration-opc-configjson">Extension configuration: opc-config.json</a>    <ul>
+      <li><a href="#basic-connection-properties" id="markdown-toc-basic-connection-properties">Basic connection properties</a></li>
+      <li><a href="#client-identity-properties" id="markdown-toc-client-identity-properties">Client identity properties</a></li>
+      <li><a href="#keystore-configuration" id="markdown-toc-keystore-configuration">Keystore configuration</a></li>
+      <li><a href="#mapping" id="markdown-toc-mapping">Mapping</a></li>
+    </ul>
+  </li>
+  <li><a href="#next-steps" id="markdown-toc-next-steps">Next steps</a></li>
+</ul>
+
+<p>This guide will help you to get familiar with OPC-UA extension configuration for Thingsboard IoT Gateway.
+Use <a href="/docs/iot-gateway/configuration/">general configuration</a> to enable this extension.
+We will describe extension configuration file below.</p>
+
+<h3 id="extension-configuration-opc-configjson">Extension configuration: opc-config.json</h3>
+
+<p>Extension configuration is a JSON file that contain information about how to connect and monitor list of OPC-UA servers.
+The root JSON element should contain “servers” array. Each server in the array is configured using following properties:</p>
+
+<h4 id="basic-connection-properties">Basic connection properties</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Property</strong></th>
+      <th><strong>Description</strong></th>
+      <th><strong>Default Value</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>applicationName</td>
+      <td>Name of the client application, used for OPC-UA connection.</td>
+      <td>Thingsboard OPC-UA client</td>
+    </tr>
+    <tr>
+      <td>applicationUri</td>
+      <td>URI of the client application, used for OPC-UA connection.</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>host</td>
+      <td>OPC-UA server host</td>
+      <td>localhost</td>
+    </tr>
+    <tr>
+      <td>port</td>
+      <td>OPC-UA server port</td>
+      <td>49320</td>
+    </tr>
+    <tr>
+      <td>scanPeriodInSeconds</td>
+      <td>Interval for complete OPC-UA server structure re-scan. Used to detect new or deleted devices.</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>timeoutInMillis</td>
+      <td>OPC-UA server connection timeout in milliseconds.</td>
+      <td>5000</td>
+    </tr>
+    <tr>
+      <td>security</td>
+      <td>OPC-UA security option. See <a href="https://github.com/eclipse/milo/blob/master/opc-ua-stack/stack-core/src/main/java/org/eclipse/milo/opcua/stack/core/security/SecurityPolicy.java">SecurityPolicy</a> for more details.</td>
+      <td>Basic128Rsa15</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>For Example:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"applicationName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thingsboard OPC-UA client"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"applicationUri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"urn:thingsboard:client"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">49320</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"scanPeriodInSeconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"timeoutInMillis"</span><span class="p">:</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"security"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Basic128Rsa15"</span><span class="w">
+      </span><span class="err">...</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+      
+</span></code></pre>
+</div>
+
+<h4 id="client-identity-properties">Client identity properties</h4>
+
+<p>OPC-UA extension supports “anonymous” and “username” client identities.
+Example of anonymous identity configuration:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+      </span><span class="err">...</span><span class="w">
+      </span><span class="nt">"identity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"anonymous"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+      </span><span class="err">...</span><span class="w">
+</span><span class="p">}</span><span class="w">
+      
+</span></code></pre>
+</div>
+
+<p>Example of username identity configuration:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+      </span><span class="err">...</span><span class="w">
+      </span><span class="nt">"identity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"username"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Your username"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Your password"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+      </span><span class="err">...</span><span class="w">
+</span><span class="p">}</span><span class="w">
+      
+</span></code></pre>
+</div>
+
+<h4 id="keystore-configuration">Keystore configuration</h4>
+
+<p>Keystore information is used to setup encrypted connection between Gateway OPC-UA client and your OPC-UA server.
+Many OPC-UA servers require provisioning of client key on the server, before client can connect.
+Supported keystore types are JKS and PKCS12.
+Example of keystore configuration:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+      </span><span class="err">...</span><span class="w">
+      </span><span class="nt">"keystore"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PKCS12"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-certs.pfx"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-keystore-password"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-client-key"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"keyPassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-client-password"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+      </span><span class="err">...</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<h4 id="mapping">Mapping</h4>
+
+<p>Mapping configuration setup rules of OPC-UA server monitoring and data conversion to Thingsboard Key-Value format. For example:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+</span><span class="err">...</span><span class="w">
+  </span><span class="nt">"mapping"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"deviceNodePattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Channel1\\.Device\\d+$"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"deviceNamePattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Device ${_System._DeviceId}"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"Tag1"</span><span class="p">,</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w"> </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${Tag1}"</span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nt">"timeseries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="nt">"key"</span><span class="p">:</span><span class="s2">"Tag2"</span><span class="p">,</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"long"</span><span class="p">,</span><span class="w"> </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${Tag2}"</span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Mapping process periodically travers OPC-UA server node tree and applies regular expression that is configured in <strong>deviceNodePattern</strong> parameter for each mapping configuration.
+List of nodes that match regular expression are stored as device nodes. 
+Now mapping process will use <strong>deviceNamePattern</strong> to get device name value. 
+You can use OPC-UA tags inside the pattern by specifying their relative (to device node) names. See example below. 
+Similar mapping rules are applied for <strong>attributes</strong> and <strong>timeseries</strong> values:</p>
+
+<ul>
+  <li><strong>key</strong> - constant Attribute or Timeseries Thingsboard key.</li>
+  <li><strong>type</strong> - either boolean, long, double or string.</li>
+  <li><strong>value</strong> - expression based on relative tag values specified inside <strong>${}</strong></li>
+</ul>
+
+<h2 id="next-steps">Next steps</h2>
+
+<p>Explore examples:</p>
+
+<ul>
+  <li><a href="/docs/iot-gateway/getting-started/#step-9-connect-to-external-opc-ua-server">KEPServerEX connection example</a></li>
+</ul>
+
+<p>Explore guides related to main Thingsboard features:</p>
+
+<ul>
+  <li><a href="/docs/user-guide/visualization/">Data Visualization</a> - how to visualize collected data.</li>
+  <li><a href="/docs/user-guide/attributes/">Device attributes</a> - how to use device attributes.</li>
+  <li><a href="/docs/user-guide/telemetry/">Telemetry data collection</a> - how to collect telemetry data.</li>
+  <li><a href="/docs/user-guide/rpc/">Using RPC capabilities</a> - how to send commands to/from devices.</li>
+  <li><a href="/docs/user-guide/rule-engine/">Rule Engine</a> - how to use rule engine to analyze data from devices.</li>
+</ul>
+
+  </div>
+</section>
+
+<footer>
+	<main class="light-text">
+		<nav>
+			<a href="/docs/getting-started-guides/helloworld/">Get Started</a>
+			<a href="/docs/">Documentation</a>
+			<a href="/iot-use-cases/">Use cases</a>
+			<a href="https://blog.thingsboard.io/">Blog</a>
+			<a href="/docs/services/">Services</a>
+			<a href="/docs/contact-us/">Contact us</a>
+		</nav>
+		<div class="newsletterSubsContainer">
+			<form id="newsletter-form" method="post" onsubmit="return validateNewsletterForm(this)">
+				<fieldset>
+					<div class="newsletterInputs">
+						<p class="subsTitle">Sign up for Thingsboard IoT newsletter</p>
+						<input id="subsEmail" placeholder="Email" class="text-input" name="email" type="text" size="20" maxlength="80">
+						<input type="hidden" name="_next" value="/docs/newsletter-thanks/" />
+						<input type="text" name="_gotcha" style="display:none" />
+						<input class="button" value="Submit" type="submit">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="center">
+			<div class="social">
+				<div>
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+				</div>
+				<div>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+		</div>
+		<div id="miceType" class="center">&copy; 2017 The Thingsboard Authors</div>
+	</main>
+
+	<script type="text/javascript">
+
+		function validateNewsletterForm(form) {
+			var email = $('input[name=email]', form).val();
+
+			if (!validateValue('Email Address', email)) {
+				return false;
+			}
+
+			var emailExp = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+			if(email.match(emailExp)==null) {
+				window.alert("Entered Email Address is not valid.");
+				return false;
+			}
+			return true;
+		}
+
+		function validateValue(name, val) {
+			if (isEmpty(val)) {
+				window.alert("Please fill '" + name + "' field.");
+				return false;
+			}
+			return true;
+		}
+
+		function isEmpty(val) {
+			return val === undefined || val.trim().length == 0;
+		}
+
+	</script>
+
+	<script type="text/javascript">
+
+		var newsletterform =  document.getElementById('newsletter-form');
+		newsletterform.setAttribute('action', 'https://formspree.io/' + 'newsletter' + '@' + 'thingsboard' + '.' + 'io');
+
+	</script>
+
+</footer>
+
+
+
+<button class="flyout-button" onclick="tb.toggleToc()"></button>
+
+
+<style>
+  .cse .gsc-control-cse, .gsc-control-cse {
+    padding: 0;
+  }
+  .gsc-control-cse table, .gsc-control-cse-en table {
+    margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+    border-bottom: 0;
+  }
+</style>
+</body>
+</html>

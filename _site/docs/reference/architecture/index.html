@@ -1,0 +1,586 @@
+
+
+<!Doctype html>
+<html id="docs" class="Reference Documentation">
+
+
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- Begin Jekyll SEO tag v2.0.0 -->
+<title>Thingsboard Architecture - Thingsboard</title>
+<meta property="og:title" content="Thingsboard Architecture" />
+<meta name="description" content="Thingsboard IoT Platform architecture" />
+<meta property="og:description" content="Thingsboard IoT Platform architecture" />
+<link rel="canonical" href="http://localhost:4000/docs/reference/architecture/" />
+<meta property="og:url" content="http://localhost:4000/docs/reference/architecture/" />
+<meta property="og:site_name" content="Thingsboard" />
+<meta property="og:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:image" content="http://localhost:4000/images/thingsboard_logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@thingsboard" />
+<meta name="twitter:creator" content="@thingsboard" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "headline": "Thingsboard Architecture",
+    "image": "http://localhost:4000/images/thingsboard_logo.png",
+    "description": "Thingsboard IoT Platform architecture",
+    "logo": "http://localhost:4000/images/thingsboard_logo.png",
+    "url": "http://localhost:4000/docs/reference/architecture/"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+	
+	
+	<meta name="twitter:description" content="Thingsboard IoT Platform architecture"/>
+	
+	
+	<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="/css/styles.css">
+	<script type="text/javascript">
+		/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+		!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+		/*! onloadCSS. (onload callback for loadCSS) [c]2017 Filament Group, Inc. MIT License */
+		function onloadCSS(a,b){function c(){!d&&b&&(d=!0,b.call(a))}var d;a.addEventListener&&a.addEventListener("load",c),a.attachEvent&&a.attachEvent("onload",c),"isApplicationInstalled"in navigator&&"onloadcssdefined"in a&&a.onloadcssdefined(c)}
+	</script>
+	<script type="text/javascript">
+
+		function jqueryDefer(method) {
+			if (window.jQuery) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryDefer(method)
+				}, 50);
+			}
+		}
+
+		function jqueryUiDefer(method) {
+			if (window.jQuery && window.jQuery.ui) {
+				method();
+			} else {
+				setTimeout(function() {
+					jqueryUiDefer(method)
+				}, 50);
+			}
+		}
+
+		function loadScript(src, callback)
+		{
+			var s, r, t;
+			r = false;
+			s = document.createElement('script');
+			s.type = 'text/javascript';
+			s.src = src;
+			s.onload = s.onreadystatechange = function() {
+				if ( !r && (!this.readyState || this.readyState == 'complete') )
+				{
+					r = true;
+					if (callback) {
+						callback();
+					}
+				}
+			};
+			t = document.getElementsByTagName('script')[0];
+			t.parentNode.insertBefore(s, t);
+		}
+
+		function loadCssAsync(src, callback) {
+			var stylesheet = loadCSS( src );
+			if (callback) {
+				onloadCSS(stylesheet, callback);
+			}
+		}
+
+		function loadNextScript(index, scriptsList, completeCallback) {
+			if (index < scriptsList.length) {
+				var script = scriptsList[index];
+				if (script.type === 'script') {
+					loadScript(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				} else if (script.type === 'css') {
+					loadCssAsync(script.src, function() {
+						index++;
+						loadNextScript(index, scriptsList, completeCallback);
+					});
+				}
+			} else if (completeCallback) {
+				completeCallback();
+			}
+		}
+
+		var initialScriptsList = [
+			{src: '/js/jquery-2.2.0.min.js', type: 'script'},
+			{src: '/css/jquery-ui.min.css', type: 'css'},
+			{src: '/js/jquery-ui.min.js', type: 'script'},
+			{src: '/js/script.js', type: 'script'},
+			{src: '/css/sweetalert.css', type: 'css'},
+			{src: '/js/sweetalert.min.js', type: 'script'}
+		];
+
+		loadNextScript(0, initialScriptsList);
+
+	</script>
+	<script type="text/javascript">
+		function _gaLt(event) {
+			/* If GA is blocked or not loaded, or not main|middle|touch click then don't track */
+			if (!ga.hasOwnProperty("loaded") || ga.loaded != true || (event.which != 1 && event.which != 2)) {
+				return;
+			}
+			var el = event.srcElement || event.target;
+
+			while (el && (typeof el.tagName == 'undefined' || el.tagName.toLowerCase() != 'a' || !el.href)) {
+				el = el.parentNode;
+			}
+			if (el && el.href) {
+				var link = el.href;
+				if ((link.indexOf(location.host) == -1 || link.indexOf('.' + location.host) > 0) && !link.match(/^javascript\:/i)) {
+					var target = (el.target && !el.target.match(/^_(self|parent|top)$/i)) ? el.target : false;
+					if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
+						target = "_blank";
+					}
+
+					var hbrun = false; // tracker has not yet run
+					var hitBack = function() {
+						if (hbrun) return;
+						hbrun = true;
+						window.location.href = link;
+					};
+
+					if (target) {
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search
+						);
+					} else {
+						event.preventDefault ? event.preventDefault() : event.returnValue = !1;
+						ga(
+								"send", "event", "Outgoing Links", link,
+								document.location.pathname + document.location.search, {
+									"hitCallback": hitBack
+								}
+						);
+
+						setTimeout(hitBack, 1000);
+					}
+				}
+			}
+		}
+
+		var _w = window;
+		var _gaLtEvt = ("ontouchstart" in _w) ? "click" : "mousedown";
+		_w.addEventListener ? _w.addEventListener("load", function() {document.body.addEventListener(_gaLtEvt, _gaLt, !1)}, !1)
+				: _w.attachEvent && _w.attachEvent("onload", function() {document.body.attachEvent("on" + _gaLtEvt, _gaLt)});
+	</script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-88383331-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+</head>
+<body>
+<div id="cellophane" onclick="tb.toggleMenu()"></div>
+<header>
+	<a href="/" class="logo"></a>
+	<div id="githubButtonContainer">
+		<iframe id="gh-btn-frame" src="https://ghbtns.com/github-btn.html?user=thingsboard&repo=thingsboard&type=star&count=true&size=large"
+				frameborder="0"
+				scrolling="0" width="130px" height="30px"></iframe>
+	</div>
+	<div class="nav-buttons" data-auto-burger="primary">
+		<a href="/docs/" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a>
+		<a href="/iot-use-cases/" class="button" id="useCases" data-auto-burger-exclude>Use cases</a>
+		<a href="/docs/getting-started-guides/helloworld/" class="button" id="gettingStarted" data-auto-burger-exclude>Getting started</a>
+		<a target="_blank" href="https://demo.thingsboard.io/signup" class="button" id="liveDemo" data-auto-burger-exclude>Live demo</a>
+		<button id="hamburger" onclick="tb.toggleMenu()" data-auto-burger-exclude><div></div></button>
+	</div>
+
+	<nav id="mainNav">
+		<main id="headNav" data-auto-burger="primary">
+			<div class="nav-box">
+				<h3><a href="/docs/getting-started-guides/helloworld/">Get Started</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/">Documentation</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/iot-use-cases/">Use cases</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="http://blog.thingsboard.io/">Blog</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/services/">Services</a></h3>
+			</div>
+			<div class="nav-box">
+				<h3><a href="/docs/contact-us/">Contact us</a></h3>
+			</div>
+		</main>
+		<main data-auto-burger="primary">
+			<div class="center">
+				<div class="social">
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>Twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+			<div class="clear" style="clear: both"></div>
+		</main>
+	</nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Reference Documentation</h1>
+  <h5>Design docs, concept definitions, and references for APIs and CLIs.</h5>
+  <div id="vendorStrip" class="light-text">
+    <div id="docsList">
+        <ul>
+          <li><a href="/docs/" >DOCS HOME</a></li>
+          <li><a href="/docs/api/" >API</a></li>
+          <li><a href="/docs/iot-gateway/" >IOT GATEWAY</a></li>
+          <li><a href="/docs/reference/" class="YAH">REFERENCE</a></li>
+          <li><a href="/docs/samples/" >SAMPLES</a></li>
+          <li><a href="/iot-use-cases/" >USE CASES</a></li>
+          <li><a href="/docs/iot-video-tutorials/" >VIDEO TUTORIALS</a></li>
+          <li><a href="/docs/faq/" >FAQ</a></li>
+          <li><a href="/docs/services/" >SERVICES</a></li>
+          <li><a href="/docs/contact-us/" >CONTACT US</a></li>
+        </ul>
+    </div>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)">
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section id="encyclopedia">
+  
+  <div id="docsToc" >
+        <div class="pi-accordion">
+        
+    <a class="item" data-title="Reference Documentation" href="/docs/reference/"></a>
+    <a class="item" data-title="Thingsboard Architecture" href="/docs/reference/architecture/"></a>
+<div class="item" data-title="Thingsboard Performance">
+  <div class="container">
+    <a class="item" data-title="Data Collection Performance" href="/docs/reference/performance/"></a>
+    <a class="item" data-title="Performance Test Tools" href="/docs/reference/performance-tools/"></a>
+    <a class="item" data-title="How to repeate the tests" href="/docs/reference/performance-tests/"></a>
+  </div>
+</div>
+<div class="item" data-title="Rule Engine components">
+  <div class="container">
+<div class="item" data-title="Filters">
+  <div class="container">
+    <a class="item" data-title="Message Type Filter" href="/docs/reference/filters/message-type-filter/"></a>
+    <a class="item" data-title="Device Attributes Filter" href="/docs/reference/filters/device-attributes-filter/"></a>
+    <a class="item" data-title="Device Telemetry Filter" href="/docs/reference/filters/device-telemetry-filter/"></a>
+    <a class="item" data-title="Method Name Filter" href="/docs/reference/filters/method-name-filter/"></a>
+  </div>
+</div>
+<div class="item" data-title="Processors">
+  <div class="container">
+    <a class="item" data-title="Alarm Deduplication Processor" href="/docs/reference/processors/alarm-deduplication-processor/"></a>
+  </div>
+</div>
+<div class="item" data-title="Actions">
+  <div class="container">
+    <a class="item" data-title="Telemetry Plugin Action" href="/docs/reference/actions/telemetry-plugin-action/"></a>
+    <a class="item" data-title="Send Mail Action" href="/docs/reference/actions/send-mail-action/"></a>
+    <a class="item" data-title="Kafka Plugin Action" href="/docs/reference/actions/kafka-plugin-action/"></a>
+    <a class="item" data-title="RabbitMQ Plugin Action" href="/docs/reference/actions/rabbitmq-plugin-action/"></a>
+    <a class="item" data-title="REST API Call Plugin Action" href="/docs/reference/actions/rest-api-call-plugin-action/"></a>
+    <a class="item" data-title="RPC Plugin Action" href="/docs/reference/actions/rpc-plugin-action/"></a>
+  </div>
+</div>
+<div class="item" data-title="Plugins">
+  <div class="container">
+    <a class="item" data-title="Telemetry Plugin" href="/docs/reference/plugins/telemetry/"></a>
+    <a class="item" data-title="RPC Plugin" href="/docs/reference/plugins/rpc/"></a>
+    <a class="item" data-title="Device Messaging Plugin" href="/docs/reference/plugins/messaging/"></a>
+    <a class="item" data-title="Mail Plugin" href="/docs/reference/plugins/mail/"></a>
+    <a class="item" data-title="Kafka Plugin" href="/docs/reference/plugins/kafka/"></a>
+    <a class="item" data-title="RabbitMQ Plugin" href="/docs/reference/plugins/rabbitmq/"></a>
+    <a class="item" data-title="REST API Call Plugin" href="/docs/reference/plugins/rest/"></a>
+    <a class="item" data-title="Time RPC Plugin" href="/docs/reference/plugins/time/"></a>
+  </div>
+</div>
+  </div>
+</div>
+    <a class="item" data-title="Release Notes" href="https://github.com/thingsboard/thingsboard/releases/" target='_blank'></a>
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="tb.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+  
+  <div id="docsContent" class="">
+    <h1>Thingsboard Architecture</h1>
+    <ul id="markdown-toc">
+  <li><a href="#high-level-overview" id="markdown-toc-high-level-overview">High level overview</a>    <ul>
+      <li><a href="#device-connectivity" id="markdown-toc-device-connectivity">Device Connectivity</a></li>
+      <li><a href="#rule-engine" id="markdown-toc-rule-engine">Rule Engine</a></li>
+      <li><a href="#core-services" id="markdown-toc-core-services">Core Services</a></li>
+      <li><a href="#server-side-api-gateway" id="markdown-toc-server-side-api-gateway">Server-side API Gateway</a></li>
+    </ul>
+  </li>
+  <li><a href="#actor-model" id="markdown-toc-actor-model">Actor model</a></li>
+  <li><a href="#clustering-mode" id="markdown-toc-clustering-mode">Clustering mode</a>    <ul>
+      <li><a href="#service-discovery" id="markdown-toc-service-discovery">Service Discovery</a></li>
+      <li><a href="#consistent-hashing" id="markdown-toc-consistent-hashing">Consistent Hashing</a></li>
+    </ul>
+  </li>
+  <li><a href="#security" id="markdown-toc-security">Security</a>    <ul>
+      <li><a href="#transport-encryption" id="markdown-toc-transport-encryption">Transport encryption</a></li>
+      <li><a href="#device-authentication" id="markdown-toc-device-authentication">Device authentication</a></li>
+    </ul>
+  </li>
+  <li><a href="#third-party-tools" id="markdown-toc-third-party-tools">Third-party tools</a></li>
+</ul>
+
+<p>Thingsboard is designed to distribute workload between multiple nodes without single point of failure.
+Each Thingsboard node is identical and can handle request from both device and server-side applications.</p>
+
+<h2 id="high-level-overview">High level overview</h2>
+
+<p><img src="/images/reference/architecture-in-brief.svg" alt="image" /></p>
+
+<h4 id="device-connectivity">Device Connectivity</h4>
+
+<p>Thingsboard supports <a href="/docs/reference/mqtt-api/"><strong>MQTT</strong></a>, <a href="/docs/reference/coap-api/"><strong>CoAP</strong></a> and <a href="/docs/reference/http-api/"><strong>HTTP</strong></a> protocols for device connectivity. 
+It is possible to plugin support of different protocols or customize existing implementations.</p>
+
+<h4 id="rule-engine">Rule Engine</h4>
+
+<p>Thingsboard <a href="/docs/user-guide/rule-engine/">Rule Engine</a> allows to process messages from devices and trigger configurable processing modules called Plugins.</p>
+
+<h4 id="core-services">Core Services</h4>
+
+<p>Thingsboard contains set of core services that allow to manage following entities:</p>
+
+<ul>
+  <li>Devices and their credentials</li>
+  <li>Rules and Plugins</li>
+  <li>Tenants and customers</li>
+  <li>Widgets and Dashboard</li>
+  <li>Alarms and Events</li>
+</ul>
+
+<p>Rules and Plugins are able to invoke certain subset of this APIs. For example, rule can create an alarm for certain device.</p>
+
+<h4 id="server-side-api-gateway">Server-side API Gateway</h4>
+
+<p>Every Thingsboard server provides REST API for registered users. 
+Plugins are able to extend existing REST APIs and also handle websocket connections. 
+For example:</p>
+<ul>
+  <li>System Telemetry plugin allows to manage attributes and fetch timeseries data using websockets and REST API.</li>
+  <li>System RPC plugin provides REST API to push custom commands to devices.</li>
+</ul>
+
+<h2 id="actor-model">Actor model</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/Actor_model">Actor model</a> enables high performant concurrent processing of messages from devices as long as server-side API calls.
+Thingsboard uses <a href="http://akka.io/">Akka</a> as an actor system implementation with following actor hierarchies.</p>
+
+<p><img src="/images/reference/actor-system-hierarchies.svg" alt="image" /></p>
+
+<p>Brief description of each actors functionality is listed below:</p>
+
+<ul>
+  <li><strong>App Actor</strong> - responsible for management of tenant, system rules &amp; plugins actors. 
+ Instance of this actor is always present in memory.</li>
+  <li><strong>Tenant Actor</strong> - responsible for management of tenant device, rules &amp; plugins actors. 
+ Instance of this actor is always present in memory.</li>
+  <li><strong>Device Actor</strong> - maintain state of the device: active sessions, subscriptions, pending RPC commands, etc. 
+ Caches current device attributes in memory for performance reasons.
+ Actor is created when first message from device is processed. Actor is stopped when there is no messages from devices for a certain time.</li>
+  <li><strong>Rule Actor</strong> - filter and process incoming messages, converts them to actions and forward this actions to plugin actors. 
+ Instance of this actor is always present in memory.</li>
+  <li>
+    <p><strong>Plugin Actor</strong> - process incoming messages, and report results back to rule actor. Also handles server side requests. 
+ Instance of this actor is always present in memory.</p>
+  </li>
+  <li><strong>Device Session Manager Actor</strong> - responsible for management of device session actors. 
+ Creates session actors on first message with corresponding session id. Closes session actors when corresponding session is closed.</li>
+  <li>
+    <p><strong>Session Actor</strong> - represents communication session between device and Thingsboard server. 
+ Session may be synchronous (HTTP, CoAP) and asynchronous (MQTT, CoAP with Observe option).</p>
+  </li>
+  <li><strong>RPC Session Manager Actor</strong> - responsible for management of cluster RPC session actors.
+ Creates session actor when new server is up. Closes session actor when server is down.</li>
+  <li><strong>RPC Session Actor</strong> - represents communication session between two Thingsboard servers in the cluster mode.
+ Communication is done using HTTP/2 based on <a href="http://www.grpc.io/">gRPC</a>.</li>
+</ul>
+
+<h2 id="clustering-mode">Clustering mode</h2>
+
+<h6 id="service-discovery">Service Discovery</h6>
+
+<p>Thingsboard uses Zookeeper for service discovery. 
+All Thingsboard nodes are identical and registered as ephemeral in Zookeeper. Apache Curator <a href="http://curator.apache.org/curator-recipes/path-cache.html">path cache receipt</a> is used to keep track of all available sibling nodes.</p>
+
+<h6 id="consistent-hashing">Consistent Hashing</h6>
+
+<p>Thingsboard adopts <a href="https://dzone.com/articles/simple-magic-consistent">consistent hashing</a> to ensure scalability and availability.
+Message from Device A that is received on particular node may be forwarded to the other node based on the hash of the device ID.
+Although this introduce certain networking overhead, 
+it allows to process all messages from particular device using corresponding device actor on a determined server, which introduce following advantages:</p>
+
+<ul>
+  <li>improve cache hit rate. Device attributes and other device related data are fetched by device actor on a specific server.</li>
+  <li>avoid race conditions. All messages for particular device are processed on a determined server.</li>
+  <li>allows to target server-side api calls based on device id.</li>
+</ul>
+
+<p>The illustration below demonstrates how Thingsboard handles RPC request to Device D1. 
+In this case request arrives to Server A, but D1 is connected using MQTT to Server C. 
+In the worst-case scenario, D1 Device Actor will be located on another server B that obviously does not match either A or C.</p>
+
+<p><img src="/images/reference/cluster-mode-rpc-request.svg" alt="image" /></p>
+
+<h2 id="security">Security</h2>
+
+<h3 id="transport-encryption">Transport encryption</h3>
+
+<p>As a system administrator you are able to configure Thingsboard to use secure sockets layer for HTTP(s) and MQTT transports.
+DTLS for CoAP is not supported yet.</p>
+
+<h3 id="device-authentication">Device authentication</h3>
+
+<p>Thingsboard is designed to support many types of device credentials. 
+Current release provides support of token based credentials for all <a href="/docs/reference/protocols/">protocols</a> 
+and support of X.509 certificate based credentials for MQTT protocol. See <a href="/docs/user-guide/mqtt-over-ssl/">MQTT over SSL</a> guide for more details.</p>
+
+<h2 id="third-party-tools">Third-party tools</h2>
+
+<p>Thingsboard uses following main third-party projects:</p>
+
+<ul>
+  <li>Akka - for actor system implementation</li>
+  <li>Zookeeper - for services coordination</li>
+  <li>gRPC - for high-performance RPC</li>
+  <li>Cassandra - as a scalable and reliable database</li>
+</ul>
+
+
+  </div>
+</section>
+
+<footer>
+	<main class="light-text">
+		<nav>
+			<a href="/docs/getting-started-guides/helloworld/">Get Started</a>
+			<a href="/docs/">Documentation</a>
+			<a href="/iot-use-cases/">Use cases</a>
+			<a href="https://blog.thingsboard.io/">Blog</a>
+			<a href="/docs/services/">Services</a>
+			<a href="/docs/contact-us/">Contact us</a>
+		</nav>
+		<div class="newsletterSubsContainer">
+			<form id="newsletter-form" method="post" onsubmit="return validateNewsletterForm(this)">
+				<fieldset>
+					<div class="newsletterInputs">
+						<p class="subsTitle">Sign up for Thingsboard IoT newsletter</p>
+						<input id="subsEmail" placeholder="Email" class="text-input" name="email" type="text" size="20" maxlength="80">
+						<input type="hidden" name="_next" value="/docs/newsletter-thanks/" />
+						<input type="text" name="_gotcha" style="display:none" />
+						<input class="button" value="Submit" type="submit">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="center">
+			<div class="social">
+				<div>
+					<a href="https://twitter.com/thingsboard" class="twitter"><span>twitter</span></a>
+					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
+					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
+					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
+				</div>
+				<div>
+					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
+					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
+					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
+				</div>
+			</div>
+		</div>
+		<div id="miceType" class="center">&copy; 2017 The Thingsboard Authors</div>
+	</main>
+
+	<script type="text/javascript">
+
+		function validateNewsletterForm(form) {
+			var email = $('input[name=email]', form).val();
+
+			if (!validateValue('Email Address', email)) {
+				return false;
+			}
+
+			var emailExp = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+			if(email.match(emailExp)==null) {
+				window.alert("Entered Email Address is not valid.");
+				return false;
+			}
+			return true;
+		}
+
+		function validateValue(name, val) {
+			if (isEmpty(val)) {
+				window.alert("Please fill '" + name + "' field.");
+				return false;
+			}
+			return true;
+		}
+
+		function isEmpty(val) {
+			return val === undefined || val.trim().length == 0;
+		}
+
+	</script>
+
+	<script type="text/javascript">
+
+		var newsletterform =  document.getElementById('newsletter-form');
+		newsletterform.setAttribute('action', 'https://formspree.io/' + 'newsletter' + '@' + 'thingsboard' + '.' + 'io');
+
+	</script>
+
+</footer>
+
+
+
+<button class="flyout-button" onclick="tb.toggleToc()"></button>
+
+
+<style>
+  .cse .gsc-control-cse, .gsc-control-cse {
+    padding: 0;
+  }
+  .gsc-control-cse table, .gsc-control-cse-en table {
+    margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+    border-bottom: 0;
+  }
+</style>
+</body>
+</html>
