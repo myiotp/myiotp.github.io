@@ -36,11 +36,8 @@
 <!-- End Jekyll SEO tag -->
 	
 	
-	<meta name="twitter:description" content="MQTT protocol support for Thingsboard IoT Gateway"/>
-	
-	
 	<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
-	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+
 	<link rel="stylesheet" href="/css/styles.css">
 	<script type="text/javascript">
 		/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
@@ -179,68 +176,41 @@
 		_w.addEventListener ? _w.addEventListener("load", function() {document.body.addEventListener(_gaLtEvt, _gaLt, !1)}, !1)
 				: _w.attachEvent && _w.attachEvent("onload", function() {document.body.attachEvent("on" + _gaLtEvt, _gaLt)});
 	</script>
-	<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-		ga('create', 'UA-88383331-1', 'auto');
-		ga('send', 'pageview');
-	</script>
 </head>
 <body>
 <div id="cellophane" onclick="tb.toggleMenu()"></div>
 <header>
-	<a href="/" class="logo"></a>
-	<div id="githubButtonContainer">
-		<iframe id="gh-btn-frame" src="https://ghbtns.com/github-btn.html?user=thingsboard&repo=thingsboard&type=star&count=true&size=large"
-				frameborder="0"
-				scrolling="0" width="130px" height="30px"></iframe>
-	</div>
+	<a href="#" class="logo"></a>
 	<div class="nav-buttons" data-auto-burger="primary">
-		<a href="/docs/" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a>
-		<a href="/iot-use-cases/" class="button" id="useCases" data-auto-burger-exclude>Use cases</a>
-		<a href="/docs/getting-started-guides/helloworld/" class="button" id="gettingStarted" data-auto-burger-exclude>Getting started</a>
-		<a target="_blank" href="https://demo.thingsboard.io/signup" class="button" id="liveDemo" data-auto-burger-exclude>Live demo</a>
+		<a href="#" class="button" id="viewDocs" data-auto-burger-exclude>&nbsp;&nbsp;主要功能&nbsp;&nbsp;</a>
+		<a href="#" class="button" id="useCases" data-auto-burger-exclude>&nbsp;&nbsp;查看文档&nbsp;&nbsp;</a>
+		<a href="#" class="button" id="useCases" data-auto-burger-exclude>&nbsp;&nbsp;案例分析&nbsp;&nbsp;</a>
+		<a href="#" class="button" id="gettingStarted" data-auto-burger-exclude>&nbsp;&nbsp;开始使用&nbsp;&nbsp;</a>
 		<button id="hamburger" onclick="tb.toggleMenu()" data-auto-burger-exclude><div></div></button>
 	</div>
 
 	<nav id="mainNav">
 		<main id="headNav" data-auto-burger="primary">
 			<div class="nav-box">
-				<h3><a href="/docs/getting-started-guides/helloworld/">Get Started</a></h3>
+				<h3><a href="#">开始使用<a></h3>
 			</div>
 			<div class="nav-box">
-				<h3><a href="/docs/">Documentation</a></h3>
+				<h3><a href="#">查看文档</a></h3>
 			</div>
 			<div class="nav-box">
-				<h3><a href="/iot-use-cases/">Use cases</a></h3>
+				<h3><a href="#">案例分析</a></h3>
 			</div>
 			<div class="nav-box">
-				<h3><a href="http://blog.thingsboard.io/">Blog</a></h3>
+				<h3><a href="http://osswangxining.github.io/">Blog</a></h3>
 			</div>
 			<div class="nav-box">
-				<h3><a href="/docs/services/">Services</a></h3>
+				<h3><a href="#">服务支持</a></h3>
 			</div>
 			<div class="nav-box">
-				<h3><a href="/docs/contact-us/">Contact us</a></h3>
+				<h3><a href="#">联系我们</a></h3>
 			</div>
 		</main>
-		<main data-auto-burger="primary">
-			<div class="center">
-				<div class="social">
-					<a href="https://twitter.com/thingsboard" class="twitter"><span>Twitter</span></a>
-					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
-					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
-					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
-					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
-					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
-					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
-				</div>
-			</div>
-			<div class="clear" style="clear: both"></div>
-		</main>
+
 	</nav>
 </header>
 
@@ -816,82 +786,9 @@ The Gateway will subscribe to the “response” topic and wait for device reply
 
 <footer>
 	<main class="light-text">
-		<nav>
-			<a href="/docs/getting-started-guides/helloworld/">Get Started</a>
-			<a href="/docs/">Documentation</a>
-			<a href="/iot-use-cases/">Use cases</a>
-			<a href="https://blog.thingsboard.io/">Blog</a>
-			<a href="/docs/services/">Services</a>
-			<a href="/docs/contact-us/">Contact us</a>
-		</nav>
-		<div class="newsletterSubsContainer">
-			<form id="newsletter-form" method="post" onsubmit="return validateNewsletterForm(this)">
-				<fieldset>
-					<div class="newsletterInputs">
-						<p class="subsTitle">Sign up for Thingsboard IoT newsletter</p>
-						<input id="subsEmail" placeholder="Email" class="text-input" name="email" type="text" size="20" maxlength="80">
-						<input type="hidden" name="_next" value="/docs/newsletter-thanks/" />
-						<input type="text" name="_gotcha" style="display:none" />
-						<input class="button" value="Submit" type="submit">
-					</div>
-				</fieldset>
-			</form>
-		</div>
-		<div class="center">
-			<div class="social">
-				<div>
-					<a href="https://twitter.com/thingsboard" class="twitter"><span>twitter</span></a>
-					<a href="https://github.com/thingsboard/thingsboard" class="github"><span>Github</span></a>
-					<a href="https://gitter.im/thingsboard/chat" class="gitter"><span>Gitter</span></a>
-					<a href="http://stackoverflow.com/questions/tagged/thingsboard" class="stack-overflow"><span>Stack Overflow</span></a>
-				</div>
-				<div>
-					<a href="https://groups.google.com/forum/#!forum/thingsboard" class="mailing-list"><span>Mailing List</span></a>
-					<a href="https://www.youtube.com/channel/UCDb9fsV-YR4JmnipAMGsVAQ" class="youtube"><span>YouTube Channel</span></a>
-					<a href="https://www.facebook.com/thingsboard" class="facebook"><span>Facebook Page</span></a>
-				</div>
-			</div>
-		</div>
-		<div id="miceType" class="center">&copy; 2017 The Thingsboard Authors</div>
+		
+		<div id="miceType" class="center">&copy; 2016 - 2017 IoT套件</div>
 	</main>
-
-	<script type="text/javascript">
-
-		function validateNewsletterForm(form) {
-			var email = $('input[name=email]', form).val();
-
-			if (!validateValue('Email Address', email)) {
-				return false;
-			}
-
-			var emailExp = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-			if(email.match(emailExp)==null) {
-				window.alert("Entered Email Address is not valid.");
-				return false;
-			}
-			return true;
-		}
-
-		function validateValue(name, val) {
-			if (isEmpty(val)) {
-				window.alert("Please fill '" + name + "' field.");
-				return false;
-			}
-			return true;
-		}
-
-		function isEmpty(val) {
-			return val === undefined || val.trim().length == 0;
-		}
-
-	</script>
-
-	<script type="text/javascript">
-
-		var newsletterform =  document.getElementById('newsletter-form');
-		newsletterform.setAttribute('action', 'https://formspree.io/' + 'newsletter' + '@' + 'thingsboard' + '.' + 'io');
-
-	</script>
 
 </footer>
 
