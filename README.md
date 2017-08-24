@@ -7,7 +7,7 @@
 
 ## Deployment of the site locally
 
-The below commands setup your environment for running GitHub pages locally. 
+The below commands setup your environment for running GitHub pages locally.
 Any edits you make will be viewable on a lightweight webserver that runs on your local machine.
 
 Install Ruby 2.2 or higher. If you're on Linux, run these commands:
@@ -27,11 +27,11 @@ Install the GitHub Pages package, which includes Jekyll:
 
 Clone our site:
 
-	git clone https://github.com/thingsboard/thingsboard.github.io.git
+	git clone
 
 Make any changes you want. Then, to see your changes locally:
 
-	cd thingsboard.github.io
+	cd myiotp.github.io
 	jekyll serve
 
 Your copy of the site will then be viewable at: [http://localhost:4000](http://localhost:4000)
